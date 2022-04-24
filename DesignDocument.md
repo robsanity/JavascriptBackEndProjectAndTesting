@@ -3,7 +3,7 @@
 
 Authors: Lorenzo Buompane, Simone Romantini, Jonathan Damone, Roberto Di Ciaula
 
-Date: 25 April 2022
+Date: 24 April 2022
 
 Version: 2.0
 
@@ -17,7 +17,7 @@ Version: 2.0
 
 
 # High level design 
-![High Level](./doc/PackageDiagram.PNG)
+![High Level](docs/PackageDiagram.PNG)
 
 EZWH is a layered application that consists of one executable generating one process and thread for each user.
 The application is composed of the following packages:
@@ -297,7 +297,7 @@ User -- SKUItem
 
 
 # Verification sequence diagrams 
-![Scenario 3.1](./doc/scenario3.1.png)
-![Scenario 5.3.1](./doc/scenario5.3.1.png)
-![Scenario 6.1](./doc/scenario6.1.png)
-![Scenario10.1](./doc/scenario10.1.png)
+![Scenario 3.1](docs/scenario3.1.png)
+![Scenario 5.3.1](docs/scenario5.3.1.png)
+![Scenario 6.1](docs/scenario6.1.png)
+![Scenario10.1](docs/scenario10.1.png)
