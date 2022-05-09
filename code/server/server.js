@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express');
+const { validationResult } = require('express-validator');
 const testDescriptorsDAO = require('./modules/testDescriptorsDAO');
 const testResultsDAO = require('./modules/testResultsDAO');
 const usersDAO = require('./modules/usersDAO');
@@ -17,126 +18,103 @@ app.get('/api/skus', (req, res) => {
       .catch((error) => { res.status(500).json(error) });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Return a SKU, given its id.
-app.get('/api/skus/:id', (req,res)=>{
-
-  if(ok){
-    //SKU_item = chiamata funzione da SKU o DBInterface
-    return res.status(200).json(SKU_item);
+app.get('/api/skus/:id', (req, res) => {
+  const errors = validationResult(req); //Disponibile via require('express-validator'), estrae i validation errors da una request e li rende disponibili in un oggetto Result.
+  if (!errors.isEmpty()) {  //Controllo di errori generici
+      return res.status(422).json({ errors: errors.array() }); //(422)validation of id failed
   }
 
-  if(Unathorized)
-    return res.status(401) //Unathorized (not logged in or wrong permissions)
-
-  if(Internal_Server_Error)
-    return res.status(500) //generic error
-
-  if(Unprocessable_Entity)
-    return res.status(422) //validation of id failed
-    
-  if(Not_Found)
-  return res.status(404) // no SKU associated to id
-
+  DAO.findSKU(req.params.id)    //dentro req.params.id c'è l'id del SKU e lo passiamo a findSKU (definita in DAO.js)
+      .then((SKU) => { res.status(200).json(SKU); })  //Se trovato ritorna l'oggetto...
+      .catch((error) => { res.status(500).json(error) }); //...errore altrimenti
 });
 
 //Creates a new SKU with an empty array of testDescriptors.
-app.post('/api/sku', (req,res)=>{
-
-  if(ok){
-    //Dentro req c'è un item SKU da registrare
-    return res.status(201);
+app.post('/api/sku', (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
   }
 
-  if(Unathorized)
-    return res.status(401) //Unathorized (not logged in or wrong permissions)
+  //Ricavo gli attributi necessari a creare una nuova SKU e li passo a createSKU
+  let description = req.body.description;
+  let weight = req.body.weight;
+  let volume = req.body.volume;
+  let notes = req.body.notes;
+  let price = req.body.price;
+  let availableQuantity = req.body.availableQuantity;
+  let testDescriptors = [];
 
-  if(Service_Unavailable)
-    return res.status(503) //generic error
-
-  if(Unprocessable_Entity)
-    return res.status(422) //validation of request body failed
+  DAO.createSKU({
+      description: description, weight: weight, volume: volume,
+      notes: notes, price: price, availableQuantity: availableQuantity, testDescriptors: testDescriptors
+  })
+      .then(() => { res.status(201).end(); })
+      .catch((error) => { res.status(500).json(error); });
 });
-
 
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
-app.put('/api/sku/:id', (req,res)=>{
-
-  if(ok){
-    //Dentro req c'è il new item SKU da sovrascrivere a quello esistente
-    return res.status(201);
+app.put('/api/sku/:id',  (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
   }
 
-  if(Unathorized)
-    return res.status(401) //Unathorized (not logged in or wrong permissions)
+  let description = req.body.description;
+  let weight = req.body.weight;
+  let volume = req.body.volume;
+  let notes = req.body.notes;
+  let price = req.body.price;
+  let availableQuantity = req.body.availableQuantity;
+  let testDescriptors = req.body.testDescriptors;
 
-  if(Service_Unavailable)
-    return res.status(503) //generic error
-
-  if(Unprocessable_Entity)
-    return res.status(422) //validation of request body failed
-    
-  if(Not_Found)
-    return res.status(404) // SKU not existing
+  DAO.updateSKU(req.params.id, {
+      description: description, weight: weight, volume: volume,
+      notes: notes, price: price, availableQuantity: availableQuantity, testDescriptors: testDescriptors
+  })
+      .then((result) => {
+          if (!result.error)
+              res.status(200).end();
+          else
+              res.status(404).json(result);
+      })
+      .catch((error) => { res.status(503).json(error); });
 });
 
 
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
 //are modified according to the available quantity.
-app.put('/api/sku/:id/position', (req,res)=>{
-
-  if(ok){
-    //Dentro req c'è la nuova position da aggiungere o modificare
-    return res.status(200);
+app.put('/api/sku/:id/position', (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
   }
 
-  if(Unathorized)
-    return res.status(401) //Unathorized (not logged in or wrong permissions)
-
-  if(Service_Unavailable)
-    return res.status(503) //generic error
-
-  if(Unprocessable_Entity)
-    return res.status(422) //validation of position through the algorithm failed or position isn't capable to satisfy volume 
-                          //and weight constraints for available quantity of sku or position is already assigned to a sku
-
-  if(Not_Found)
-    return res.status(404) // Position or SKU not existing
+  DAO.updatePosition(req.params.id, req.body.position)
+      .then((result) => {
+          if (!result.error)
+              res.status(200).end();
+          else
+              res.status(404).json(result);
+      })
+      .catch((error) => { res.status(503).json(error); });
 });
 
-
 //Delete a SKU receiving its id.
-app.delete('/api/skus/:id', (req,res)=>{
-
-  if(ok){
-    //Dentro req.header c'è l'id
-    return res.status(204);
+app.delete('/api/skus/:id', (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
   }
 
-  if(Unathorized)
-    return res.status(401) //Unathorized (not logged in or wrong permissions)
-
-  if(Service_Unavailable)
-    return res.status(503) //generic error
-
-  if(Unprocessable_Entity)
-    return res.status(422) //validation of id failed
-
+  DAO.deleteSKU(req.params.id)
+      .then((result) => {
+          if (!result.error)
+              res.status(204).end();
+      })
+      .catch((error) => { res.status(503).json(error); });
 });
 
 //-----------------------------------------------------
