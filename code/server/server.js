@@ -1,5 +1,8 @@
 'use strict';
 const express = require('express');
+const testDescriptorsDAO = require('./modules/testDescriptorsDAO');
+const testResultsDAO = require('./modules/testResultsDAO');
+const usersDAO = require('./modules/usersDAO');
 // init express
 const app = new express();
 const port = 3001;
@@ -371,6 +374,113 @@ app.delete('/api/position/:positionID', (req,res)=>{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* LORENZO */
+
+/* TEST DESCRIPTOR */
+app.get('/api/testDescriptors', async (req, res) => {
+  try {
+      const listTestDescriptors = await testDescriptorsDAO.listTestDescriptors();
+      res.status(200).json(listTestDescriptors)
+  } catch (error) {
+      res.status(500).json();
+  }
+});
+
+app.get('/api/testDescriptors/:id', async (req, res) => {
+  if (Object.keys(req.header).length === 0) {
+      return res.status(422).json({ error: `Empty params request` });
+  }
+  let testDescriptorId = req.params.id;
+  if (testDescriptorId === undefined || testDescriptorId.id === undefined || testDescriptorId.id == '') {
+      return res.status(422).json({ error: `Invalid id data` });
+  }
+
+  try {
+      const testDescriptor = await testDescriptorsDAO.testDescriptorsById(testDescriptorId);
+      res.status(200).json(testDescriptor)
+  } catch (error) {
+      res.status(404).json();
+  }
+});
+
+/* TEST RESULTS */
+app.get('api/skuitems/:rfid/testResults', async (req, res) => {
+  if (Object.keys(req.header).length === 0) {
+      return res.status(422).json({ error: `Empty params request` });
+  }
+  let rfid = req.params.rfid;
+  if (rfid === undefined || rfid.rfid === undefined || rfid.rfid === '') {
+      return res.status(422).json({ error: `Invalid rfid data` });
+  }
+
+  try {
+      const listTestResults = await testResultsDAO.listTestResults(rfid);
+      res.status(200).json(listTestResults)
+  } catch (error) {
+      res.status(500).json();
+  }
+})
+
+app.get('api/skuitems/:rfid/testResults/:id', async (req, res) => {
+  if (Object.keys(req.header).length === 0) {
+      return res.status(422).json({ error: `Empty params request` });
+  }
+  let rfid = req.params.rfid;
+  let id = req.params.id;
+  if (rfid === undefined || rfid.rfid === undefined || rfid.rfid === '' ||
+      id === undefined || id.id === undefined || id === '') {
+      return res.status(422).json({ error: `Invalid rfid or id data` });
+  }
+
+  try {
+      const listTestResults = await testResultsDAO.listTestResultsById(rfid, id);
+      res.status(200).json(listTestResults)
+  } catch (error) {
+      res.status(500).json();
+  }
+})
+
+/* USERS */
+app.get('/api/suppliers', async (req, res) => {
+  try {
+      const suppliers = await usersDAO.listSuppliers();
+      res.status(200).json(suppliers)
+  } catch (error) {
+      res.status(500).json();
+  }
+});
+
+app.get('/api/users', async (req, res) => {
+  try {
+      const users = await usersDAO.listUsers();
+      res.status(200).json(users)
+  } catch (error) {
+      res.status(500).json();
+  }
+});
+
+/* RESTOCK ORDERS */
+
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------- */
 
 
 
