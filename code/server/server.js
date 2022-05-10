@@ -452,9 +452,28 @@ app.get('/api/users', async (req, res) => {
 //                                      ITEM
 //------------------------------------------------------------------------------------------------
 
-//----------------------|   GET   |
 
-//----------------------|   POST  |
+
+//--------------------------------------|   GET   |------------------------------------------------
+app.get('/api/items', async (req, res) => {
+
+  try {
+      const item = await ITEMDAO.listItem();
+      res.status(200).json(item)
+  } catch (error) {
+
+    if(Unathorized)
+      return res.status(401) //Unathorized (not logged in or wrong permissions)
+  
+    if(Internal_Server_Error)
+      return res.status(500) //Internal_Server_Error
+  
+  }
+});
+
+//--------------------------------------|   POST  |------------------------------------------------
+
+
 
 //----------------------|   PUT  |
 
