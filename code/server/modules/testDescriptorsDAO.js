@@ -32,6 +32,14 @@ class testDescriptorsDAO {
     insertTestDescriptor(name, procedureDescription, idSKU) {
 
     }
+
+    updateTestDescriptor(id) {
+
+    }
+
+    deleteTestDescriptor(id) {
+        
+    }
 }
 
 module.exports = testDescriptorsDAO;
