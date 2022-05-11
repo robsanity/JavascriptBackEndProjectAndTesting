@@ -1,7 +1,7 @@
 'use strict';
 
 class testDescriptorsDAO {
-    listTestDescriptors() {
+    getTestDescriptors() {
         return new Promise((resolve, reject) => {
             const sql = "SELECT * FROM testDescriptors";
             db.all(sql, [], (err, rows) => {
@@ -15,7 +15,7 @@ class testDescriptorsDAO {
         });
     };
 
-    testDescriptorsById(idToReturn) {
+    getByIdTestDescriptors(idToReturn) {
         return new Promise((resolve, reject) => {
             const sql = "SELECT * FROM testDescriptors WHERE id=?";
             db.all(sql, [idToReturn], (err, rows) => {
@@ -28,6 +28,10 @@ class testDescriptorsDAO {
             });
         });
     };
+
+    insertTestDescriptor(name, procedureDescription, idSKU) {
+
+    }
 }
 
 module.exports = testDescriptorsDAO;

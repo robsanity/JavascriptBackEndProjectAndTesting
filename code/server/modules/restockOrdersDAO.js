@@ -26,7 +26,7 @@ class restockOrdersDAO {
                 const restockOrdersISSUED = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, 
                     products: t.products, supplierId: t.supplierId, skuItems: t.skuItems }));
                     //valutare come fare array di products e skuitems(che deve essere vuoto)
-                resolve(restockOrdersISUED);
+                resolve(restockOrdersISSUED);
             });
         });
     }
