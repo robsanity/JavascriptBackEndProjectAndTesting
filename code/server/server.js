@@ -30,6 +30,8 @@ app.get('/api/skus/:id', async (req, res) => {
   }
   try {
     const SKU = await SKUsDAO.findSKU();
+    if(SKU === null)
+      res.status(404).end()
     res.status(200).json(SKU)
   } catch (error) {
     res.status(500).json(error);
