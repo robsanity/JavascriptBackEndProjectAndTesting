@@ -18,14 +18,15 @@ app.get('/api/skus', async (req, res) => {
   try {
     const listSKUs = await SKUsDAO.listSKUs();
     res.status(200).json(listSKUs)
-  } catch (error) {
+  } 
+  catch (error) {
     res.status(500).json(error);
   }
 });
 
 //Return a SKU, given its id.
 app.get('/api/skus/:id', async (req, res) => {
-  if (req.params.id === null) {
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
     return res.status(422).json({ error: `Empty params request` });
   }
   try {
@@ -33,7 +34,8 @@ app.get('/api/skus/:id', async (req, res) => {
     if(SKU === null)
       res.status(404).end()
     res.status(200).json(SKU)
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json(error);
   }
 });
