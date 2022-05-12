@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/sku
+Content-Type: application/json
+
+{
+    "description": "mamt",
+    "weight":12,
+    "volume":30,
+    "notes" :"wela",
+    "price":12,
+    "availableQuantity":33
+}

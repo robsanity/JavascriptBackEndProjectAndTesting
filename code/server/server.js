@@ -3,29 +3,28 @@ const express = require('express');
 const testDescriptorsDAO = require('./modules/testDescriptorsDAO');
 const testResultsDAO = require('./modules/testResultsDAO');
 const usersDAO = require('./modules/usersDAO');
+const SKUsDAO = require('./modules/SKUsDAO');
 // init express
 const app = new express();
 const port = 3001;
 
 app.use(express.json());
 
+
 //------------------------------------------------------------------------------------------------
 //                                     SKU
 //------------------------------------------------------------------------------------------------
 
 //Return an array containing all SKUs.
-app.get('/api/skus', async (req, res) => {
-  try {
-    const listSKUs = await SKUsDAO.listSKUs();
-    res.status(200).json(listSKUs)
-  }
-  catch (error) {
-    res.status(500).json(error);
-  }
+app.get('/api/skus', (req, res) => {
+  SKUsDAO.listSKUs()
+      .then((SKUs) => { res.status(200).json(SKUs); })
+      .catch((error) => { res.status(500).json(error) });
 });
 
 //Return a SKU, given its id.
 app.get('/api/skus/:id', async (req, res) => {
+  
   if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
     return res.status(422).end();
   }
@@ -42,7 +41,7 @@ app.get('/api/skus/:id', async (req, res) => {
 
 //Creates a new SKU with an empty array of testDescriptors.
 app.post('/api/sku', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body.description === null || req.body.weight === null || req.body.volume === null || req.body.notes === null || req.body.price === null || req.body.availableQuantity === null || req.body.testDescriptors === null) {
+  if (Object.keys(req.header).length === undefined || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined ) {
     return res.status(422).end();
   }
 
@@ -53,10 +52,11 @@ app.post('/api/sku', async (req, res) => {
   let notes = req.body.notes;
   let price = req.body.price;
   let availableQuantity = req.body.availableQuantity;
-  let testDescriptors = [];
+  
+  
 
   try {
-    await SKUsDAO.createSKU(description, weight, volume, notes, price, availableQuantity, testDescriptors);
+    await SKUsDAO.createSKU(description, weight, volume, notes,availableQuantity,price);
     res.status(201).end();
   } catch (error) {
     res.status(503).json(error);
