@@ -11,7 +11,7 @@ const db = require('../db.js');
                 reject({error: `Database error during the retrieval of the SKUs`});
                 return;
             }
-            const SKUs = rows.map((t) => ({ idSKU: t.idSKU}));
+            const SKUs = rows.map((t) => ({idSKU: t.idSKU, description: t.description, weight:t.weight,volume:t.volume,notes:t.notes,idPosition:t.idPosition,avaibleQuantity:t.avaibleQuantity,price:t.price}));
             resolve(SKUs);
             });
         });
@@ -25,7 +25,7 @@ const db = require('../db.js');
                         reject({error: `Database error during the retrieval of the SKUs`});
                         return;
                     }
-                    const SKUs = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, weight:t.weight,volume:t.volume,notes:t.notes,idPosition:t.idPosition,avaibleQuantity:t.avaibleQuantity,price:t.price}));
+                    const SKUs = rows.map((t) => ({ description: t.description, weight:t.weight,volume:t.volume,notes:t.notes,idPosition:t.idPosition,avaibleQuantity:t.avaibleQuantity,price:t.price}));
                     resolve(SKUs);
                     });
             });
@@ -47,7 +47,7 @@ const db = require('../db.js');
 
     function updateSKU() {
         return new Promise((resolve, reject) => {
-        
+            
         });
     };
 
