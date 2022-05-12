@@ -1,7 +1,7 @@
 'use strict'
 function getRestockOrders() {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM restockOrders";
+        const sql = "SELECT * FROM restockOrders WHERE state!='ISSUED'";
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "no restock orders in database" });
@@ -9,9 +9,8 @@ function getRestockOrders() {
             }
             const restockOrders = rows.map((t) => ({
                 id: t.id, issueDate: t.issueDate, state: t.state,
-                products: t.products, supplierId: t.supplierId, transportNote: t.transportNote, skuItems: t.skuItems
+                 supplierId: t.supplierId, transportNote: t.transportNote
             }));
-            //valutare come fare array di products e skuitems
             resolve(restockOrders);
         });
     });
@@ -27,9 +26,9 @@ function getISSUEDRestockOrders() {
             }
             const restockOrdersISSUED = rows.map((t) => ({
                 id: t.id, issueDate: t.issueDate, state: t.state,
-                products: t.products, supplierId: t.supplierId, skuItems: t.skuItems
+                supplierId: t.supplierId
             }));
-            //valutare come fare array di products e skuitems(che deve essere vuoto)
+            
             resolve(restockOrdersISSUED);
         });
     });
@@ -37,7 +36,7 @@ function getISSUEDRestockOrders() {
 
 function getByIdRestockOrders(id) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM restockOrders WHERE id=?";
+        const sql = "SELECT * FROM restockOrders WHERE idRestockOrder=?";
         db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject({ error: "no restock orders with the given id in database" });
@@ -45,9 +44,8 @@ function getByIdRestockOrders(id) {
             }
             const restockOrdersById = rows.map((t) => ({
                 id: t.id, issueDate: t.issueDate, state: t.state,
-                products: t.products, supplierId: t.supplierId, transportNote: t.transportNote, skuItems: t.skuItems
+                supplierId: t.supplierId, transportNote: t.transportNote
             }));
-            //valutare come fare array di products e skuitems
             resolve(restockOrdersById);
         });
     });
@@ -55,7 +53,7 @@ function getByIdRestockOrders(id) {
 
 function getToBeReturnRestockOrders(id) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM restockOrders WHERE id=?";           //completare la query          
+        const sql = "SELECT SIidSKU as SKUId, rfid  FROM RestockOrders RO, RestockOrderItems ROI, Items I, SKUItems SI WHERE RO.idRestockOrder=? AND RO.idRestockOrder=ROI.idRestockOrder AND ROI.idItem=I.idItem AND I.idSKU=SI.idSKU";                  
         db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject({ error: "no restock orders with the given id in database" });

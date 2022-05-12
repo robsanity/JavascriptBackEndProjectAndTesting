@@ -3,7 +3,9 @@ const express = require('express');
 const testDescriptorsDAO = require('./modules/testDescriptorsDAO');
 const testResultsDAO = require('./modules/testResultsDAO');
 const usersDAO = require('./modules/usersDAO');
+const restockOrdersDAO = require('./modules/restockOrdersDAO');
 const SKUsDAO = require('./modules/SKUsDAO');
+
 // init express
 const app = new express();
 const port = 3001;
@@ -697,6 +699,161 @@ app.delete('/api/users/:username/:type', async (req, res) => {
 //------------------------------------------------------------------------------------------------
 //                                      RESTOCK ORDERS
 //------------------------------------------------------------------------------------------------
+//--------------------------------------|   GET   |------------------------------------------------
+app.get('/api/restockOrders', async (req, res) => {
+  try {
+    // state!=ISSUED
+    let restockOrdersList = await restockOrdersDAO.getRestockOrders();
+
+    // idItems(RestockOrderItem) JOIN idItems(Items) - idSKU(Items) JOIN idSKU(SKU) - idSKU(SKUs) JOIN idSKU(SKUItems)
+    // SELECT idRestockOrder, idSKU, description, price, quantity, rfid
+    let productsQuery = getProductsRestockOrders();
+
+    let restockOrders = restockOrdersList.map((r) => ({
+      id: r.idRestockOrder,
+      issueDate: r.issueDate,
+      state: r.state,
+      products: productsQuery
+      .filter((p) => p.idRestockOrder==r.idRestockOrder)
+      .map(element => (
+        {
+          idSKU: element.idSKU,
+          description: element.description,
+          price: element.price,
+          qty: element.availableQuantity
+        }
+      )),
+      supplierId: r.supplierId,
+      transportNote: r.transportNote,
+      skuItems: productsQuery
+      .filter((p) => p.idRestockOrder==r.idRestockOrder)
+      .map(element => (
+        {
+          SKUId: element.idSKU,
+          rfid: element.rfid
+        }
+      ))
+    }));
+
+    res.status(200).json(restockOrders)
+  } catch (error) {
+    res.status(500).json();
+  }
+});
+
+app.get('/api/restockOrdersIssued', async (req, res) => {
+  try {
+    let restockOrdersIssuedList = await restockOrdersDAO.getISSUEDRestockOrders();
+    
+    // idItems(RestockOrderItem) JOIN idItems(Items) - idSKU(Items) JOIN idSKU(SKU)
+    // SELECT idRestockOrder, idSKU, description, price, quantity
+    let productsQuery = getProductsRestockOrders();
+
+    let restockOrders = restockOrdersIssuedList.map((r) => ({
+      id: r.idRestockOrder,
+      issueDate: r.issueDate,
+      state: r.state,
+      products: productsQuery
+      .filter((p) => p.idRestockOrder==r.idRestockOrder)
+      .map(element => (
+        {
+          idSKU: element.idSKU,
+          description: element.description,
+          price: element.price,
+          qty: element.availableQuantity
+        }
+      )),
+      transportNote: r.transportNote,
+      skuItems: []
+    }));
+
+    res.status(200).json(restockOrders)
+  } catch (error) {
+    res.status(500).json();
+  }
+});
+
+app.get('/api/restockOrders/:id', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0) {
+      res.status(422).end();
+    }
+
+    let id = req.params.id;
+    if (id === undefined || id === '' || isNaN(id)) {
+      res.status(422).end();
+    }
+
+    let rO = await restockOrdersDAO.getByIdRestockOrders(id);
+    if (rO.length===0) {
+      res.status(404).end();
+    }
+
+    let restockOrdersList = await restockOrdersDAO.getByIdRestockOrders(id);
+
+    // idItems(RestockOrderItem) JOIN idItems(Items) - idSKU(Items) JOIN idSKU(SKU) - idSKU(SKUs) JOIN idSKU(SKUItems)
+    // SELECT idRestockOrder, idSKU, description, price, quantity, rfid
+    let productsQuery = getProductsRestockOrders();
+
+    let restockOrders = restockOrdersList.map((r) => ({
+      issueDate: r.issueDate,
+      state: r.state,
+      products: productsQuery
+      .filter((p) => p.idRestockOrder==r.idRestockOrder)
+      .map(element => (
+        {
+          idSKU: element.idSKU,
+          description: element.description,
+          price: element.price,
+          qty: element.availableQuantity
+        }
+      )),
+      skuItems: productsQuery
+      .filter((p) => p.idRestockOrder==r.idRestockOrder)
+      .map(element => (
+        {
+          SKUId: element.idSKU,
+          rfid: element.rfid
+        }
+      ))
+    }));
+
+    res.status(200).json(restockOrders)
+  } catch (error) {
+    res.status(500).json();
+  }
+});
+
+app.get('/api/restockOrders/:id/returnItems', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0) {
+      res.status(422).end();
+    }
+
+    let id = req.params.id;
+    if (id === undefined || id === '' || isNaN(id)) {
+      res.status(422).end();
+    }
+
+    let rO = await restockOrdersDAO.getByIdRestockOrders(id);
+    if (rO.length===0) {
+      res.status(404).end();
+    }
+
+    await restockOrdersDAO.getToBeReturnRestockOrders(id);
+    
+
+
+
+  } catch(error) {
+    res.status(500).json();
+  }
+})
+//--------------------------------------|   POST   |------------------------------------------------
+
+//--------------------------------------|   PUT   |-------------------------------------------------
+
+//--------------------------------------|   DELETE   |----------------------------------------------
 
 
 
