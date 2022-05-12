@@ -1,37 +1,25 @@
 'use strict';
 
 export class SKUsDAO {
-    listSKUs() {
+    findSKU() {
         return new Promise((resolve, reject) => {
         
         });
     };
 
-    findSKUlistSKUs() {
+    createSKU() {
         return new Promise((resolve, reject) => {
         
         });
     };
 
-    createSKUlistSKUs() {
+    updateSKU() {
         return new Promise((resolve, reject) => {
         
         });
     };
 
-    updateSKUlistSKUs() {
-        return new Promise((resolve, reject) => {
-        
-        });
-    };
-
-    updatePositionlistSKUs() {
-        return new Promise((resolve, reject) => {
-        
-        });
-    };
-
-    deleteSKUlistSKUs() {
+    deleteSKU() {
         return new Promise((resolve, reject) => {
         
         });

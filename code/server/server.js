@@ -27,13 +27,13 @@ app.get('/api/skus', async (req, res) => {
 //Return a SKU, given its id.
 app.get('/api/skus/:id', async (req, res) => {
   if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
-    return res.status(422).json({ error: `Empty params request` });
+    return res.status(422).end();
   }
   try {
-    const SKU = await SKUsDAO.findSKU();
+    const SKU = await SKUsDAO.findSKU(req.params.id);
     if(SKU === null)
-      res.status(404).end()
-    res.status(200).json(SKU)
+      res.status(404).end();
+    res.status(200).json(SKU);
   }
   catch (error) {
     res.status(500).json(error);
@@ -43,7 +43,7 @@ app.get('/api/skus/:id', async (req, res) => {
 //Creates a new SKU with an empty array of testDescriptors.
 app.post('/api/sku', async (req, res) => {
   if (Object.keys(req.header).length === 0 || req.body === null) {
-    return res.status(422).json({ error: `Empty params request` });
+    return res.status(422).end();
   }
 
   //Ricavo gli attributi necessari a creare una nuova SKU e li passo a createSKU
@@ -56,10 +56,7 @@ app.post('/api/sku', async (req, res) => {
   let testDescriptors = [];
 
   try {
-    await SKUsDAO.createSKU({
-      description: description, weight: weight, volume: volume,
-      notes: notes, price: price, availableQuantity: availableQuantity, testDescriptors: testDescriptors
-    });
+    await SKUsDAO.createSKU(description, weight, volume, notes, price, availableQuantity, testDescriptors);
     res.status(201).end();
   } catch (error) {
     res.status(503).json(error);
