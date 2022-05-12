@@ -1,27 +1,27 @@
 'use strict';
 
-export class SKUsDAO {
-    findSKU() {
+    function findSKU() {
         return new Promise((resolve, reject) => {
         
         });
     };
 
-    createSKU() {
+    function createSKU() {
         return new Promise((resolve, reject) => {
         
         });
     };
 
-    updateSKU() {
+    function updateSKU() {
         return new Promise((resolve, reject) => {
         
         });
     };
 
-    deleteSKU() {
+    function deleteSKU() {
         return new Promise((resolve, reject) => {
         
         });
     };
-}
+
+module.exports = {findSKU, createSKU, updateSKU, deleteSKU}

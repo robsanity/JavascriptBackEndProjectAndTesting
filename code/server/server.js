@@ -42,7 +42,7 @@ app.get('/api/skus/:id', async (req, res) => {
 
 //Creates a new SKU with an empty array of testDescriptors.
 app.post('/api/sku', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body === null) {
+  if (Object.keys(req.header).length === 0 || req.body.description === null || req.body.weight === null || req.body.volume === null || req.body.notes === null || req.body.price === null || req.body.availableQuantity === null || req.body.testDescriptors === null ) {
     return res.status(422).end();
   }
 
