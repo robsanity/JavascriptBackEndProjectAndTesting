@@ -22,18 +22,14 @@ Version:
     class and method name that contains the test case>
     <Jest tests  must be in code/server/unit_test  >
 
- ### **Class *class_name* - method *name***
+## Class SKU
 
-
-
+### **Class SKU - method *GET***
 **Criteria for method *name*:**
 	
 
  - 
  - 
-
-
-
 
 
 **Predicates for method *name*:**
@@ -68,6 +64,85 @@ Version:
 |||||||
 |||||||
 |||||||
+### **Class SKU - method *POST***
+### **Class SKU - method *PUT***
+### **Class SKU - method *DELETE***
+
+## Class SKU ITEM
+
+### **Class SKU ITEM - method *GET***
+### **Class SKU ITEM- method *POST***
+### **Class SKU ITEM - method *PUT***
+### **Class SKU ITEM - method *DELETE***
+
+
+## Class POSITION
+
+### **Class POSITION - method *GET***
+### **Class POSITION - method *POST***
+### **Class POSITION - method *PUT***
+### **Class POSITION - method *DELETE***
+
+## Class TEST DESCRIPTOR
+
+### **Class TEST DESCRIPTOR - method *GET***
+### **Class TEST DESCRIPTOR - method *POST***
+### **Class TEST DESCRIPTOR - method *PUT***
+### **Class TEST DESCRIPTOR- method *DELETE***
+
+## Class TEST Result
+
+### **Class TEST Result - method *GET***
+### **Class TEST Result - method *POST***
+### **Class TEST Result - method *PUT***
+### **Class TEST Result - method *DELETE***
+
+## Class user
+
+### **Class user - method *GET***
+### **Class user- method  *POST***
+### **Class user - method *PUT***
+### **Class user - method *DELETE***
+
+## Class Restock order
+
+### **Class Restock order - method *GET***
+### **Class Restock order- method  *POST***
+### **Class Restock order - method *PUT***
+### **Class Restock order - method *DELETE***
+
+
+## Class Return order
+
+### **Class Return order - method *GET***
+
+
+
+### **Class Return order- method  *POST***
+### **Class Return order - method *PUT***
+### **Class Return order - method *DELETE***
+## Class Internal order
+
+### **Class Internal order - method *GET***
+### **Class Internal order- method  *POST***
+### **Class Internal order - method *PUT***
+### **Class Internal order - method *DELETE***
+## Class Item
+### **Class Internal order - method *GET***
+### **Class Internal order- method  *POST***
+### **Class Internal order - method *PUT***
+### **Class Internal order - method *DELETE***
+
+
+
+
+
+
+
+
+
+
+
 
 
 
