@@ -32,6 +32,23 @@ class usersDAO {
             });
         });
     }
+
+    //cerca user con username e type
+    checkUser(username, type) {
+
+    }
+
+    insertUser(username, name, surname, type) {
+
+    }
+
+    updateUser(username, oltType, newType) {
+
+    }
+
+    deleteUser(username, type) {
+        
+    }
 }
 
 module.exports = usersDAO;

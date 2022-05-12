@@ -15,7 +15,7 @@ class testResultsDAO {
         });
     }
 
-    getByIdTestResultsById(rfid, id) {
+    getByIdTestResults(rfid, id) {
         return new Promise((resolve, reject) => {
             const sql = "SELECT * FROM testResults WHERE idTestDescriptor=? AND idSKUItem=?";           
             db.all(sql, [id, rfid], (err, rows) => {
@@ -32,6 +32,18 @@ class testResultsDAO {
     //controlla se c'è almeno un rfid nella table testresults
     checkRfid(rfid) {
 
+    }
+
+    insertTestResult(rfid, idTestDescriptor, date, result) {
+
+    }
+
+    updateTestResults(id, newIdTestDescriptor, newDate, newResult) {
+
+    }
+
+    deleteTestResult(rfid, id) {
+        
     }
 }
 

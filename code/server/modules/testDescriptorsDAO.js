@@ -33,7 +33,7 @@ class testDescriptorsDAO {
 
     }
 
-    updateTestDescriptor(id) {
+    updateTestDescriptor(id, newName, newProcedureDescription, newIdSKU) {
 
     }
 

@@ -18,7 +18,7 @@ app.get('/api/skus', async (req, res) => {
   try {
     const listSKUs = await SKUsDAO.listSKUs();
     res.status(200).json(listSKUs)
-  } 
+  }
   catch (error) {
     res.status(500).json(error);
   }
@@ -31,7 +31,7 @@ app.get('/api/skus/:id', async (req, res) => {
   }
   try {
     const SKU = await SKUsDAO.findSKU(req.params.id);
-    if(SKU === null)
+    if (SKU === null)
       res.status(404).end();
     res.status(200).json(SKU);
   }
@@ -42,7 +42,7 @@ app.get('/api/skus/:id', async (req, res) => {
 
 //Creates a new SKU with an empty array of testDescriptors.
 app.post('/api/sku', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body.description === null || req.body.weight === null || req.body.volume === null || req.body.notes === null || req.body.price === null || req.body.availableQuantity === null || req.body.testDescriptors === null ) {
+  if (Object.keys(req.header).length === 0 || req.body.description === null || req.body.weight === null || req.body.volume === null || req.body.notes === null || req.body.price === null || req.body.availableQuantity === null || req.body.testDescriptors === null) {
     return res.status(422).end();
   }
 
@@ -338,8 +338,7 @@ app.post('/api/testDescriptor', async (req, res) => {
       return res.status(422).end();
     }
 
-    //  INSERIRE GET SKU BY ID
-    let sku = await SKUsDAO.findSKU();
+    let sku = await SKUsDAO.findSKU(idSKU);
 
     if (sku.length === 0) {
       res.status(404).end();
@@ -365,13 +364,28 @@ app.put('/api/testDescriptor/:id', async (req, res) => {
       res.status(422).end();
     }
 
-    let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
+    if (Object.keys(req.body).length === 0) {
+      res.status(422).end();
+    }
 
-    if (td.length === 0) {
+    let newName = req.body.newName;
+    let newProcedureDescription = req.body.newProcedureDescription;
+    let newIdSKU = req.body.newIdSKU;
+
+    if (newName === undefined || newName == '' ||
+      newProcedureDescription === undefined || newProcedureDescription == '' ||
+      newIdSKU === undefined || newIdSKU == '' || isNaN(newIdSKU)) {
+      return res.status(422).end();
+    }
+
+    let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
+    let sku = await SKUsDAO.findSKU(newIdSKU)
+
+    if (td.length === 0 || sku.length === 0) {
       res.status(404).end();
     }
 
-    await testDescriptorsDAO.updateTestDescriptor(id);
+    await testDescriptorsDAO.updateTestDescriptor(id, newName, newProcedureDescription, newIdSKU);
     res.status(200).end();
   }
   catch (error) {
@@ -379,7 +393,7 @@ app.put('/api/testDescriptor/:id', async (req, res) => {
   }
 });
 
-//--------------------------------------|   PUT   |------------------------------------------------
+//--------------------------------------|   DELETE   |------------------------------------------------
 app.delete('/api/testDescriptor/:id', async (req, res) => {
   try {
     if (Object.keys(req.header).length === 0) {
@@ -412,7 +426,7 @@ app.delete('/api/testDescriptor/:id', async (req, res) => {
 //------------------------------------------------------------------------------------------------
 
 //--------------------------------------|   GET   |------------------------------------------------
-app.get('api/skuitems/:rfid/testResults', async (req, res) => {
+app.get('/api/skuitems/:rfid/testResults', async (req, res) => {
   try {
     if (Object.keys(req.header).length === 0) {
       res.status(422).end();
@@ -434,7 +448,7 @@ app.get('api/skuitems/:rfid/testResults', async (req, res) => {
   }
 })
 
-app.get('api/skuitems/:rfid/testResults/:id', async (req, res) => {
+app.get('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
   try {
     if (Object.keys(req.header).length === 0) {
       res.status(422).end();
@@ -447,7 +461,7 @@ app.get('api/skuitems/:rfid/testResults/:id', async (req, res) => {
       res.status(422).end();
     }
 
-    const listTestResults = await testResultsDAO.getByIdTestResultsById(rfid, id);
+    const listTestResults = await testResultsDAO.getByIdTestResults(rfid, id);
     res.status(200).json(listTestResults)
   } catch (error) {
     res.status(500).json();
@@ -455,11 +469,106 @@ app.get('api/skuitems/:rfid/testResults/:id', async (req, res) => {
 })
 
 //--------------------------------------|   POST   |------------------------------------------------
+app.post('/api/skuitems/testResult', async (req, res) => {
+  try {
+    if (Object.keys(req.body).length === 0) {
+      res.status(422).end();
+    }
+    let rfid = req.body.name;
+    let idTestDescriptor = req.body.procedureDescription;
+    let date = req.body.idSKU;
+    let result = req.body.result;
 
+    if (rfid === undefined || rfid == '' || isNaN(rfid) ||
+      idTestDescriptor === undefined || idTestDescriptor == '' || isNaN(idTestDescriptor) ||
+      date === undefined || date == '' ||
+      result === undefined || result == '' || !(result === "true" || result === "false")) {
+      return res.status(422).end();
+    }
+
+    let testDescriptor = await testDescriptorsDAO.getByIdTestDescriptors(testDescriptorId);
+
+    if (testDescriptor.length === 0) {
+      res.status(404).end();
+    }
+
+    await testResultsDAO.insertTestResult(rfid, idTestDescriptor, date, result);
+    res.status(201).end();
+  }
+  catch (error) {
+    res.status(503).end();
+  }
+});
 //--------------------------------------|   PUT   |------------------------------------------------
+app.put('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0) {
+      res.status(422).end();
+    }
 
+    let rfid = req.params.rfid;
+    let id = req.params.id;
+    if (rfid === undefined || rfid === '' || isNaN(rfid) ||
+      id === undefined || id === '' || isNaN(id)) {
+      res.status(422).end();
+    }
+
+    if (Object.keys(req.body).length === 0) {
+      res.status(422).end();
+    }
+
+    let newIdTestDescriptor = req.body.newIdTestDescriptor;
+    let newDate = req.body.newDate;
+    let newResult = req.body.newResult;
+
+    if (newIdTestDescriptor === undefined || newIdTestDescriptor === '' || isNaN(newIdTestDescriptor) ||
+      newDate === undefined || newDate === '' ||
+      newResult === undefined || newResult == '' || !(newResult === "true" || newResult === "false")) {
+      res.status(422).end();
+    }
+
+    let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
+    let ntd = await testDescriptorsDAO.getByIdTestDescriptors(newIdTestDescriptor);
+    let sku = await SKUsDAO.findSKU(rfid);
+    if (td.length === 0 || sku.length === 0 || ntd.length === 0) {
+      res.status(404).end();
+    }
+
+    await testResultsDAO.updateTestResults(id, newIdTestDescriptor, newDate, newResult);
+    res.status(200).end();
+  }
+  catch (error) {
+    res.status(503).end()
+  }
+});
 //--------------------------------------|   DELETE   |------------------------------------------------
+app.delete('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0) {
+      res.status(422).end();
+    }
 
+    let rfid = req.params.rfid;
+    let id = req.params.id;
+    if (rfid === undefined || rfid === '' || isNaN(rfid) ||
+      id === undefined || id === '' || isNaN(id)) {
+      res.status(422).end();
+    }
+
+    let tr = await testResultsDAO.getByIdTestResults(rfid, id);
+
+    if (tr.length === 0) {
+      res.status(422).end();
+    }
+
+    await testResultsDAO.deleteTestResult(rfid, id);
+    res.status(204).end();
+  }
+  catch (error) {
+    res.status(503).end();
+  }
+
+});
 
 
 
@@ -487,11 +596,100 @@ app.get('/api/users', async (req, res) => {
 });
 
 //--------------------------------------|   POST   |------------------------------------------------
+app.post('/api/newUser', async (req, res) => {
+  try {
+    if (Object.keys(req.body).length === 0) {
+      res.status(422).end();
+    }
+    let username = req.body.username
+    let name = req.body.name;
+    let surname = req.body.surname;
+    let type = req.body.type;
 
+    if (username === undefined || username == '' ||
+      name === undefined || name == '' ||
+      surname === undefined || surname == '' ||
+      type === undefined || type == '' || !(type === "customer" || type === "qualityEmployee" || type === "clerk" || type === "deliveryEmployee" || type === "supplier")) {
+      return res.status(422).end();
+    }
+
+    let user = await usersDAO.checkUser(username, type);
+
+    if (user.length !== 0) {
+      res.status(409).end();
+    }
+
+    await usersDAO.insertUser(username, name, surname, type);
+    res.status(201).end();
+  }
+  catch (error) {
+    res.status(503).end();
+  }
+});
 //--------------------------------------|   PUT   |-------------------------------------------------
+app.put('/api/users/:username', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0) {
+      res.status(422).end();
+    }
 
+    let username = req.params.username;
+    if (username === undefined || username === '') {
+      res.status(422).end();
+    }
+
+    if (Object.keys(req.body).length === 0) {
+      res.status(422).end();
+    }
+
+    let oldType = req.body.oldType;
+    let newType = req.body.newType;
+
+    if (oldType === undefined || oldType == '' || !(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier") ||
+      newType === undefined || newType == '' || !(newType === "customer" || newType === "qualityEmployee" || newType === "clerk" || newType === "deliveryEmployee" || newType === "supplier")) {
+      res.status(422).end();
+    }
+
+    let userWithType = await usersDAO.checkUserWithType(username, oldType);
+    if (userWithType.length === 0) {
+      res.status(404).end();
+    }
+
+    await usersDAO.updateUser(username, oldType, newType);
+    res.status(200).end();
+  }
+  catch (error) {
+    res.status(503).end()
+  }
+});
 //--------------------------------------|   DELETE   |----------------------------------------------
+app.delete('/api/users/:username/:type', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0) {
+      res.status(422).end();
+    }
 
+    let username = req.params.username;
+    let type = req.params.type;
+    if (username === undefined || username === '' ||
+      type === undefined || type == '' || !(type === "customer" || type === "qualityEmployee" || type === "clerk" || type === "deliveryEmployee" || type === "supplier")) {
+      res.status(422).end();
+    }
+
+    let user = await usersDAO.checkUserWithType(username, oldType);
+
+    if (user.length === 0) {
+      res.status(422).end();
+    }
+
+    await usersDAO.deleteUser(username, type);
+    res.status(204).end();
+  }
+  catch (error) {
+    res.status(503).end();
+  }
+
+});
 //------------------------------------------------------------------------------------------------
 //                                      RESTOCK ORDERS
 //------------------------------------------------------------------------------------------------
