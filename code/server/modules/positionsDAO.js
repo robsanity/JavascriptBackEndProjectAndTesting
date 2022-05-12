@@ -1,33 +1,34 @@
 'use strict';
 
-export class positionsDAO {
-    listPositions() {
-        return new Promise((resolve, reject) => {
-        
-        });
-    };
 
-    createPositions() {
-        return new Promise((resolve, reject) => {
-        
-        });
-    };
+function listPositions() {
+    return new Promise((resolve, reject) => {
 
-    modifyPosition() {
-        return new Promise((resolve, reject) => {
-        
-        });
-    };
+    });
+};
 
-    modifyPositionID() {
-        return new Promise((resolve, reject) => {
-        
-        });
-    };
+function createPositions() {
+    return new Promise((resolve, reject) => {
 
-    deletePosition() {
-        return new Promise((resolve, reject) => {
-        
-        });
-    };
-}
+    });
+};
+
+function modifyPosition() {
+    return new Promise((resolve, reject) => {
+
+    });
+};
+
+function modifyPositionID() {
+    return new Promise((resolve, reject) => {
+
+    });
+};
+
+function deletePosition() {
+    return new Promise((resolve, reject) => {
+
+    });
+};
+
+module.exports = { listPositions, createPositions, modifyPosition, modifyPositionID, deletePosition }

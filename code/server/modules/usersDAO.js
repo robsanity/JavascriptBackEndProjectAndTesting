@@ -1,11 +1,6 @@
 'use strict'
 
-class usersDAO {
-    userInfo() {
-
-    }
-
-    listSuppliers() {
+    function getSuppliers() {
         return new Promise((resolve, reject) => {
             const sql = "SELECT * FROM users WHERE type='supplier'";
             db.all(sql, [], (err, rows) => {
@@ -19,7 +14,7 @@ class usersDAO {
         });
     }
 
-    listUsers() {
+    function getUsers() {
         return new Promise((resolve, reject) => {
             const sql = "SELECT * FROM users";            
             db.all(sql, [], (err, rows) => {
@@ -34,21 +29,21 @@ class usersDAO {
     }
 
     //cerca user con username e type
-    checkUser(username, type) {
+    function checkUser(username, type) {
 
     }
 
-    insertUser(username, name, surname, type) {
+    function insertUser(username, name, surname, type) {
 
     }
 
-    updateUser(username, oltType, newType) {
+    function updateUser(username, oltType, newType) {
 
     }
 
-    deleteUser(username, type) {
+    function deleteUser(username, type) {
         
     }
-}
 
-module.exports = usersDAO;
+
+module.exports = {getSuppliers, getUsers, checkUser, insertUser, updateUser, deleteUser};
