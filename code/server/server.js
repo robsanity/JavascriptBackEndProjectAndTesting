@@ -251,13 +251,14 @@ app.get('/api/positions', async (req, res) => {
 //Creates a new Position.
 app.post('/api/position', async (req, res) => {
 
-  if (Object.keys(req.header).length === 0 || req.body === null)
-    return res.status(422).json({ error: `Empty params request` });
+  if (Object.keys(req.header).length === 0 || req.body.positionID === null || req.body.aisleID === null || req.body.row === null || req.body.col === null || req.body.maxWeight === null || req.body.maxVolume === null)
+    return res.status(422).end();
 
   try {
-    await positionsDAO.createPositions(req.body);
+    await positionsDAO.createPositions(req.body,positionID, req.body.aisleID === null, req.body.row === null, req.body.col, req.body.maxWeight, req.body.maxVolume);
     res.status(201).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 
@@ -267,13 +268,20 @@ app.post('/api/position', async (req, res) => {
 //Modify a position identified by positionID.
 app.put('/api/position/:positionID', async (req, res) => {
 
-  if (Object.keys(req.header).length === 0 || req.params.positionID === null)
-    return res.status(422).json({ error: `Empty params request` });
+  if (Object.keys(req.header).length === 0 || req.body.newAisleID === null 
+      || req.body.newEow === null || req.body.newCol === null 
+      || req.body.newMaxWeight === null || req.body.newMaxVolume === null 
+      || req.body.newOccupiedWeight === null || req.body.newOccupiedVolume === null 
+      || req.params.positionID === undefined || req.params.positionID == '' 
+      || isNaN(req.params.positionID))
+    return res.status(422).end();
 
+    //404 Not Found (no position associated to positionID) DA IMPLEMENTARE
   try {
     await positionsDAO.modifyPosition(req.params.positionID);
     res.status(200).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 });
@@ -281,13 +289,17 @@ app.put('/api/position/:positionID', async (req, res) => {
 //Modify the positionID of a position, given its old positionID.
 app.put('/api/position/:positionID/changeID', async (req, res) => {
 
-  if (Object.keys(req.header).length === 0 || req.params.positionID === null)
-    return res.status(422).json({ error: `Empty params request` });
+  if (Object.keys(req.header).length === 0 || req.body.newpositionID === null 
+      || req.params.positionID === undefined || req.params.positionID == '' 
+      || isNaN(req.params.positionID))
+    return res.status(422).end();
 
+    // 404 Not Found (no position associated to positionID) DA IMPLEMENTARE
   try {
-    await positionsDAO.modifyPositionID(req.params.positionID);
+    await positionsDAO.modifyPositionID(req.body.newpositionID);
     res.status(200).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 });
@@ -295,13 +307,16 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
 //Delete a SKU item receiving his positionID.
 app.delete('/api/position/:positionID', async (req, res) => {
 
-  if (Object.keys(req.header).length === 0 || req.body === null)
-    return res.status(422).json({ error: `Empty params request` });
+  if (Object.keys(req.header).length === 0 
+      || req.params.positionID === undefined || req.params.positionID == '' 
+      || isNaN(req.params.positionID))
+    return res.status(422).end();
 
   try {
     await positionsDAO.deletePosition(req.params.positionID);
     res.status(204).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 
