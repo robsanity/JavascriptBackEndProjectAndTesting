@@ -335,7 +335,7 @@ app.get('/api/testDescriptors/:id', async (req, res) => {
     if (id === undefined || id == '' || isNaN(id)) {
       res.status(422).end();
     }
-    const testDescriptor = await testDescriptorsDAO.getByIdTestDescriptors(testDescriptorId);
+    let testDescriptor = await testDescriptorsDAO.getByIdTestDescriptors(testDescriptorId);
     res.status(200).json(testDescriptor).end()
   } catch (error) {
     res.status(404).json();
@@ -456,15 +456,16 @@ app.get('/api/skuitems/:rfid/testResults', async (req, res) => {
       res.status(422).end();
     }
 
-    let checkRfid = await testResultsDAO.checkRfid(rfid);
+    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
     if (checkRfid.length === 0) {
       res.status(404).end()
     }
 
     const listTestResults = await testResultsDAO.getTestResults(rfid);
-    res.status(200).end()
+    res.status(200).json(listTestResults).end();
+
   } catch (error) {
-    res.status(500).end();
+    res.status(500).json( {error: error }).end();
   }
 })
 
@@ -479,6 +480,16 @@ app.get('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
       id === undefined || id === '' || isNaN(id)) {
       res.status(422).end();
+    }
+
+    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
+    if (checkRfid.length === 0) {
+      res.status(404).end()
+    }
+
+    let checkId = await testResultsDAO.checkId(id);
+    if (checkId.length === 0) {
+      res.status(404).end()
     }
 
     const listTestResults = await testResultsDAO.getByIdTestResults(rfid, id);
@@ -506,10 +517,19 @@ app.post('/api/skuitems/testResult', async (req, res) => {
       return res.status(422).end();
     }
 
-    let testDescriptor = await testDescriptorsDAO.getByIdTestDescriptors(testDescriptorId);
+    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
+    if (checkRfid.length === 0) {
+      res.status(404).end()
+    }
 
-    if (testDescriptor.length === 0) {
-      res.status(404).end();
+    let checkTD = await testDescriptorsDAO.getByIdTestDescriptors(idTestDescriptor);
+    if (checkTD.length === 0) {
+      res.status(404).end()
+    }
+
+    let checkTR = await testResultsDAO.getByIdTestResults(rfid, idTestDescriptor);
+    if (checkTR.length !== 0) {
+      res.status(422).end()
     }
 
     await testResultsDAO.insertTestResult(rfid, idTestDescriptor, date, result);
@@ -549,12 +569,12 @@ app.put('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
 
     let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
     let ntd = await testDescriptorsDAO.getByIdTestDescriptors(newIdTestDescriptor);
-    let sku = await SKUsDAO.findSKU(rfid);
+    let sku = await SKUItemsDAO.findSKUItem(rfid);
     if (td.length === 0 || sku.length === 0 || ntd.length === 0) {
       res.status(404).end();
     }
 
-    await testResultsDAO.updateTestResults(id, newIdTestDescriptor, newDate, newResult);
+    await testResultsDAO.updateTestResults(id, rfid,  newIdTestDescriptor, newDate, newResult);
     res.status(200).end();
   }
   catch (error) {
