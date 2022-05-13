@@ -905,39 +905,295 @@ app.get('/api/restockOrders/:id/returnItems', async (req, res) => {
 //--------------------------------------|   DELETE   |----------------------------------------------
 
 
+//------------------------------------------------------------------------------------------------
+//                                      RETURN ORDERS
+//------------------------------------------------------------------------------------------------
+
+
+//Return an array containing all return orders.
+app.get('/api/returnOrders', async (req, res) => {
+  try {
+    const listReturnOrders = await returnOrdersDAO.listRetOrders();
+    res.status(200).json(listReturnOrders)
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//Return a return order, given its id.
+app.get('/api/returnOrders/:id', async (req, res) => {
+
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
+    return res.status(422).end();
+  }
+  try {
+    const returnOrder = await returnOrdersDAO.findRetOrder(req.params.id);
+    if (returnOrders === null)
+      res.status(404).end();
+    res.status(200).json(returnOrders);
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//Creates a new return order.
+app.post('/api/returnOrder', async (req, res) => {
+  if (Object.keys(req.header).length === 0 
+      || req.body.returnDate === undefined 
+      || req.body.products === undefined 
+      || req.body.restockOrderId === undefined )
+    return res.status(422).end();
+
+  //404 Not Found (no restock order associated to restockOrderId) DA IMPLEMENTARE
+  let returnDate = req.body.returnDate;
+  let products = req.body.products;
+  let restockOrderId = req.body.restockOrderId;
+
+  try {
+    await returnOrdersDAO.createRetOrder(returnDate, products, restockOrderId);
+    res.status(201).end();
+  }
+  catch (error) {
+    res.status(503).json(error);
+  }
+
+});
+
+
+//Qui PUT ma nel documento delle API non è definita
+
+//Delete a return order, given its id.
+app.delete('/api/returnOrder/:id', async (req, res) => {
+
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+    return res.status(422).end();
+
+  try {
+    await returnOrdersDAO.deleteRetOrder(req.params.id);
+    res.status(204).end();
+  }
+  catch (error) {
+    res.status(503).json(error);
+  }
+});
+
+//------------------------------------------------------------------------------------------------
+//                                      INTERNAL ORDERS
+//------------------------------------------------------------------------------------------------
+
+//Possible states: ISSUED, ACCEPTED, REFUSED, CANCELED, COMPLETED
+
+//Return an array containing all SKUs.
+app.get('/api/internalOrders', async (req, res) => {
+  try {
+    const listInternalOrders = await internalOrdersDAO.listIntOrders();
+    res.status(200).json(listInternalOrders)
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//Return an array containing all internal orders in state = ISSUED.
+app.get('/api/internalOrdersIssued', async (req, res) => {
+
+  try {
+    const internalOrdersIssued = await internalOrdersDAO.findIntOrderIssued();
+    res.status(200).json(internalOrdersIssued);
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//Return an array containing all internal orders in state = ACCEPTED.
+app.get('/api/internalOrdersAccepted', async (req, res) => {
+
+  try {
+    const internalOrdersAccepted = await internalOrdersDAO.findIntOrderAccepted();
+    res.status(200).json(internalOrdersAccepted);
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//Return an internal order, given its id.
+app.get('/api/internalOrders/:id', async (req, res) => {
+
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
+    return res.status(422).end();
+  }
+  try {
+    const internalOrder = await internalOrdersDAO.findIntOrder(req.params.id);
+    if (internalOrder === null)
+      res.status(404).end();
+    res.status(200).json(internalOrder);
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//Creates a new internal order in state = ISSUED.
+app.post('/api/internalOrders', async (req, res) => {
+  if (Object.keys(req.header).length === 0 
+      || req.body.issueDate === undefined 
+      || req.body.products === undefined 
+      || req.body.customerId === undefined) 
+    return res.status(422).end();
+
+  let issueDate = req.body.issueDate;
+  let products = req.body.products;
+  let customerId = req.body.customerId;
+
+
+  try {
+    await internalOrdersDAO.createIntOrder(issueDate, products, customerId);
+    res.status(201).end();
+  }
+  catch (error) {
+    res.status(503).json(error);
+  }
+
+});
+
+//Modify the state of an internal order, given its id. If newState is = COMPLETED an array of RFIDs is sent
+app.put('/api/internalOrders/:id', async (req, res) => {
+  if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) 
+    return res.status(422).end();
+  
+ 
+  let newState = req.body.newState;
+  let products = req.body.products;
+
+
+  try {
+    let found = await internalOrdersDAO.updateIntOrder(newState, products);
+    if(found === null)
+      res.status(404).end();
+    res.status(200).end();
+  }
+  catch (error) {
+    res.status(503).json(error);
+  }
+});
+
+
+//Delete an internal order, given its id.
+app.delete('/api/internalOrders/:id', async (req, res) => {
+
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+    return res.status(422).end();
+
+  try {
+    await internalOrdersDAO.deleteIntOrder(req.params.id);
+    res.status(204).end();
+  }
+  catch (error) {
+    res.status(503).json(error);
+  }
+});
+
 
 //------------------------------------------------------------------------------------------------
 //                                      ITEM
 //------------------------------------------------------------------------------------------------
 
-
-
-//--------------------------------------|   GET   |------------------------------------------------
+//Return an array containing all SKUs.
 app.get('/api/items', async (req, res) => {
-
   try {
-    const item = await ITEMDAO.listItem();
-    res.status(200).json(item)
-  } catch (error) {
-
-    if (Unathorized)
-      return res.status(401) //Unathorized (not logged in or wrong permissions)
-
-    if (Internal_Server_Error)
-      return res.status(500) //Internal_Server_Error
-
+    const listItems = await itemsDAO.listItems();
+    res.status(200).json(listItems)
+  }
+  catch (error) {
+    res.status(500).json(error);
   }
 });
 
-//--------------------------------------|   POST   |------------------------------------------------
+//Return an item, given its id..
+app.get('/api/items/:id', async (req, res) => {
 
-//--------------------------------------|   PUT   |-------------------------------------------------
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
+    return res.status(422).end();
+  }
+  try {
+    const item = await itemsDAO.findItem(req.params.id);
+    if (item === null)
+      res.status(404).end();
+    res.status(200).json(item);
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
+});
 
-//--------------------------------------|   DELETE   |----------------------------------------------
+//Creates a new Item.
+app.post('/api/item', async (req, res) => {
+  if (Object.keys(req.header).length === 0 
+  || req.body.description === undefined 
+  || req.body.id === undefined 
+  || req.body.SKUId === undefined 
+  || req.body.supplierId === undefined 
+  || req.body.price === undefined)
+    return res.status(422).end();
+  
+  let id = req.body.id;
+  let SKUId = req.body.SKUId;
+  let supplierId = req.body.supplierId;
+  let price = req.body.price;
+  let description = req.body.description;
 
+  try {
+    await itemsDAO.createItem(description, id, SKUId, notes, supplierId, price);
+    res.status(201).end();
+  }
+  catch (error) {
+    res.status(503).json(error);
+  }
 
+});
 
+//Modify an existing item.
+app.put('/api/item/:id', async (req, res) => {
+  if (Object.keys(req.header).length === 0 
+  || req.params.id === undefined 
+  || req.params.id == '' 
+  || isNaN(req.params.id) 
+  || req.body.newDescription === undefined 
+  || req.body.newPrice === undefined)
+    return res.status(422).end();
 
+  let description = req.body.newDescription;
+  let price = req.body.newPrice;
+
+  try {
+    let found = await itemsDAO.updateItem(req.params.id, description, price);
+    if(found === null)
+      res.status(404).end();
+    res.status(200).end();
+  }
+  catch (error) {
+    res.status(503).json(error);
+  }
+});
+
+//Delete an item receiving its id.
+app.delete('/api/items/:id', async (req, res) => {
+
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+    return res.status(422).end();
+
+  try {
+    await itemsDAO.deleteItem(req.params.id);
+    res.status(204).end();
+  }
+  catch (error) {
+    res.status(503).json(error);
+  }
+});
 
 
 
