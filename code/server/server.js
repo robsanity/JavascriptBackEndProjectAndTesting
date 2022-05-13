@@ -74,7 +74,7 @@ app.post('/api/sku', async (req, res) => {
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
 app.put('/api/sku/:id', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+  if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
     return res.status(422).end();
   }
   //Come implementare:
@@ -101,7 +101,7 @@ app.put('/api/sku/:id', async (req, res) => {
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
 //are modified according to the available quantity.
 app.put('/api/sku/:id/position', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body.position === null)
+  if (Object.keys(req.header).length === 0 || req.body.position === null ||  req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
  //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
   try {
@@ -116,7 +116,7 @@ app.put('/api/sku/:id/position', async (req, res) => {
 //Delete a SKU receiving its id.
 app.delete('/api/skus/:id', async (req, res) => {
 
-  if (req.params.id === null)
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
 
   try {
@@ -140,7 +140,8 @@ app.get('/api/skuitems', async (req, res) => {
   try {
     const listSKUItems = await SKUItemsDAO.listSKUItems();
     res.status(200).json(listSKUItems);
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json(error);
   }
 
@@ -149,13 +150,16 @@ app.get('/api/skuitems', async (req, res) => {
 //Return an array containing all SKU items for a certain SKUId with Available = 1.
 app.get('/api/skuitems/sku/:id', async (req, res) => {
 
-  if (req.params.id === null) {
-    return res.status(422).json({ error: `Empty params request` });
-  }
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) 
+    return res.status(422).end();
+  
   try {
     const SKUItemsAvailable = await SKUItemsDAO.findSKUItems(req.params.id);
+    if(SKUItemsAvailable === null)
+      res.status(404).end();
     res.status(200).json(SKUItemsAvailable);
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json(error);
   }
 
@@ -164,11 +168,13 @@ app.get('/api/skuitems/sku/:id', async (req, res) => {
 //Return a SKU item, given its RFID.
 app.get('/api/skuitems/:rfid', async (req, res) => {
 
-  if (req.params.rfid === null) {
-    return res.status(422).json({ error: `Empty params request` });
+  if (req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid)) {
+    return res.status(422).end();
   }
   try {
     const SKUItem = await SKUItemsDAO.findSKUItem(req.params.rfid);
+    if(SKUItem === null)
+      res.status(404).end();
     res.status(200).json(SKUItem)
   } catch (error) {
     res.status(500).json(error);
@@ -179,13 +185,14 @@ app.get('/api/skuitems/:rfid', async (req, res) => {
 
 //Creates a new SKU item with Available =0.
 app.post('/api/skuitem', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body === null)
-    return res.status(422).json({ error: `Empty params request` });
+  if (Object.keys(req.header).length === 0 || req.body.RFID === null || req.body.SKUID === null)
+    return res.status(422).end();
 
   try {
-    await SKUItemsDAO.reateSKUItem(req.body);
+    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, dayjs('{req.body.DateOfStock}').format('YYYY/MM/DDTHH:mm'));
     res.status(201).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 });
@@ -193,13 +200,16 @@ app.post('/api/skuitem', async (req, res) => {
 
 //Modify RFID, available and date of stock fields of an existing SKU Item.
 app.put('/api/skuitems/:rfid', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.params.rfid === null || req.body === null)
-    return res.status(422).json({ error: `Empty params request` });
+  if (Object.keys(req.header).length === 0 || req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
+    return res.status(422).end();
 
   try {
-    await SKUItemsDAO.modifySKUItem(req.params.rfid);
+    let item = await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs('{req.body.newDateOfStock}').format('YYYY/MM/DDTHH:mm'));
+    if(item === null)
+      res.status(404).end();
     res.status(200).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json(error);
   }
 });
@@ -207,13 +217,14 @@ app.put('/api/skuitems/:rfid', async (req, res) => {
 
 //Delete a SKU item receiving his rfid.
 app.delete('/api/skuitems/:rfid', async (req, res) => {
-  if (req.params.rfid === null)
-    return res.status(422).json({ error: `Empty params request` });
+  if (req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
+    return res.status(422).end();
 
   try {
     const SKU = await SKUItemsDAO.deleteSKUItem(req.params.rfid);
     res.status(204).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 });
