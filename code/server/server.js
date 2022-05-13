@@ -5,6 +5,8 @@ const testResultsDAO = require('./modules/testResultsDAO');
 const usersDAO = require('./modules/usersDAO');
 const restockOrdersDAO = require('./modules/restockOrdersDAO');
 const SKUsDAO = require('./modules/SKUsDAO');
+const SKUItemsDAO = require('./modules/SKUItemsDAO');
+const positionsDAO = require('./modules/positionsDAO');
 
 // init express
 const app = new express();
@@ -18,7 +20,7 @@ app.use(express.json());
 //------------------------------------------------------------------------------------------------
 
 //Return an array containing all SKUs.
-app.get('/api/skus', (req, res) => {
+app.get('/api/skus', async (req, res) => {
   try {
     const listSKUs = await SKUsDAO.listSKUs();
     res.status(200).json(listSKUs)
@@ -59,12 +61,11 @@ app.post('/api/sku', async (req, res) => {
   let price = req.body.price;
   let availableQuantity = req.body.availableQuantity;
 
-
-
   try {
     await SKUsDAO.createSKU(description, weight, volume, notes, availableQuantity, price);
     res.status(201).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 
@@ -73,25 +74,25 @@ app.post('/api/sku', async (req, res) => {
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
 app.put('/api/sku/:id', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body === null) {
-    return res.status(422).json({ error: `Empty params request` });
+  if (Object.keys(req.header).length === 0 || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+    return res.status(422).end();
   }
-
+  //Come implementare:
+  //if with newAvailableQuantity position is not capable enough in weight or in volume --> Error 422
   let description = req.body.description;
   let weight = req.body.weight;
   let volume = req.body.volume;
   let notes = req.body.notes;
   let price = req.body.price;
   let availableQuantity = req.body.availableQuantity;
-  let testDescriptors = req.body.testDescriptors;
 
   try {
-    await SKUsDAO.updateSKU(req.params.id, {
-      description: description, weight: weight, volume: volume,
-      notes: notes, price: price, availableQuantity: availableQuantity, testDescriptors: testDescriptors
-    });
+    let found = await SKUsDAO.updateSKU(req.params.id, description,  weight, volume, notes, price, availableQuantity);
+    if(found === null)
+      res.status(404).end();
     res.status(200).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 });
@@ -100,13 +101,14 @@ app.put('/api/sku/:id', async (req, res) => {
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
 //are modified according to the available quantity.
 app.put('/api/sku/:id/position', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body === null)
-    return res.status(422).json({ error: `Empty params request` });
-
+  if (Object.keys(req.header).length === 0 || req.body.position === null)
+    return res.status(422).end();
+ //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
   try {
     await SKUsDAO.updatePosition(req.params.id, req.body.position);
     res.status(200).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 });
@@ -115,12 +117,13 @@ app.put('/api/sku/:id/position', async (req, res) => {
 app.delete('/api/skus/:id', async (req, res) => {
 
   if (req.params.id === null)
-    return res.status(422).json({ error: `Empty params request` });
+    return res.status(422).end();
 
   try {
     await SKUsDAO.deleteSKU(req.params.id);
     res.status(204).end();
-  } catch (error) {
+  }
+  catch (error) {
     res.status(503).json(error);
   }
 });
