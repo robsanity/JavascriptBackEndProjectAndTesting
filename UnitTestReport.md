@@ -25,14 +25,14 @@ Version:
 ## Class SKU
 
 ### **Class SKU - method *GET***
-**Criteria for method *name*:**
+**Criteria for method *GET*:**
 	
 
  - Database conection where is stored all the array data
  - check if who want acess  have the correct right to do it permission
 
 
-**Predicates for method *name*:**
+**Predicates for method *GET*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -51,6 +51,47 @@ Version:
 |               |not exist   |I|T3{ CEO}|||
 |connection down|  -         |v|T4{ Customer}|  ||
 
+**Criteria for method *id*:**
+
+	
+
+ -  number of id 
+  -check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+**Predicates for method *id*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID       |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{  id:"456", user: manager} ,T12B{  id:"0", user: manager},T13B{  id:"maxValueType", user: manager} |||
+||                         |not allowed |v|T2{id:"456",  Customer},|||
+||                         |not exist   |I|T3{id:"456" , CEO}|||
+||connection down|  -                   |v|T4{ id:"456",  Customer}|  ||
+|not exist|connection up   |allowed     |v|T5{id:"456" , manager}|||
+||                         |not allowed |v|T6{id:"456" , Customer}|||
+||                         |not exist   |I|T7{id:"456", CEO}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{id:"A56" , manager}|||
+||                         |not allowed |v|T10{ id:"A56" , Customer}|||
+||                         |not exist   |I|T11{ id:"A56" ,CEO}|||
+||connection down|  -                   |v|T4{ id:"A56"Customer}|  ||
 
 ### **Class SKU - method *POST***
 ### **Class SKU - method *PUT***
