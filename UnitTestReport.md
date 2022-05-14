@@ -53,7 +53,6 @@ Version:
 
 **Criteria for method *id*:**
 
-	
 
  -  number of id 
   -check Database conection where is stored all the array data
@@ -93,7 +92,44 @@ Version:
 ||                         |not exist   |I|T11{ id:"A56" ,CEO}|||
 ||connection down|  -                   |v|T4{ id:"A56"Customer}|  ||
 
+[//]: #-------------------------------------------------------------------------------------------------------------------
+
+
 ### **Class SKU - method *POST***
+**Criteria for method *POST*:**
+
+
+ -  number of weight, volume and price and available Quantity  (WVPaQ)
+ - SKU is already stored in the wharehouse
+  -check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it 
+ - number of object inside the body 
+
+
+
+
+**Predicates for method *POST*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   WVPaQ      |  positive, negative      |  
+|   SKU  already stored    |  true,false     |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed       |
+|     number of object             |    <6, >6 , =6     |
+
+
+
+**Combination of predicates**:
+
+
+|   WVPaQ    |SKU  already stored | db connection|permission|number of object |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|-------|
+
+
+
+
+
 ### **Class SKU - method *PUT***
 ### **Class SKU - method *DELETE***
 
