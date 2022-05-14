@@ -203,10 +203,13 @@ app.put('/api/skuitems/:rfid', async (req, res) => {
   if (Object.keys(req.header).length === 0 || req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
     return res.status(422).end();
 
-  try {
-    let item = await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs('{req.body.newDateOfStock}').format('YYYY/MM/DDTHH:mm'));
-    if (item === null)
+    let checkSKUItems = await SKUItemsDAO.findSKUItem(rfid);
+    if (checkSKUItems.length===0){
       res.status(404).end();
+    }
+  try {
+    await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs('{req.body.newDateOfStock}').format('YYYY/MM/DDTHH:mm'));
+    
     res.status(200).end();
   }
   catch (error) {
@@ -277,7 +280,7 @@ app.put('/api/position/:positionID', async (req, res) => {
     || isNaN(req.params.positionID))
     return res.status(422).end();
 
-  let checkPosition = positionsDAO.checkPosition(req.params.positionID);
+  let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
   if (checkPosition.length === 0) {
     res.status(404).end();
   }
@@ -299,11 +302,11 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
     || isNaN(req.params.positionID))
     return res.status(422).end();
 
-  let checkOldPosition = positionsDAO.checkPosition(req.params.positionID);
+  let checkOldPosition = await positionsDAO.checkPosition(req.params.positionID);
   if (checkOldPosition.length === 0) {
     res.status(404).end();
   }
-  let checkNewPosition = positionsDAO.checkPosition(req.body.newPositionID);
+  let checkNewPosition = await positionsDAO.checkPosition(req.body.newPositionID);
   if (checkNewPosition.length !== 0) {
     res.status(422).end();
   }
@@ -323,7 +326,7 @@ app.delete('/api/position/:positionID', async (req, res) => {
     || req.params.positionID === undefined || req.params.positionID == ''
     || isNaN(req.params.positionID))
     return res.status(422).end();
-  let checkPosition = positionsDAO.checkPosition(req.params.positionID);
+  let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
   if (checkPosition.length === 0) {
     res.status(422).end();
   }
