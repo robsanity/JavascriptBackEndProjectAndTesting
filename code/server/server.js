@@ -74,9 +74,9 @@ app.post('/api/sku', async (req, res) => {
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
 app.put('/api/sku/:id', async (req, res) => {
- // if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
-   // return res.status(422).end();
-  //}
+  if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+    return res.status(422).end();
+  }
   //Come implementare:
   //if with newAvailableQuantity position is not capable enough in weight or in volume --> Error 422
   let description = req.body.description;
@@ -85,11 +85,10 @@ app.put('/api/sku/:id', async (req, res) => {
   let notes = req.body.notes;
   let price = req.body.price;
   let availableQuantity = req.body.availableQuantity;
-  
 
   try {
-    let found = await SKUsDAO.updateSKU(description,  weight, volume, notes, price, availableQuantity, req.params.id);
-    if(found === null)
+    let found = await SKUsDAO.updateSKU(req.params.id, description, weight, volume, notes, price, availableQuantity);
+    if (found === null)
       res.status(404).end();
     res.status(200).end();
   }
@@ -204,13 +203,13 @@ app.put('/api/skuitems/:rfid', async (req, res) => {
   if (Object.keys(req.header).length === 0 || req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
     return res.status(422).end();
 
-    let checkSKUItems = await SKUItemsDAO.findSKUItem(rfid);
-    if (checkSKUItems.length===0){
-      res.status(404).end();
-    }
+  let checkSKUItems = await SKUItemsDAO.findSKUItem(rfid);
+  if (checkSKUItems.length === 0) {
+    res.status(404).end();
+  }
   try {
     await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs('{req.body.newDateOfStock}').format('YYYY/MM/DDTHH:mm'));
-    
+
     res.status(200).end();
   }
   catch (error) {
@@ -928,24 +927,95 @@ app.put('/api/restockOrder/:id', async (req, res) => {
       return res.status(422).end();
     }
 
-    let newState=req.body.newState;
-    if (newState === undefined || newState == '' ) {
+    let newState = req.body.newState;
+    if (newState === undefined || newState == '') {
       return res.status(422).end();
     }
 
     let rO = await restockOrdersDAO.getByIdRestockOrders(id);
 
     if (rO.length !== 0) {
-      res.status(409).end();
+      res.status(404).end();
     }
 
     await restockOrdersDAO.putStateRestockOrder(id, newState);
-    res.status(201).end();
+    res.status(200).end();
   }
   catch (error) {
     res.status(503).end();
   }
 });
+
+app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0) {
+      res.status(422).end();
+    }
+
+    let id = req.params.id;
+    if (id === undefined || id == '' || isNaN(id)) {
+      return res.status(422).end();
+    }
+
+    let skuItems = req.body.skuItems;
+    if (skuItems === undefined || skuItems === '' || skuItems.length === 0) {
+      return res.status(422).end();
+    }
+
+    let rO = await restockOrdersDAO.getByIdRestockOrders(id);
+    if (rO.length !== 0) {
+      res.status(404).end();
+    }
+
+    //check state delivered
+    let skuItemsOnRO = rO.skuItems;
+    if (skuItemsOnRO.length === 0) {
+      skuItems = skuItemsOnRO
+        .map(e => ({ SKUId: e.idSKU, rfid: e.rfid }))
+        .concat(skuItems.map(e => ({ SKUId: e.idSKU, rfid: e.rfid })));
+    }
+
+    //put in RestockOrderItems but QUANTITY????
+    res.status(200).end();
+  }
+  catch (error) {
+    res.status(503).end();
+  }
+});
+
+
+app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0) {
+      res.status(422).end();
+    }
+
+    let id = req.params.id;
+    if (id === undefined || id == '' || isNaN(id)) {
+      return res.status(422).end();
+    }
+
+    let transportNote = req.body.transportNote;
+    if (newState === undefined || newState == '') {
+      return res.status(422).end();
+    }
+
+    let rO = await restockOrdersDAO.getByIdRestockOrders(id);
+    if (rO.length !== 0) {
+      res.status(404).end();
+    }
+
+    //check deliverydate after issuedate
+    //check state delivered
+
+    await restockOrdersDAO.putTNRestockOrder(id, newState);
+    res.status(200).end();
+  }
+  catch (error) {
+    res.status(503).end();
+  }
+});
+
 //--------------------------------------|   DELETE   |----------------------------------------------
 
 
