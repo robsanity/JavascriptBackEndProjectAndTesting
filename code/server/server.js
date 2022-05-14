@@ -916,7 +916,35 @@ app.get('/api/restockOrders/:id/returnItems', async (req, res) => {
 //--------------------------------------|   POST   |------------------------------------------------
 
 //--------------------------------------|   PUT   |-------------------------------------------------
+app.put('/api/restockOrder/:id', async (req, res) => {
+  try {
+    if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0) {
+      res.status(422).end();
+    }
 
+    let id = req.params.id;
+    if (id === undefined || id == '' || isNaN(id)) {
+      return res.status(422).end();
+    }
+
+    let newState=req.body.newState;
+    if (newState === undefined || newState == '' ) {
+      return res.status(422).end();
+    }
+
+    let rO = await restockOrdersDAO.getByIdRestockOrders(id);
+
+    if (rO.length !== 0) {
+      res.status(409).end();
+    }
+
+    await restockOrdersDAO.putStateRestockOrder(id, newState);
+    res.status(201).end();
+  }
+  catch (error) {
+    res.status(503).end();
+  }
+});
 //--------------------------------------|   DELETE   |----------------------------------------------
 
 
