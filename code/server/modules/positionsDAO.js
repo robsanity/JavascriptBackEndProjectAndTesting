@@ -71,7 +71,7 @@ function modifyPositionID(positionID,newPositionID ) {
 
 function deletePosition(positionID) {
     return new Promise((resolve, reject) => {
-        const sql = "DELETE FROM Position WHERE idPosition=?";
+        const sql = "DELETE FROM PositionS WHERE idPosition=?";
         db.all(sql, [positionID], (err, rows) => {
             if (err) {
                 reject({ error: "no delete" });
