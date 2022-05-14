@@ -28,42 +28,30 @@ Version:
 **Criteria for method *name*:**
 	
 
- - 
- - 
+ - Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
 
 
 **Predicates for method *name*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
-
-
-
-
-
-**Boundaries**:
-
-| Criteria | Boundary values |
-| -------- | --------------- |
-|          |                 |
-|          |                 |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
 
 
 
 **Combination of predicates**:
 
 
-| Criteria 1 | Criteria 2 | ... | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|-------|
-|||||||
-|||||||
-|||||||
-|||||||
-|||||||
+| DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|connection up  |allowed     |v|T1{ manager}|||
+|               |not allowed |v|T2{ Customer}|||
+|               |not exist   |I|T3{ CEO}|||
+|connection down|  -         |v|T4{ Customer}|  ||
+
+
 ### **Class SKU - method *POST***
 ### **Class SKU - method *PUT***
 ### **Class SKU - method *DELETE***
