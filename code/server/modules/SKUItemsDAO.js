@@ -82,4 +82,4 @@ function deleteSKUItem(rfid) {
     });
 };
 
-module.exports = { listSKUItems, findSKUItems, findSKUItem, checkSKUItems, createSKUItem, modifySKUItem, deleteSKUItem }
+module.exports = { listSKUItems, findSKUItems, findSKUItem, createSKUItem, modifySKUItem, deleteSKUItem }

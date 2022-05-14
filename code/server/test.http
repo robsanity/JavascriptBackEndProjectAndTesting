@@ -1,19 +1,15 @@
 
-
-
-
-
-
 PUT http://localhost:3001/api/sku/1
 Content-Type: application/json
 
-
     {
-    "description" : "a new sku",
-    "weight" : 100,
-    "volume" : 50,
-    "notes" : "first SKU",
+    "description" : "campione",
+    "weight" : 15,
+    "volume" : 30,
+    "notes" : "ciao",
     "price" : 10.99,
-    "availableQuantity" : 50
+    "availableQuantity" : 20
 }
+
+
 

@@ -49,7 +49,7 @@ app.get('/api/skus/:id', async (req, res) => {
 
 //Creates a new SKU with an empty array of testDescriptors.
 app.post('/api/sku', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+  if (/*Object.keys(req.header).length === 0|| */ req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
     return res.status(422).end();
   }
 
@@ -88,7 +88,7 @@ app.put('/api/sku/:id', async (req, res) => {
   
 
   try {
-    let found = await SKUsDAO.updateSKU(description,  weight, volume, notes, price, availableQuantity, req.params.id);
+    let found = await SKUsDAO.updateSKU(description,weight,volume,notes,price,availableQuantity,req.params.id, req.params.id,req.params.id,req.params.id);
     if(found === null)
       res.status(404).end();
     res.status(200).end();
@@ -102,11 +102,12 @@ app.put('/api/sku/:id', async (req, res) => {
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
 //are modified according to the available quantity.
 app.put('/api/sku/:id/position', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body.position === null || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+  if (/*Object.keys(req.header).length === 0 ||*/ req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
+    
   //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
   try {
-    await SKUsDAO.updatePosition(req.params.id, req.body.position);
+    await SKUsDAO.updatePosition(req.params.id,req.params.id,req.params.id,req.body.position,req.params.id,req.params.id,req.params.id,req.body.position);
     res.status(200).end();
   }
   catch (error) {

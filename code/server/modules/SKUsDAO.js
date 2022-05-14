@@ -45,31 +45,76 @@ function createSKU(description, weight, volume, notes, availableQuantity, price)
     });
 };
 
-function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU) {
+function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU,idSKU2,idSKU3,idSKU4) {
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE  SKUs SET description = ?, weight = ?, volume = ?, notes = ?, price =  ?, availableQuantity = ? WHERE idSKU = ? && UPDATE Positions SET occupiedWeight";
+        const sql = "UPDATE SKUs SET description = ?, weight = ?, volume = ?, notes = ?, price =  ?, availableQuantity = ? WHERE idSKU = ? "; 
+        const sql2 = "UPDATE Positions SET occupiedWeight = Positions.occupiedWeight + (SELECT weight FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?), occupiedVolume = occupiedVolume + (SELECT volume FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?) WHERE idPosition = (SELECT idPosition FROM SKUs WHERE idSKU = ?)  ";
+
         db.run(sql, [description,weight,volume,notes,price,availableQuantity,idSKU], function(err){
             if (err){
                 reject(err + 'Error');
             }
             else{
+                
                 resolve (this.lastID);
+            }
+
+        })
+        db.run(sql2, [idSKU2,idSKU3,idSKU4], function(err){
+            if (err){
+                reject(err + 'Error');
+            }
+            else{
+                
+                resolve (this.lastID);
+            }
+
+        })
+    });
+};
+function updatePosition(idSKU1,idSKU2,idSKU3,idPosition,idSKU4,idSKU5,idSKU6,idPosition2) {
+    return new Promise((resolve, reject) => {
+        const sql =  "UPDATE Positions SET occupiedWeight = Positions.occupiedWeight - (SELECT weight FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?),  occupiedVolume = Positions.occupiedVolume - (SELECT volume FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?) WHERE idPosition = (SELECT idPosition FROM SKUs WHERE idSKU = ?)";
+        const sql2 = "UPDATE SKUs SET idPosition = ? WHERE idSKU = ?"
+        const sql3 = "UPDATE Positions SET occupiedWeight = Positions.occupiedWeight + (SELECT weight FROM SKUs WHERE idSKU = ?), occupiedVolume = Positions.occupiedVolume + (SELECT volume FROM SKUs WHERE idSKU = ?) WHERE idPosition = ?";
+        db.run(sql, [idSKU1,idSKU2,idSKU3], function(err){
+            if(err){
+                reject(err + 'Error');
+            }
+            else {
+                resolve(this.lastID)
+            }
+        })
+        db.run(sql2, [idPosition,idSKU4],function(err){
+            if(err){
+                reject(err +'Error');
+            }else {
+                resolve (this.lastID);
+            }
+        })
+        db.run(sql3, [idSKU5,idSKU6,idPosition2],function(err){
+            if(err){
+                reject(err+ 'Error');
+            }else{
+                resolve(this.lastId);
+            }
+        })
+        //
+    });
+};
+
+function deleteSKU(idSKU) {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM SKUs WHERE idSKU = ?"
+        db.run(sql,[idSKU],function(err){
+            if(err){
+                reject(err +'Error')
+            }
+            else {
+                resolve(this.lastID)
             }
         })
     });
 };
-function updatePosition() {
-    return new Promise((resolve, reject) => {
-        const sql1 = "UPDATE SKUs SET idPosition = ? WHERE idSKU = ?";
-        const sql2 = "UPDATE Position JOIN SKUs on idPosition SET idPosition = ? ,occupiedWeight = occupiedWeight + weight , occupiedVolume = occupiedVolume + volume, WHERE idSKU = ? AND idPosition = ?"
-        
-    });
-};
 
-function deleteSKU() {
-    return new Promise((resolve, reject) => {
-
-    });
-};
-
-module.exports = { listSKUs, findSKU, createSKU, updateSKU, deleteSKU }
+module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU}
