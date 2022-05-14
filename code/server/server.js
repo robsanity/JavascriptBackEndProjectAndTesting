@@ -74,9 +74,9 @@ app.post('/api/sku', async (req, res) => {
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
 app.put('/api/sku/:id', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
-    return res.status(422).end();
-  }
+ // if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+   // return res.status(422).end();
+  //}
   //Come implementare:
   //if with newAvailableQuantity position is not capable enough in weight or in volume --> Error 422
   let description = req.body.description;
@@ -85,9 +85,10 @@ app.put('/api/sku/:id', async (req, res) => {
   let notes = req.body.notes;
   let price = req.body.price;
   let availableQuantity = req.body.availableQuantity;
+  
 
   try {
-    let found = await SKUsDAO.updateSKU(req.params.id, description,  weight, volume, notes, price, availableQuantity);
+    let found = await SKUsDAO.updateSKU(description,  weight, volume, notes, price, availableQuantity, req.params.id);
     if(found === null)
       res.status(404).end();
     res.status(200).end();

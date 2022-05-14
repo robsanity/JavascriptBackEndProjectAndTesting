@@ -1,20 +1,19 @@
-GET http://localhost:3001/api/skus
-
-GET http://localhost:3001/api/skus/1
 
 
 
 
 
 
-POST http://localhost:3001/api/sku
+PUT http://localhost:3001/api/sku/1
 Content-Type: application/json
 
-{
-    "description": "mamt",
-    "weight":12,
-    "volume":30,
-    "notes" :"wela",
-    "price":12,
-    "availableQuantity":33
+
+    {
+    "description" : "a new sku",
+    "weight" : 100,
+    "volume" : 50,
+    "notes" : "first SKU",
+    "price" : 10.99,
+    "availableQuantity" : 50
 }
+

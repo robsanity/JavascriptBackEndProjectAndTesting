@@ -45,9 +45,24 @@ function createSKU(description, weight, volume, notes, availableQuantity, price)
     });
 };
 
-function updateSKU() {
+function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU) {
     return new Promise((resolve, reject) => {
-
+        const sql = "UPDATE  SKUs SET description = ?, weight = ?, volume = ?, notes = ?, price =  ?, availableQuantity = ? WHERE idSKU = ? && UPDATE Positions SET occupiedWeight";
+        db.run(sql, [description,weight,volume,notes,price,availableQuantity,idSKU], function(err){
+            if (err){
+                reject(err + 'Error');
+            }
+            else{
+                resolve (this.lastID);
+            }
+        })
+    });
+};
+function updatePosition() {
+    return new Promise((resolve, reject) => {
+        const sql1 = "UPDATE SKUs SET idPosition = ? WHERE idSKU = ?";
+        const sql2 = "UPDATE Position JOIN SKUs on idPosition SET idPosition = ? ,occupiedWeight = occupiedWeight + weight , occupiedVolume = occupiedVolume + volume, WHERE idSKU = ? AND idPosition = ?"
+        
     });
 };
 
