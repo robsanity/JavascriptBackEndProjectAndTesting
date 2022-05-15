@@ -1,5 +1,6 @@
 
-DELETE    http://localhost:3001/api/skus/:99999
+GET http://localhost:3001/api/returnOrders
+
 
 
 
