@@ -7,6 +7,7 @@ const restockOrdersDAO = require('./modules/restockOrdersDAO');
 const SKUsDAO = require('./modules/SKUsDAO');
 const SKUItemsDAO = require('./modules/SKUItemsDAO');
 const positionsDAO = require('./modules/positionsDAO');
+const returnOrdersDAO = require('./modules/returnOrdersDAO');
 
 // init express
 const app = new express();
@@ -1028,7 +1029,7 @@ app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
 //Return an array containing all return orders.
 app.get('/api/returnOrders', async (req, res) => {
   try {
-    const listReturnOrders = await returnOrdersDAO.listRetOrders();
+    const listReturnOrders = await returnOrdersDAO.listReturnOrders();
     res.status(200).json(listReturnOrders)
   }
   catch (error) {
@@ -1043,7 +1044,7 @@ app.get('/api/returnOrders/:id', async (req, res) => {
     return res.status(422).end();
   }
   try {
-    const returnOrder = await returnOrdersDAO.findRetOrder(req.params.id);
+    const returnOrders = await returnOrdersDAO.findRetOrder(req.params.id);
     if (returnOrders === null)
       res.status(404).end();
     res.status(200).json(returnOrders);
