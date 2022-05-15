@@ -1262,7 +1262,7 @@ app.post('/api/item', async (req, res) => {
   let description = req.body.description;
 
   try {
-    await itemsDAO.createItem(description, id, SKUId, notes, supplierId, price);
+    await itemsDAO.createItem(description, id, SKUId, supplierId, price);
     res.status(201).end();
   }
   catch (error) {
