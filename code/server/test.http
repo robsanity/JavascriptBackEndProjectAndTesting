@@ -1,15 +1,5 @@
 
-PUT http://localhost:3001/api/sku/1
-Content-Type: application/json
-
-    {
-    "description" : "campione",
-    "weight" : 15,
-    "volume" : 30,
-    "notes" : "ciao",
-    "price" : 10.99,
-    "availableQuantity" : 20
-}
+DELETE    http://localhost:3001/api/skus/:99999
 
 
 

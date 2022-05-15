@@ -30,14 +30,23 @@ app.get('/api/skus', async (req, res) => {
   }
 });
 
+//Ritorna array di SKU con status 200
+
+
+
+
+
+
 //Return a SKU, given its id.
 app.get('/api/skus/:id', async (req, res) => {
 
-  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
+  let id=req.params.id.replace(':', '');
+  if (id === undefined || id == '' || isNaN(id))
     return res.status(422).end();
-  }
+
+
   try {
-    const SKU = await SKUsDAO.findSKU(req.params.id);
+    const SKU = await SKUsDAO.findSKU(id);
     if (SKU === null)
       res.status(404).end();
     res.status(200).json(SKU);
@@ -47,11 +56,20 @@ app.get('/api/skus/:id', async (req, res) => {
   }
 });
 
+//Se id è vuoto/non un numero torna 422
+//Se SKU === null torna 404 ma bisogna implementare il "return null;" in SKUsDAO
+//Altrimenti torna oggetto con status 200
+
+
+
+
+
+
 //Creates a new SKU with an empty array of testDescriptors.
 app.post('/api/sku', async (req, res) => {
-  if (/*Object.keys(req.header).length === 0|| */ req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+  if (req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined)
     return res.status(422).end();
-  }
+  
 
   //Ricavo gli attributi necessari a creare una nuova SKU e li passo a createSKU
   let description = req.body.description;
@@ -70,6 +88,12 @@ app.post('/api/sku', async (req, res) => {
   }
 
 });
+
+//Funzionante, ritorna 201 se oggetto creato
+//In mancanza dei uno dei campi richiesti torna 422
+
+
+
 
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
@@ -117,17 +141,22 @@ app.put('/api/sku/:id/position', async (req, res) => {
 //Delete a SKU receiving its id.
 app.delete('/api/skus/:id', async (req, res) => {
 
-  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+  let id=req.params.id.replace(':', '');
+  if (id === undefined || id == '' || isNaN(id))
     return res.status(422).end();
 
   try {
-    await SKUsDAO.deleteSKU(req.params.id);
+    await SKUsDAO.deleteSKU(id);
     res.status(204).end();
   }
   catch (error) {
     res.status(503).json(error);
   }
 });
+
+
+//Funzionante, ritorna 204 se SKU è stato eliminato
+//ritorna 204 anche se l'id non esiste
 
 
 //------------------------------------------------------------------------------------------------
