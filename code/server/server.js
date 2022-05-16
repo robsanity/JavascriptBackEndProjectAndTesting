@@ -69,7 +69,7 @@ app.get('/api/skus/:id', async (req, res) => {
 app.post('/api/sku', async (req, res) => {
   if (req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined)
     return res.status(422).end();
-  
+
 
   //Ricavo gli attributi necessari a creare una nuova SKU e li passo a createSKU
   let description = req.body.description;
@@ -111,8 +111,8 @@ app.put('/api/sku/:id', async (req, res) => {
   let availableQuantity = req.body.availableQuantity;
 
   try {
-    let found = await SKUsDAO.updateSKU(description,weight,volume,notes,price,availableQuantity,req.params.id, req.params.id,req.params.id,req.params.id);
-    if(found === null)
+    let found = await SKUsDAO.updateSKU(description, weight, volume, notes, price, availableQuantity, req.params.id, req.params.id, req.params.id, req.params.id);
+    if (found === null)
       res.status(404).end();
     res.status(200).end();
   }
@@ -127,10 +127,10 @@ app.put('/api/sku/:id', async (req, res) => {
 app.put('/api/sku/:id/position', async (req, res) => {
   if (/*Object.keys(req.header).length === 0 ||*/ req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
-    
+
   //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
   try {
-    await SKUsDAO.updatePosition(req.params.id,req.params.id,req.params.id,req.body.position,req.params.id,req.params.id,req.params.id,req.body.position);
+    await SKUsDAO.updatePosition(req.params.id, req.params.id, req.params.id, req.body.position, req.params.id, req.params.id, req.params.id, req.body.position);
     res.status(200).end();
   }
   catch (error) {
@@ -351,7 +351,7 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
 //Delete a SKU item receiving his positionID.
 app.delete('/api/position/:positionID', async (req, res) => {
 
-  if ( req.params.positionID === undefined || req.params.positionID == ''
+  if (req.params.positionID === undefined || req.params.positionID == ''
     || isNaN(req.params.positionID))
     return res.status(422).end();
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
@@ -1128,9 +1128,9 @@ app.delete('/api/returnOrder/:id', async (req, res) => {
 //Possible states: ISSUED, ACCEPTED, REFUSED, CANCELED, COMPLETED
 
 //Return an array containing all SKUs.
-app.get('/api/internalOrders', async (req, res) => {
+app.get('/api/internalOrders', (req, res) => {
   try {
-    const listInternalOrders = await internalOrdersDAO.listIntOrders();
+    const listInternalOrders = internalOrdersDAO.listIntOrders();
     res.status(200).json(listInternalOrders)
   }
   catch (error) {
@@ -1139,10 +1139,10 @@ app.get('/api/internalOrders', async (req, res) => {
 });
 
 //Return an array containing all internal orders in state = ISSUED.
-app.get('/api/internalOrdersIssued', async (req, res) => {
+app.get('/api/internalOrdersIssued', (req, res) => {
 
   try {
-    const internalOrdersIssued = await internalOrdersDAO.findIntOrderIssued();
+    const internalOrdersIssued = internalOrdersDAO.findIntOrderIssued();
     res.status(200).json(internalOrdersIssued);
   }
   catch (error) {
@@ -1151,10 +1151,10 @@ app.get('/api/internalOrdersIssued', async (req, res) => {
 });
 
 //Return an array containing all internal orders in state = ACCEPTED.
-app.get('/api/internalOrdersAccepted', async (req, res) => {
+app.get('/api/internalOrdersAccepted', (req, res) => {
 
   try {
-    const internalOrdersAccepted = await internalOrdersDAO.findIntOrderAccepted();
+    const internalOrdersAccepted = internalOrdersDAO.findIntOrderAccepted();
     res.status(200).json(internalOrdersAccepted);
   }
   catch (error) {
@@ -1163,14 +1163,14 @@ app.get('/api/internalOrdersAccepted', async (req, res) => {
 });
 
 //Return an internal order, given its id.
-app.get('/api/internalOrders/:id', async (req, res) => {
+app.get('/api/internalOrders/:id', (req, res) => {
 
   if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
     return res.status(422).end();
   }
   try {
-    const internalOrder = await internalOrdersDAO.findIntOrder(req.params.id);
-    if (internalOrder === null)
+    const internalOrder = internalOrdersDAO.listIntOrders().filter(e => e.id = req.params.id);
+    if (internalOrder.length === 0)
       res.status(404).end();
     res.status(200).json(internalOrder);
   }
@@ -1181,8 +1181,7 @@ app.get('/api/internalOrders/:id', async (req, res) => {
 
 //Creates a new internal order in state = ISSUED.
 app.post('/api/internalOrders', async (req, res) => {
-  if (Object.keys(req.header).length === 0
-    || req.body.issueDate === undefined
+  if (req.body.issueDate === undefined
     || req.body.products === undefined
     || req.body.customerId === undefined)
     return res.status(422).end();
@@ -1211,12 +1210,22 @@ app.put('/api/internalOrders/:id', async (req, res) => {
   let newState = req.body.newState;
   let products = req.body.products;
 
+  //aggiungere controlli su body
+
+  if (newState !== 'ACCEPTED' || newState !== 'COMPLETED') {
+    res.status(422).end();
+    return;
+  }
 
   try {
-    let found = await internalOrdersDAO.updateIntOrder(newState, products);
-    if (found === null)
+    let found = internalOrdersDAO.listIntOrders().filter(e => e.id = req.params.id);
+    if (found.length === 0) {
       res.status(404).end();
+      return;
+    }
+    await internalOrdersDAO.updateIntOrder(req.params.id, newState, products);
     res.status(200).end();
+    return;
   }
   catch (error) {
     res.status(503).json(error);
