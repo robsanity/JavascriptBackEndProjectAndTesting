@@ -46,10 +46,15 @@ app.get('/api/skus/:id', async (req, res) => {
 
 
   try {
-    const SKU = await SKUsDAO.findSKU(req.params.id);
-    if (SKU === null)
+    const SKU = await SKUsDAO.findSKU(req.params.id)
+    
+    
+    if (SKU.length === 0){ 
       res.status(404).end();
+    }
+    else{
     res.status(200).json(SKU);
+    }
   }
   catch (error) {
     res.status(500).json(error);
@@ -98,7 +103,7 @@ app.post('/api/sku', async (req, res) => {
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
 app.put('/api/sku/:id', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
     return res.status(422).end();
   }
   //Come implementare:
