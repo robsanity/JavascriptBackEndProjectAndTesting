@@ -92,7 +92,6 @@ Version:
 ||                         |not exist   |I|T11{ id:"A56" ,CEO}|||
 ||connection down|  -                   |v|T4{ id:"A56"Customer}|  ||
 
-[//]: #-------------------------------------------------------------------------------------------------------------------
 
 
 ### **Class SKU - method *POST***
@@ -112,11 +111,11 @@ Version:
 
 | Criteria | Predicate |
 | -------- | --------- |
-|   WVPaQ      |  positive, negative      |  
+|       |  positive, negative      |  
 |   SKU  already stored    |  true,false     |  
 |   Database conection        |   connection up ,connection down       |  
 |     permission              |    allowed, not allowed       |
-|     number of object             |    <6, >6 , =6     |
+|     number of object             |    =!6 , =6     |
 
 
 
@@ -125,13 +124,133 @@ Version:
 
 |   WVPaQ    |SKU  already stored | db connection|permission|number of object |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|-------|-------|-------|
+| positive|T| up    |allowed|=6|v|  T1{"a old sku",100,50,first SKU",10.99,50}|-------|
+| positive|T| up    |allowed|=!6|I| T2{"a old sku",100,50,first SKU"}|-------|
+| positive|T| up    |not allowed|-|-|T3{"a old sku",100,50,first SKU"},clerk|-------|
+| positive|T| down   |-|- |v| T4{"a old sku",100,50,first SKU",10.99,50}|-------|
+| positive|F| up    |allowed|=6|v|T4{"a new sku",100,50,first SKU",10.99,50}|-------|
+| positive|F| up    |allowed|=!6|I|T5{"a new sku",100,10.99,50}|-------|
+| positive|F| up    |not allowed|-|I|T6{"a new sku",100,10.99,50}-------|
+| positive|F| down    |-|- |-|T7{"a new sku",100,50,first SKU"},clerk|-------|
+| negative |-| -    |-|- |i|-------|T8{"a new sku",-20,50,first SKU"},clerk|
 
 
+
+
+[//]: #-------------------------------------------------------------------------------------------------------------------
+[//]: #-------------------------------------------------------------------------------------------------------------------
+[//]: #-------------------------------------------------------------------------------------------------------------------
 
 
 
 ### **Class SKU - method *PUT***
+**Criteria for method *id*:**
+
+
+ -  number of id 
+-check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+ -  number of weight, volume and price and available Quantity  (WVPaQ)
+ - SKU is already stored in the wharehouse
+ - number of object inside the body 
+
+
+**Predicates for method *id*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID       |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+|     number of object             |    =!6 , =6     |
+|   SKU  already stored    |  true,false     |  
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+| Database conection  | sku stored |  permission   |  number of object | ID           |  Valid / Invalid | Description of the test case                                |   |   |   |   |   |   |
+|---------------------|------------|---------------|-------------------|--------------|------------------|-------------------------------------------------------------|---|---|---|---|---|---|
+| up                  | T          |  allowed      | 6                 | correct      |                  | T1({a new sku",100,50,"first SKU",10.99,50} ID: 123 ) T1B({a new sku",100,50,"first SKU",10.99,50} ID: MAXVALUE)     |   |   |   |   |   |   |
+|                     |            |               |                   | do not exist |                  | T2({a new sku",100,50,"first SKU",10.99,50} ID: 123 )       |   |   |   |   |   |   |
+|                     |            |               |                   | wrong type   |                  | T3({a new sku",100,50,"first SKU",10.99,50} ID: 1G3 )       |   |   |   |   |   |   |
+|                     |            |               | !=6               | correct      |                  | T4({a new sku",10.99,50} ID: 123 )                          |   |   |   |   |   |   |
+|                     |            |               |                   | do not exist |                  | T5({a new sku",100,50} ID: 123 )                            |   |   |   |   |   |   |
+|                     |            |               |                   | wrong type   |                  | T6({a new sku",10.99,50} ID: 1H3 )                          |   |   |   |   |   |   |
+|                     |            |  Not allowed  | 6                 | -            |                  | T7({a new sku",100,50,"first SKU",10.99,50} ID: 123,CLERK ) |   |   |   |   |   |   |
+|                     | F          | -             | -                 | -            |                  | T8({a new sku",100,50,"first SKU",10.99,50} ID: 123 )       |   |   |   |   |   |   |
+| down                | -          | -             | -                 | -            |                  | T9({a new sku",100,50,"first SKU",10.99,50} ID: 123 )       |   |   |   |   |   |   |
+
+
+
+
+**Predicates for method *POSITION*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID       |  correct,do not exist,wrong type       |  
+|   position  existance     |  exist,do not exist      |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+
+|   SKU  already stored    |  true,false     |  
+
+
+
+
+**Combination of predicates**:
+
+
+|   |   |   |              |               |            |                    |                     |                  |                                              |   |   |   |
+|---|---|---|--------------|---------------|------------|--------------------|---------------------|------------------|----------------------------------------------|---|---|---|
+|   |   |   | ID           |  permission   | sku stored | position existance | Database conection  |  Valid / Invalid | Description of the test case                 |   |   |   |
+|   |   |   |    correct          |   allowed             | T          | exist              | up                  | v                | T1( POSITION:800234523412 , manager logged ) |   |   |   |
+|   |   |   |              |               |            |                    | down                | I                | T2( POSITION:800234523412 , manager logged ) |   |   |   |
+|   |   |   |              |               |            | Do not exist       | -                   | I                | T3( POSITION:800234523412 , manager logged ) |   |   |   |
+|   |   |   |              |               | F          | -                  | -                   | I                | T4( POSITION:800234523412 , manager logged ) |   |   |   |
+|   |   |   |              |  Not allowed  | -          | -                  | -                   | I                | T5( POSITION:800234523412 , clerk logged )   |   |   |   |
+|   |   |   | do not exist | -             | -          | -                  | -                   | I                | T6( POSITION:800234523412 , manager logged ) |   |   |   |
+
+
+
+
+
 ### **Class SKU - method *DELETE***
+**Predicates for method *delete:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID       |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+|     sku stored           |    true, false    |
+
+
+
+
+
+**Combination of predicates**:
+
+| ID           |  permission   | sku stored | Database conection  |  Valid / Invalid | Description of the test case   |   |   |   |   |   |   |   |
+|--------------|---------------|------------|---------------------|------------------|--------------------------------|---|---|---|---|---|---|---|
+| exist        | allowed       | T          | up                  | v                | T1( id: 123 ,manager logged )  |   |   |   |   |   |   |   |
+|              |               |            | down                | I                | T2( id: 123 ,manager logged )  |   |   |   |   |   |   |   |
+|              |               | F          | -                   | I                | T3( id: 123 ,manager logged )  |   |   |   |   |   |   |   |
+|              |  Not allowed  | -          | -                   | I                | T4( id: 123 ,clerk logged )    |   |   |   |   |   |   |   |
+| do not exist | -             | -          | -                   | I                | T5( id: 1245 ,manager logged ) |   |   |   |   |   |   |   |
+| wrong type   | -             | -          | -                   | I                | T6( id: 1dd ,manager logged )  |   |   |   |   |   |   |   |
+|              |               |            |                     |                  |                                |   |   |   |   |   |   |   |
+|              |               |            |                     |                  |                                |   |   |   |   |   |   |   |
+|              |               |            |                     |                  |                                |   |   |   |   |   |   |   |
+
+
+
 
 ## Class SKU ITEM
 
