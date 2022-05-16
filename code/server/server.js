@@ -41,13 +41,12 @@ app.get('/api/skus', async (req, res) => {
 //Return a SKU, given its id.
 app.get('/api/skus/:id', async (req, res) => {
 
-  let id=req.params.id.replace(':', '');
-  if (id === undefined || id == '' || isNaN(id))
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
 
 
   try {
-    const SKU = await SKUsDAO.findSKU(id);
+    const SKU = await SKUsDAO.findSKU(req.params.id);
     if (SKU === null)
       res.status(404).end();
     res.status(200).json(SKU);
@@ -142,12 +141,11 @@ app.put('/api/sku/:id/position', async (req, res) => {
 //Delete a SKU receiving its id.
 app.delete('/api/skus/:id', async (req, res) => {
 
-  let id=req.params.id.replace(':', '');
-  if (id === undefined || id == '' || isNaN(id))
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
 
   try {
-    await SKUsDAO.deleteSKU(id);
+    await SKUsDAO.deleteSKU(req.params.id);
     res.status(204).end();
   }
   catch (error) {
