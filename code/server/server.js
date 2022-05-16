@@ -9,7 +9,7 @@ const SKUItemsDAO = require('./modules/SKUItemsDAO');
 const positionsDAO = require('./modules/positionsDAO');
 const returnOrdersDAO = require('./modules/returnOrdersDAO');
 
-
+const dayjs = require('dayjs') 
 // init express
 const app = new express();
 const port = 3001;
@@ -243,9 +243,9 @@ app.get('/api/skuitems/:rfid', async (req, res) => {
 app.post('/api/skuitem', async (req, res) => {
   if ( req.body.RFID === null || req.body.SKUID === null)
     return res.status(422).end();
-console.log(dayjs(req.body.DateOfStock));
+
   try {
-    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, dayjs('{req.body.DateOfStock}').format('YYYY-MM-DD'));
+    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, dayjs(req.body.DateOfStock).format('YYYY-MM-DD HH:mm') );
     res.status(201).end();
   }
   catch (error) {
@@ -253,7 +253,7 @@ console.log(dayjs(req.body.DateOfStock));
   }
 });
 
-//Ritorna solo 503 Service Unavailable
+//Ritorna solo 503 Service Unavailable, da rivedere il passaggio della data
 
 
 
@@ -267,7 +267,7 @@ app.put('/api/skuitems/:rfid', async (req, res) => {
     res.status(404).end();
   }
   try {
-    await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs('{req.body.newDateOfStock}').format('YYYY/MM/DDTHH:mm'));
+    await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs(req.body.DateOfStock).format('YYYY-MM-DD HH:mm'));
 
     res.status(200).end();
   }
@@ -317,6 +317,11 @@ app.get('/api/positions', async (req, res) => {
 
 });
 
+//FUNZIONANTE
+
+
+
+
 
 //Creates a new Position.
 app.post('/api/position', async (req, res) => {
@@ -334,12 +339,16 @@ app.post('/api/position', async (req, res) => {
 
 });
 
+//FUNZIONANTE
+
+
+
+
 
 //Modify a position identified by positionID.
 app.put('/api/position/:positionID', async (req, res) => {
 
-  if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0
-    || req.body.newAisleID === null
+  if ( req.body.newAisleID === null
     || req.body.newRow === null || req.body.newCol === null
     || req.body.newMaxWeight === null || req.body.newMaxVolume === null
     || req.body.newOccupiedWeight === null || req.body.newOccupiedVolume === null
@@ -363,8 +372,7 @@ app.put('/api/position/:positionID', async (req, res) => {
 //Modify the positionID of a position, given its old positionID.
 app.put('/api/position/:positionID/changeID', async (req, res) => {
 
-  if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0
-    || req.body.newPositionID === null
+  if (req.body.newPositionID === null
     || req.params.positionID === undefined || req.params.positionID == ''
     || isNaN(req.params.positionID))
     return res.status(422).end();
@@ -389,13 +397,15 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
 //Delete a SKU item receiving his positionID.
 app.delete('/api/position/:positionID', async (req, res) => {
 
-  if ( req.params.positionID === undefined || req.params.positionID == ''
-    || isNaN(req.params.positionID))
+  if ( req.params.positionID === undefined || req.params.positionID == '' || isNaN(req.params.positionID))
     return res.status(422).end();
+
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
+
   if (checkPosition.length === 0) {
     res.status(422).end();
   }
+  
   try {
     await positionsDAO.deletePosition(req.params.positionID);
     res.status(204).end();
@@ -405,6 +415,11 @@ app.delete('/api/position/:positionID', async (req, res) => {
   }
 
 });
+//FUNZIONANTE
+
+
+
+
 
 //------------------------------------------------------------------------------------------------
 //                                      TEST DESCRIPTOR
