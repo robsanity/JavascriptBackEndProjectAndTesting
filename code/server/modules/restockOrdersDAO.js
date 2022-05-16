@@ -1,4 +1,6 @@
 'use strict'
+const db = require('../db.js');
+
 function getRestockOrders() {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM restockOrders WHERE state!='ISSUED'";

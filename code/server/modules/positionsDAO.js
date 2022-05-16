@@ -1,5 +1,5 @@
 'use strict';
-
+const db = require('../db.js');
 
 function listPositions() {
     return new Promise((resolve, reject) => {

@@ -1,4 +1,5 @@
 'use strict'
+const db = require('../db.js');
 
 function listItems() {
     return new Promise((resolve, reject) => {
