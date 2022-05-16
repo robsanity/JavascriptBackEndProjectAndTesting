@@ -9,6 +9,7 @@ const SKUItemsDAO = require('./modules/SKUItemsDAO');
 const positionsDAO = require('./modules/positionsDAO');
 const returnOrdersDAO = require('./modules/returnOrdersDAO');
 
+const dayjs = require('dayjs') 
 // init express
 const app = new express();
 const port = 3001;
@@ -46,10 +47,15 @@ app.get('/api/skus/:id', async (req, res) => {
 
 
   try {
-    const SKU = await SKUsDAO.findSKU(req.params.id);
-    if (SKU === null)
+    const SKU = await SKUsDAO.findSKU(req.params.id)
+    
+    
+    if (SKU.length === 0){ 
       res.status(404).end();
+    }
+    else{
     res.status(200).json(SKU);
+    }
   }
   catch (error) {
     res.status(500).json(error);
@@ -98,7 +104,7 @@ app.post('/api/sku', async (req, res) => {
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
 app.put('/api/sku/:id', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
     return res.status(422).end();
   }
   //Come implementare:
@@ -111,10 +117,13 @@ app.put('/api/sku/:id', async (req, res) => {
   let availableQuantity = req.body.availableQuantity;
 
   try {
-    let found = await SKUsDAO.updateSKU(description, weight, volume, notes, price, availableQuantity, req.params.id, req.params.id, req.params.id, req.params.id);
-    if (found === null)
+    let found = await SKUsDAO.updateSKU(description,weight,volume,notes,price,availableQuantity,req.params.id, req.params.id,req.params.id,req.params.id);
+    if(found.length === 0){
       res.status(404).end();
+    }
+    else{
     res.status(200).end();
+    }
   }
   catch (error) {
     res.status(503).json(error);
@@ -125,7 +134,7 @@ app.put('/api/sku/:id', async (req, res) => {
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
 //are modified according to the available quantity.
 app.put('/api/sku/:id/position', async (req, res) => {
-  if (/*Object.keys(req.header).length === 0 ||*/ req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+  if ( req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
 
   //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
@@ -184,15 +193,23 @@ app.get('/api/skuitems/sku/:id', async (req, res) => {
 
   try {
     const SKUItemsAvailable = await SKUItemsDAO.findSKUItems(req.params.id);
-    if (SKUItemsAvailable === null)
+    if (SKUItemsAvailable.length === 0){
       res.status(404).end();
-    res.status(200).json(SKUItemsAvailable);
+    }
+    else{
+    res.status(200).json(SKUItemsAvailable);      
+    }
+
   }
   catch (error) {
     res.status(500).json(error);
   }
 
 });
+//Funzionante
+
+
+
 
 //Return a SKU item, given its RFID.
 app.get('/api/skuitems/:rfid', async (req, res) => {
@@ -202,23 +219,33 @@ app.get('/api/skuitems/:rfid', async (req, res) => {
   }
   try {
     const SKUItem = await SKUItemsDAO.findSKUItem(req.params.rfid);
-    if (SKUItem === null)
-      res.status(404).end();
-    res.status(200).json(SKUItem)
+    if (SKUItem.length === 0){
+      res.status(404).end();      
+    }
+    else{
+    res.status(200).json(SKUItem)    
+    }
+
   } catch (error) {
     res.status(500).json(error);
   }
 
 });
 
+//Funzionante
+
+
+
+
+
 
 //Creates a new SKU item with Available =0.
 app.post('/api/skuitem', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body.RFID === null || req.body.SKUID === null)
+  if ( req.body.RFID === null || req.body.SKUID === null)
     return res.status(422).end();
 
   try {
-    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, dayjs('{req.body.DateOfStock}').format('YYYY/MM/DDTHH:mm'));
+    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, dayjs(req.body.DateOfStock).format('YYYY-MM-DD HH:mm') );
     res.status(201).end();
   }
   catch (error) {
@@ -226,18 +253,21 @@ app.post('/api/skuitem', async (req, res) => {
   }
 });
 
+//Ritorna solo 503 Service Unavailable, da rivedere il passaggio della data
+
+
 
 //Modify RFID, available and date of stock fields of an existing SKU Item.
 app.put('/api/skuitems/:rfid', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
+  if ( req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
     return res.status(422).end();
 
-  let checkSKUItems = await SKUItemsDAO.findSKUItem(rfid);
+  let checkSKUItems = await SKUItemsDAO.findSKUItem(req.params.rfid);
   if (checkSKUItems.length === 0) {
     res.status(404).end();
   }
   try {
-    await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs('{req.body.newDateOfStock}').format('YYYY/MM/DDTHH:mm'));
+    await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs(req.body.DateOfStock).format('YYYY-MM-DD HH:mm'));
 
     res.status(200).end();
   }
@@ -245,6 +275,12 @@ app.put('/api/skuitems/:rfid', async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+//Ritorna solo 500 Internal Server Error
+
+
+
+
 
 
 //Delete a SKU item receiving his rfid.
@@ -260,6 +296,8 @@ app.delete('/api/skuitems/:rfid', async (req, res) => {
     res.status(503).json(error);
   }
 });
+
+//Funzionante
 
 //------------------------------------------------------------------------------------------------
 //                                     Positions
@@ -279,6 +317,11 @@ app.get('/api/positions', async (req, res) => {
 
 });
 
+//FUNZIONANTE
+
+
+
+
 
 //Creates a new Position.
 app.post('/api/position', async (req, res) => {
@@ -296,12 +339,16 @@ app.post('/api/position', async (req, res) => {
 
 });
 
+//FUNZIONANTE
+
+
+
+
 
 //Modify a position identified by positionID.
 app.put('/api/position/:positionID', async (req, res) => {
 
-  if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0
-    || req.body.newAisleID === null
+  if ( req.body.newAisleID === null
     || req.body.newRow === null || req.body.newCol === null
     || req.body.newMaxWeight === null || req.body.newMaxVolume === null
     || req.body.newOccupiedWeight === null || req.body.newOccupiedVolume === null
@@ -325,8 +372,7 @@ app.put('/api/position/:positionID', async (req, res) => {
 //Modify the positionID of a position, given its old positionID.
 app.put('/api/position/:positionID/changeID', async (req, res) => {
 
-  if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0
-    || req.body.newPositionID === null
+  if (req.body.newPositionID === null
     || req.params.positionID === undefined || req.params.positionID == ''
     || isNaN(req.params.positionID))
     return res.status(422).end();
@@ -351,13 +397,15 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
 //Delete a SKU item receiving his positionID.
 app.delete('/api/position/:positionID', async (req, res) => {
 
-  if (req.params.positionID === undefined || req.params.positionID == ''
-    || isNaN(req.params.positionID))
+  if ( req.params.positionID === undefined || req.params.positionID == '' || isNaN(req.params.positionID))
     return res.status(422).end();
+
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
+
   if (checkPosition.length === 0) {
     res.status(422).end();
   }
+  
   try {
     await positionsDAO.deletePosition(req.params.positionID);
     res.status(204).end();
@@ -367,6 +415,11 @@ app.delete('/api/position/:positionID', async (req, res) => {
   }
 
 });
+//FUNZIONANTE
+
+
+
+
 
 //------------------------------------------------------------------------------------------------
 //                                      TEST DESCRIPTOR
