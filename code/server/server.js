@@ -9,6 +9,7 @@ const SKUItemsDAO = require('./modules/SKUItemsDAO');
 const positionsDAO = require('./modules/positionsDAO');
 const returnOrdersDAO = require('./modules/returnOrdersDAO');
 
+
 // init express
 const app = new express();
 const port = 3001;
@@ -117,9 +118,12 @@ app.put('/api/sku/:id', async (req, res) => {
 
   try {
     let found = await SKUsDAO.updateSKU(description,weight,volume,notes,price,availableQuantity,req.params.id, req.params.id,req.params.id,req.params.id);
-    if(found === null)
+    if(found.length === 0){
       res.status(404).end();
+    }
+    else{
     res.status(200).end();
+    }
   }
   catch (error) {
     res.status(503).json(error);
@@ -130,7 +134,7 @@ app.put('/api/sku/:id', async (req, res) => {
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
 //are modified according to the available quantity.
 app.put('/api/sku/:id/position', async (req, res) => {
-  if (/*Object.keys(req.header).length === 0 ||*/ req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+  if ( req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
     
   //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
@@ -189,15 +193,23 @@ app.get('/api/skuitems/sku/:id', async (req, res) => {
 
   try {
     const SKUItemsAvailable = await SKUItemsDAO.findSKUItems(req.params.id);
-    if (SKUItemsAvailable === null)
+    if (SKUItemsAvailable.length === 0){
       res.status(404).end();
-    res.status(200).json(SKUItemsAvailable);
+    }
+    else{
+    res.status(200).json(SKUItemsAvailable);      
+    }
+
   }
   catch (error) {
     res.status(500).json(error);
   }
 
 });
+//Funzionante
+
+
+
 
 //Return a SKU item, given its RFID.
 app.get('/api/skuitems/:rfid', async (req, res) => {
@@ -207,23 +219,33 @@ app.get('/api/skuitems/:rfid', async (req, res) => {
   }
   try {
     const SKUItem = await SKUItemsDAO.findSKUItem(req.params.rfid);
-    if (SKUItem === null)
-      res.status(404).end();
-    res.status(200).json(SKUItem)
+    if (SKUItem.length === 0){
+      res.status(404).end();      
+    }
+    else{
+    res.status(200).json(SKUItem)    
+    }
+
   } catch (error) {
     res.status(500).json(error);
   }
 
 });
 
+//Funzionante
+
+
+
+
+
 
 //Creates a new SKU item with Available =0.
 app.post('/api/skuitem', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.body.RFID === null || req.body.SKUID === null)
+  if ( req.body.RFID === null || req.body.SKUID === null)
     return res.status(422).end();
-
+console.log(dayjs(req.body.DateOfStock));
   try {
-    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, dayjs('{req.body.DateOfStock}').format('YYYY/MM/DDTHH:mm'));
+    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, dayjs('{req.body.DateOfStock}').format('YYYY-MM-DD'));
     res.status(201).end();
   }
   catch (error) {
@@ -231,13 +253,16 @@ app.post('/api/skuitem', async (req, res) => {
   }
 });
 
+//Ritorna solo 503 Service Unavailable
+
+
 
 //Modify RFID, available and date of stock fields of an existing SKU Item.
 app.put('/api/skuitems/:rfid', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
+  if ( req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
     return res.status(422).end();
 
-  let checkSKUItems = await SKUItemsDAO.findSKUItem(rfid);
+  let checkSKUItems = await SKUItemsDAO.findSKUItem(req.params.rfid);
   if (checkSKUItems.length === 0) {
     res.status(404).end();
   }
@@ -250,6 +275,12 @@ app.put('/api/skuitems/:rfid', async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+//Ritorna solo 500 Internal Server Error
+
+
+
+
 
 
 //Delete a SKU item receiving his rfid.
@@ -265,6 +296,8 @@ app.delete('/api/skuitems/:rfid', async (req, res) => {
     res.status(503).json(error);
   }
 });
+
+//Funzionante
 
 //------------------------------------------------------------------------------------------------
 //                                     Positions
