@@ -1,5 +1,8 @@
 
-GET http://localhost:3001/api/returnOrders
+DELETE http://localhost:3001/api/position/800234543412
+Content-Type: application/json
+
+
 
 
 
