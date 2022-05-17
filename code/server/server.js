@@ -1314,8 +1314,8 @@ app.get('/api/internalOrders/:id', (req, res) => {
 //Creates a new internal order in state = ISSUED.
 app.post('/api/internalOrders', async (req, res) => {
   if (req.body.issueDate === undefined
-    || req.body.products === undefined
-    || req.body.customerId === undefined)
+      || req.body.products === undefined
+      || req.body.customerId === undefined)
     return res.status(422).end();
 
   let issueDate = req.body.issueDate;
@@ -1335,7 +1335,7 @@ app.post('/api/internalOrders', async (req, res) => {
 
 //Modify the state of an internal order, given its id. If newState is = COMPLETED an array of RFIDs is sent
 app.put('/api/internalOrders/:id', async (req, res) => {
-  if (Object.keys(req.header).length === 0 || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
 
 
@@ -1415,12 +1415,11 @@ app.get('/api/items/:id', async (req, res) => {
 
 //Creates a new Item.
 app.post('/api/item', async (req, res) => {
-  if (Object.keys(req.header).length === 0
-    || req.body.description === undefined
-    || req.body.id === undefined
-    || req.body.SKUId === undefined
-    || req.body.supplierId === undefined
-    || req.body.price === undefined)
+  if ( req.body.description === undefined
+      || req.body.id === undefined
+      || req.body.SKUId === undefined
+      || req.body.supplierId === undefined
+      || req.body.price === undefined)
     return res.status(422).end();
 
   let id = req.body.id;
@@ -1441,12 +1440,11 @@ app.post('/api/item', async (req, res) => {
 
 //Modify an existing item.
 app.put('/api/item/:id', async (req, res) => {
-  if (Object.keys(req.header).length === 0
-    || req.params.id === undefined
-    || req.params.id == ''
-    || isNaN(req.params.id)
-    || req.body.newDescription === undefined
-    || req.body.newPrice === undefined)
+  if (  req.params.id === undefined
+        || req.params.id == ''
+        || isNaN(req.params.id)
+        || req.body.newDescription === undefined
+        || req.body.newPrice === undefined)
     return res.status(422).end();
 
   let description = req.body.newDescription;
@@ -1454,12 +1452,15 @@ app.put('/api/item/:id', async (req, res) => {
 
   try {
     let found = await itemsDAO.updateItem(req.params.id, description, price);
-    if (found === null)
-      res.status(404).end();
-    res.status(200).end();
+    if (found.length === 0){
+      return res.status(404).end();      
+    }
+    else{
+      return res.status(200).end();      
+    }
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
@@ -1471,10 +1472,10 @@ app.delete('/api/items/:id', async (req, res) => {
 
   try {
     await itemsDAO.deleteItem(req.params.id);
-    res.status(204).end();
+    return res.status(204).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
