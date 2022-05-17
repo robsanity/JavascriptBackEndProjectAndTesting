@@ -17,7 +17,7 @@ function getTestResults(rfid) {
 
 function getByIdTestResults(rfid, id) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM testResults WHERE idTestDescriptor=? AND idSKUItem=?";
+        const sql = "SELECT * FROM testResults WHERE idResults=? AND idSKUItem=?";
         db.all(sql, [id, rfid], (err, rows) => {
             if (err) {
                 reject({ error: "no test result associated to id or no sku item associated to rfid rfid" });
@@ -31,7 +31,7 @@ function getByIdTestResults(rfid, id) {
 
 function checkId(id) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM testResults WHERE idTestDescriptor=?";
+        const sql = "SELECT * FROM testResults WHERE idResults=?";
         db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject({ error: "no test result associated to id" });
@@ -58,7 +58,7 @@ function insertTestResult(rfid, idTestDescriptor, date, result) {
 
 function updateTestResults(id, rfid, newIdTestDescriptor, newDate, newResult) {
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE TestResults SET idTestDescriptor=?, date=?, result=?, idSKUItem=? WHERE idDescriptor=? AND idSKUItem=?";
+        const sql = "UPDATE TestResults SET idTestDescriptor=?, date=?, result=? WHERE idResults=? AND idSKUItem=?";
         db.all(sql, [newIdTestDescriptor, newDate, newResult, id, rfid], (err, rows) => {
             if (err) {
                 reject({ error: "no update" });
@@ -71,7 +71,7 @@ function updateTestResults(id, rfid, newIdTestDescriptor, newDate, newResult) {
 
 function deleteTestResult(rfid, id) {
     return new Promise((resolve, reject) => {
-        const sql = "DELETE FROM TestResults WHERE idDescriptor=? AND idSKUItem=?";
+        const sql = "DELETE FROM TestResults WHERE idResults=? AND idSKUItem=?";
         db.all(sql, [id, rfid], (err, rows) => {
             if (err) {
                 reject({ error: "no delete" });

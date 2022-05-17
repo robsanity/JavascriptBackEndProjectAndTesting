@@ -712,7 +712,6 @@ app.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
     if (newIdTestDescriptor === undefined || newIdTestDescriptor === '' || isNaN(newIdTestDescriptor) ||
       newDate === undefined || newDate === '' ||
       newResult === undefined || newResult == '' || !(newResult === true || newResult === false)) {
-        console.log(test)
         return res.status(422).end();
     }
 
