@@ -45,22 +45,24 @@ function findSKUItem(rfid) {
 
 function createSKUItem(rfid, SKUId, date) {
     return new Promise((resolve, reject) => {
-        const sql = "INSERT INTO SKUItems (RFID, idSKU, available, dateOfStock) values (?,?,?,?)";
-        db.all(sql, [rfid, SKUId, 0, date], (err, rows) => {
-            if (err) {
+        const sql = "INSERT INTO SKUItems (RFID, idSKU, dateOfStock) VALUES (?,?,?)";
+        db.run(sql, [rfid, SKUId, date], function(err) {
+            if(err) {
                 reject({ error: "no insert" });
-
             }
-            resolve(true);
+            else
+            {
+            resolve(this.lastID);
+            }
         });
     });
 };
 
 
-function modifySKUItem(rfid, newrfid, newavailable, newdate) {
+function modifySKUItem(newrfid, newavailable, newdate,rfid) {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE SKUItems SET RFID=?, available=?, dateOfStock=? WHERE RFID=?";
-        db.all(sql, [newrfid, newavailable, newdate, rfid], (err, rows) => {
+        db.all(sql, [ newrfid, newavailable, newdate,rfid], (err, rows) => {
             if (err) {
                 reject({ error: "no update" });
 

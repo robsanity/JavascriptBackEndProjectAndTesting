@@ -242,11 +242,12 @@ app.get('/api/skuitems/:rfid', async (req, res) => {
 
 //Creates a new SKU item with Available =0.
 app.post('/api/skuitem', async (req, res) => {
-  if ( req.body.RFID === null || req.body.SKUID === null)
+  if (req.body.RFID === null || req.body.SKUId === null)
     return res.status(422).end();
 
+
   try {
-    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, req.body.DateOfStock );
+    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUId, req.body.DateOfStock);
     res.status(201).end();
   }
   catch (error) {
@@ -254,7 +255,7 @@ app.post('/api/skuitem', async (req, res) => {
   }
 });
 
-//Ritorna solo 503 Service Unavailable, da rivedere il passaggio della data
+//Ora Funzionante, ricordarsi che in input della richiesta la data bisogna scriverla "YYYY-DD-MM"
 
 
 
@@ -267,17 +268,20 @@ app.put('/api/skuitems/:rfid', async (req, res) => {
   if (checkSKUItems.length === 0) {
     res.status(404).end();
   }
+  else{
+
   try {
-    await SKUItemsDAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, dayjs(req.body.DateOfStock).format('YYYY-MM-DD HH:mm'));
+    await SKUItemsDAO.modifySKUItem(req.body.newRFID, req.body.newAvailable, req.body.newDateOfStock, req.params.rfid);
 
     res.status(200).end();
   }
   catch (error) {
     res.status(500).json(error);
   }
+}
 });
 
-//Ritorna solo 500 Internal Server Error
+//Ora funzionante, ricordarsi che in input della richiesta la data bisogna scriverla "YYYY-DD-MM"
 
 
 

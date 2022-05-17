@@ -1,16 +1,9 @@
 
-<<<<<<< HEAD
-GET  http://localhost:3001/api/skuitems/80012345/testResults
-Content-Type: application/json
-=======
-POST  http://localhost:3001/api/item
+PUT  http://localhost:3001/api/skuitems/12324
 Content-Type: application/json
 
-    {
-        "id" : 12,
-        "description" : "a new item",
-        "price" : 10.99,
-        "SKUId" : 1,
-        "supplierId" : 2
-    }
->>>>>>> bd63657d4245479bfb5565bd918f38254aecbbcb
+ {
+    "newRFID":"9999",
+    "newAvailable":33,
+    "newDateOfStock":"2021-04-05"
+}
