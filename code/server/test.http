@@ -1,9 +1,3 @@
 
-GET http://localhost:3001/api/returnOrders
+GET  http://localhost:3001/api/positions
 Content-Type: application/json
-
-
-
-
-
-
