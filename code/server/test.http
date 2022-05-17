@@ -1,13 +1,10 @@
 
-GET  http://localhost:3001/api/positions
+POST  http://localhost:3001/api/returnOrder
 Content-Type: application/json
 
 {
-    "newAisleID": "1111",
-    "newRow": "3454",
-    "newCol": "3412",
-    "newMaxWeight": 1200,
-    "newMaxVolume": 600,
-    "newOccupiedWeight": 200,
-    "newOccupiedVolume":100
+"returnDate":"2021/11/29 09:33",
+"products": [{"SKUId":12,"description":"a product","price":10.99,               "RFID":"131"},
+                        {"SKUId":180,"description":"another product","price":11.99,"RFID":"1321"}],
+"restockOrderId" : 1
 }

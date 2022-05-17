@@ -1162,7 +1162,7 @@ app.get('/api/returnOrders/:id', async (req, res) => {
   if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
     return res.status(422).end();
   }
-  /*const id = await returnOrdersDAO.getRetID();
+  const id = await returnOrdersDAO.getRetID();
   let k = 0
   let s = 0
   while (k < id.length){  
@@ -1174,7 +1174,7 @@ app.get('/api/returnOrders/:id', async (req, res) => {
   if (s === 0){
     res.status(404).end();
   }
-  else {*/
+  else {
   try {
     const returnOrders = await returnOrdersDAO.findRetOrder(req.params.id);
     res.status(200).json(returnOrders);
@@ -1182,7 +1182,7 @@ app.get('/api/returnOrders/:id', async (req, res) => {
   catch (error) {
     res.status(500).json(error);
   }
-}
+}}
 );
 
 //Creates a new return order.
@@ -1196,26 +1196,39 @@ app.post('/api/returnOrder', async (req, res) => {
   
   let returnDate = req.body.returnDate;
   const products = req.body.products;
-  let k = products.length;
-  let z = req.body.products;
   let restockOrderId = req.body.restockOrderId;
+  let id = await returnOrdersDAO.getIDMax();
+  console.log(id);
+  var idfinale = id[0].idReturnOrder;
+  console.log(idfinale);
+  idfinale = idfinale+1;
   let s = 0;
-  const id = await returnOrdersDAO.mfazcamamt();
-  
-  while(s < k){
-    let RFID = z[s].RFID;
-    
-  //try {
-    await returnOrdersDAO.createRetOrder(id,returnDate, restockOrderId, RFID);
-    res.status(201).end();
-    s++;
-  /*}
+  console.log(s)
+  for(s=0; s<products.length;s++){
+  var RFID = products[s].RFID
+    try {
+      await returnOrdersDAO.createRetOrder(idfinale,returnDate, restockOrderId, RFID);
+      res.status(201).end();
+      
+    }
+    catch (error) {
+      res.status(503).json(error);
+    }
+  }
+  try{
+  await returnOrdersDAO.updateProducts();
+  res.status(201).end();
+  }
   catch (error) {
     res.status(503).json(error);
-  }*/
   }
+  
+  });
+  
+   
+    
+ 
 
-});
 
 
 //Qui PUT ma nel documento delle API non è definita
