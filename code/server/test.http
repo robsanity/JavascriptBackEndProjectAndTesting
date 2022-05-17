@@ -1,13 +1,3 @@
 
-GET  http://localhost:3001/api/positions
+GET  http://localhost:3001/api/skuitems/80012345/testResults
 Content-Type: application/json
-
-{
-    "newAisleID": "1111",
-    "newRow": "3454",
-    "newCol": "3412",
-    "newMaxWeight": 1200,
-    "newMaxVolume": 600,
-    "newOccupiedWeight": 200,
-    "newOccupiedVolume":100
-}
