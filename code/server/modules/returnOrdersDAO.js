@@ -13,31 +13,26 @@ function listReturnOrders() {
             }
             //array di products
             const lello = rows.map((t) => ({ idReturnOrder: t.idReturnOrder, idSKU: t.idSKU, description: t.description, price: t.price, RFID: t.RFID }));
-           
+
             db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject({ error: `Database error` });
                     return;
                 }
                 //array finale con pop e slice dell'array di products per avere tutto nello stesso ordine
-                const we = rows.map((k) => ({ idReturnOrder: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder,products:[] }));
-
-              
-                
-                
-
+                const we = rows.map((k) => ({ idReturnOrder: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder, products: [] }));
                 for (let i = 0; i < we.length; i++) {
-                   for (let k = 0; k < lello.length; k++) {
-                        if(we[i].idReturnOrder == lello[k].idReturnOrder){
+                    for (let k = 0; k < lello.length; k++) {
+                        if (we[i].idReturnOrder == lello[k].idReturnOrder) {
                             we[i].products.push(lello.reduce((x => x = lello[k])));
-                                 
+
                         }
                     }
                 }
-               
 
-                    resolve(we);
-                });
+
+                resolve(we);
+            });
         });
 
     });
@@ -98,20 +93,7 @@ function createRetOrder(idReturnOrder, returnDate, idRestockOrder, idSKUItem) {
         })
     });
 };
-function mfazcamamt() {
-    return new Promise((resolve, reject) => {
-        const sql = "SELECT MAX(idReturnOrder) AS idReturnOrder FROM ReturnOrders";
-        db.all(sql, [], (err, rows) => {
-            if (err) {
-                reject({ error: `Database error` });
-                return;
-            }
-            const k = rows.map((l) => ({ idReturnOrder: l.idReturnOrder }));
-            const finale = k[0].idReturnOrder;
-            resolve(finale);
-        });
-    });
-}
+
 
 
 module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, mfazcamamt }
