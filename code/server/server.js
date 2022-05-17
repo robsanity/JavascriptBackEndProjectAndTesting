@@ -246,7 +246,7 @@ app.post('/api/skuitem', async (req, res) => {
     return res.status(422).end();
 
   try {
-    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, dayjs(req.body.DateOfStock).format('YYYY-MM-DD HH:mm') );
+    await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUID, req.body.DateOfStock );
     res.status(201).end();
   }
   catch (error) {
@@ -370,7 +370,7 @@ app.put('/api/position/:positionID', async (req, res) => {
   }
 });
 
-//NON FUNZIONANTE, RITORNA 503
+//FUNZIONANTE
 
 
 
@@ -387,10 +387,12 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
   if (checkOldPosition.length === 0) {
     res.status(404).end();
   }
+
   let checkNewPosition = await positionsDAO.checkPosition(req.body.newPositionID);
   if (checkNewPosition.length !== 0) {
     res.status(422).end();
   }
+
   try {
     await positionsDAO.modifyPositionID(req.params.positionID, req.body.newPositionID);
     res.status(200).end();
@@ -587,116 +589,119 @@ app.delete('/api/testDescriptor/:id', async (req, res) => {
 //                                      TEST RESULT
 //------------------------------------------------------------------------------------------------
 
-//--------------------------------------|   GET   |------------------------------------------------
+//--------------------------------------|   GET   |-----------------------------------------------
 app.get('/api/skuitems/:rfid/testResults', async (req, res) => {
+  
   try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
     let rfid = req.params.rfid;
     if (rfid === undefined || rfid === '' || isNaN(rfid)) {
-      res.status(422).end();
-    }
-
-    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
-    if (checkRfid.length === 0) {
-      res.status(404).end()
-    }
-
-    const listTestResults = await testResultsDAO.getTestResults(rfid);
-    res.status(200).json(listTestResults).end();
-
-  } catch (error) {
-    res.status(500).json({ error: error }).end();
-  }
-})
-
-app.get('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
-  try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
-
-    let rfid = req.params.rfid;
-    let id = req.params.id;
-    if (rfid === undefined || rfid === '' || isNaN(rfid) ||
-      id === undefined || id === '' || isNaN(id)) {
-      res.status(422).end();
-    }
-
-    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
-    if (checkRfid.length === 0) {
-      res.status(404).end()
-    }
-
-    let checkId = await testResultsDAO.checkId(id);
-    if (checkId.length === 0) {
-      res.status(404).end()
-    }
-
-    const listTestResults = await testResultsDAO.getByIdTestResults(rfid, id);
-    res.status(200).json(listTestResults)
-  } catch (error) {
-    res.status(500).json();
-  }
-})
-
-//--------------------------------------|   POST   |------------------------------------------------
-app.post('/api/skuitems/testResult', async (req, res) => {
-  try {
-    if (Object.keys(req.body).length === 0) {
-      res.status(422).end();
-    }
-    let rfid = req.body.name;
-    let idTestDescriptor = req.body.procedureDescription;
-    let date = req.body.idSKU;
-    let result = req.body.result;
-
-    if (rfid === undefined || rfid == '' || isNaN(rfid) ||
-      idTestDescriptor === undefined || idTestDescriptor == '' || isNaN(idTestDescriptor) ||
-      date === undefined || date == '' ||
-      result === undefined || result == '' || !(result === "true" || result === "false")) {
       return res.status(422).end();
     }
 
     let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
     if (checkRfid.length === 0) {
-      res.status(404).end()
+      return res.status(404).end()
     }
-
-    let checkTD = await testDescriptorsDAO.getByIdTestDescriptors(idTestDescriptor);
-    if (checkTD.length === 0) {
-      res.status(404).end()
+    else{
+      const listTestResults = await testResultsDAO.getTestResults(rfid);
+      return res.status(200).json(listTestResults).end();      
     }
-
-    let checkTR = await testResultsDAO.getByIdTestResults(rfid, idTestDescriptor);
-    if (checkTR.length !== 0) {
-      res.status(422).end()
-    }
-
-    await testResultsDAO.insertTestResult(rfid, idTestDescriptor, date, result);
-    res.status(201).end();
   }
   catch (error) {
-    res.status(503).end();
+    return res.status(500).json({ error: error }).end();
   }
-});
-//--------------------------------------|   PUT   |------------------------------------------------
-app.put('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
+})
+//FUNZIONANTE (1 === TRUE)
+
+
+
+app.get('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
   try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
 
     let rfid = req.params.rfid;
     let id = req.params.id;
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
       id === undefined || id === '' || isNaN(id)) {
-      res.status(422).end();
+      return res.status(422).end();
     }
 
-    if (Object.keys(req.body).length === 0) {
-      res.status(422).end();
+    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
+    if (checkRfid.length === 0) {
+      return res.status(404).end()
+    }
+
+    let checkId = await testResultsDAO.checkId(id);
+    if (checkId.length === 0) {
+      return res.status(404).end()
+    }
+
+    const listTestResults = await testResultsDAO.getByIdTestResults(rfid, id);
+    return res.status(200).json(listTestResults)
+  }
+  catch (error) {
+    return res.status(500).json();
+  }
+})
+//FUNZIONANTE 
+
+
+
+
+//--------------------------------------|   POST   |------------------------------------------------
+app.post('/api/skuitems/testResult', async (req, res) => {
+  try {
+
+    let rfid = req.body.rfid;
+    let idTestDescriptor = req.body.idTestDescriptor;
+    let date = req.body.Date;
+    let result = req.body.Result;
+
+    if (rfid === undefined || rfid == '' || isNaN(rfid) ||
+      idTestDescriptor === undefined || idTestDescriptor == '' || isNaN(idTestDescriptor) ||
+      date === undefined || date == '' ||
+      result === undefined || result == '' || !(result == true || result == false)) {
+        
+
+      return res.status(422).end();
+    }
+
+    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
+    if (checkRfid.length === 0) {
+      return res.status(404).end()
+    }
+
+    let checkTD = await testDescriptorsDAO.getByIdTestDescriptors(idTestDescriptor);
+    if (checkTD.length === 0) {
+      return res.status(404).end()
+    }
+
+    let checkTR = await testResultsDAO.getByIdTestResults(rfid, idTestDescriptor);
+    if (checkTR.length !== 0) {
+   
+      return res.status(422).end()
+    }
+
+    await testResultsDAO.insertTestResult(rfid, idTestDescriptor, date, result);
+    return res.status(201).end();
+  }
+  catch (error) {
+    return res.status(503).end();
+  }
+});
+//FUNZIONANTE
+
+
+
+
+//--------------------------------------|   PUT   |------------------------------------------------
+app.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
+  try {
+
+    let rfid = req.params.rfid;
+    let id = req.params.id;
+    if (rfid === undefined || rfid === '' || isNaN(rfid) ||
+      id === undefined || id === '' || isNaN(id)) {
+      return res.status(422).end();
     }
 
     let newIdTestDescriptor = req.body.newIdTestDescriptor;
@@ -705,54 +710,57 @@ app.put('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
 
     if (newIdTestDescriptor === undefined || newIdTestDescriptor === '' || isNaN(newIdTestDescriptor) ||
       newDate === undefined || newDate === '' ||
-      newResult === undefined || newResult == '' || !(newResult === "true" || newResult === "false")) {
-      res.status(422).end();
+      newResult === undefined || newResult == '' || !(newResult === true || newResult === false)) {
+        console.log(test)
+        return res.status(422).end();
     }
 
     let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
     let ntd = await testDescriptorsDAO.getByIdTestDescriptors(newIdTestDescriptor);
     let sku = await SKUItemsDAO.findSKUItem(rfid);
     if (td.length === 0 || sku.length === 0 || ntd.length === 0) {
-      res.status(404).end();
+      return res.status(404).end();
     }
 
     await testResultsDAO.updateTestResults(id, rfid, newIdTestDescriptor, newDate, newResult);
-    res.status(200).end();
+    return res.status(200).end();
   }
   catch (error) {
-    res.status(503).end()
+    return res.status(503).end()
   }
 });
-//--------------------------------------|   DELETE   |------------------------------------------------
-app.delete('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
-  try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
 
+//NON FUNZIONANTE, RITORNA 503
+
+
+
+
+//--------------------------------------|   DELETE   |------------------------------------------------
+app.delete('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
+  try {
     let rfid = req.params.rfid;
     let id = req.params.id;
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
       id === undefined || id === '' || isNaN(id)) {
-      res.status(422).end();
+        return res.status(422).end();
     }
 
     let tr = await testResultsDAO.getByIdTestResults(rfid, id);
 
     if (tr.length === 0) {
-      res.status(422).end();
+      return res.status(422).end();
     }
 
     await testResultsDAO.deleteTestResult(rfid, id);
-    res.status(204).end();
+    return res.status(204).end();
   }
   catch (error) {
-    res.status(503).end();
+    return res.status(503).end();
   }
 
 });
 
-
+//NON FUNZIONANTE, RITORNA 503
 
 //------------------------------------------------------------------------------------------------
 //                                       USER

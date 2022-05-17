@@ -1,4 +1,4 @@
 
-GET  http://localhost:3001/api/testDescriptors
+DELETE  http://localhost:3001/api/skuitems/80011445/testResult/1
 Content-Type: application/json
 
