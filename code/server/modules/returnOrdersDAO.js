@@ -96,4 +96,4 @@ function createRetOrder(idReturnOrder, returnDate, idRestockOrder, idSKUItem) {
 
 
 
-module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, mfazcamamt }
+module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder }

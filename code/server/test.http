@@ -1,3 +1,4 @@
 
-GET  http://localhost:3001/api/positions
+GET  http://localhost:3001/api/testDescriptors
 Content-Type: application/json
+

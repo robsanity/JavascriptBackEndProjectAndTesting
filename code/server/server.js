@@ -8,7 +8,7 @@ const SKUsDAO = require('./modules/SKUsDAO');
 const SKUItemsDAO = require('./modules/SKUItemsDAO');
 const positionsDAO = require('./modules/positionsDAO');
 const returnOrdersDAO = require('./modules/returnOrdersDAO');
-const { resetWatchers } = require('nodemon/lib/monitor/watch');
+
 
 const dayjs = require('dayjs') 
 // init express
@@ -350,11 +350,11 @@ app.post('/api/position', async (req, res) => {
 app.put('/api/position/:positionID', async (req, res) => {
 
   if ( req.body.newAisleID === null
-    || req.body.newRow === null || req.body.newCol === null
-    || req.body.newMaxWeight === null || req.body.newMaxVolume === null
-    || req.body.newOccupiedWeight === null || req.body.newOccupiedVolume === null
-    || req.params.positionID === undefined || req.params.positionID == ''
-    || isNaN(req.params.positionID))
+        || req.body.newRow === null || req.body.newCol === null
+        || req.body.newMaxWeight === null || req.body.newMaxVolume === null
+        || req.body.newOccupiedWeight === null || req.body.newOccupiedVolume === null
+        || req.params.positionID === undefined || req.params.positionID == ''
+        || isNaN(req.params.positionID))
     return res.status(422).end();
 
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
@@ -369,6 +369,11 @@ app.put('/api/position/:positionID', async (req, res) => {
     res.status(503).json(error);
   }
 });
+
+//NON FUNZIONANTE, RITORNA 503
+
+
+
 
 //Modify the positionID of a position, given its old positionID.
 app.put('/api/position/:positionID/changeID', async (req, res) => {
@@ -395,6 +400,10 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
   }
 });
 
+//FUNZIONANTE MA DA RICONTROLLARE
+
+
+
 //Delete a SKU item receiving his positionID.
 app.delete('/api/position/:positionID', async (req, res) => {
 
@@ -406,13 +415,14 @@ app.delete('/api/position/:positionID', async (req, res) => {
   if (checkPosition.length === 0) {
     res.status(422).end();
   }
-  
-  try {
+  else{
+    try {
     await positionsDAO.deletePosition(req.params.positionID);
     res.status(204).end();
-  }
-  catch (error) {
+    }
+    catch (error) {
     res.status(503).json(error);
+    }  
   }
 
 });
@@ -435,30 +445,43 @@ app.get('/api/testDescriptors', async (req, res) => {
     res.status(500).json();
   }
 });
+//FUNZIONANTE
+
+
+
+
 
 app.get('/api/testDescriptors/:id', async (req, res) => {
+
   try {
-    if (Object.keys(req.header).length === 0) {
+    let id = req.params.id;
+    if (id === undefined || id == '' || isNaN(id))
       res.status(422).end();
+
+    let testDescriptor = await testDescriptorsDAO.getByIdTestDescriptors(id);
+
+    if(testDescriptor.length === 0){
+      res.status(404).end();
+    }
+    else{
+    res.status(200).json(testDescriptor)      
     }
 
-    let id = req.params.id;
-    if (id === undefined || id == '' || isNaN(id)) {
-      res.status(422).end();
-    }
-    let testDescriptor = await testDescriptorsDAO.getByIdTestDescriptors(testDescriptorId);
-    res.status(200).json(testDescriptor).end()
-  } catch (error) {
-    res.status(404).json();
+  }
+  catch (error) {
+    res.status(500).json();
   }
 });
+//FUNZIONANTE
+
+
+
+
+
 
 //--------------------------------------|   POST   |------------------------------------------------
 app.post('/api/testDescriptor', async (req, res) => {
   try {
-    if (Object.keys(req.body).length === 0) {
-      res.status(422).end();
-    }
     let name = req.body.name;
     let procedureDescription = req.body.procedureDescription;
     let idSKU = req.body.idSKU;
@@ -474,28 +497,31 @@ app.post('/api/testDescriptor', async (req, res) => {
     if (sku.length === 0) {
       res.status(404).end();
     }
-
-    await testDescriptorsDAO.insertTestDescriptor(name, procedureDescription, idSKU);
-    res.status(201).end();
+    else{
+      await testDescriptorsDAO.insertTestDescriptor(name, procedureDescription, idSKU);
+      res.status(201).end();      
+    }
   }
   catch (error) {
     res.status(503).end();
   }
 });
+//FUNZIONANTE
+
+
+
+
+
+
+
+
 
 //--------------------------------------|   PUT   |------------------------------------------------
 app.put('/api/testDescriptor/:id', async (req, res) => {
+  
   try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
-
     let id = req.params.id;
     if (id === undefined || id == '' || isNaN(id)) {
-      res.status(422).end();
-    }
-
-    if (Object.keys(req.body).length === 0) {
       res.status(422).end();
     }
 
@@ -505,9 +531,8 @@ app.put('/api/testDescriptor/:id', async (req, res) => {
 
     if (newName === undefined || newName == '' ||
       newProcedureDescription === undefined || newProcedureDescription == '' ||
-      newIdSKU === undefined || newIdSKU == '' || isNaN(newIdSKU)) {
+      newIdSKU === undefined || newIdSKU == '' || isNaN(newIdSKU))
       return res.status(422).end();
-    }
 
     let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
     let sku = await SKUsDAO.findSKU(newIdSKU)
@@ -515,41 +540,47 @@ app.put('/api/testDescriptor/:id', async (req, res) => {
     if (td.length === 0 || sku.length === 0) {
       res.status(404).end();
     }
-
-    await testDescriptorsDAO.updateTestDescriptor(id, newName, newProcedureDescription, newIdSKU);
-    res.status(200).end();
+    else{
+      await testDescriptorsDAO.updateTestDescriptor(id, newName, newProcedureDescription, newIdSKU);
+      res.status(200).end();      
+    }
   }
   catch (error) {
     res.status(503).end()
   }
 });
 
+//FUNZIONANTE
+
+
+
 //--------------------------------------|   DELETE   |------------------------------------------------
 app.delete('/api/testDescriptor/:id', async (req, res) => {
+  
   try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
-
     let id = req.params.id;
-    if (id === undefined || id == '' || isNaN(id)) {
+    if (id === undefined || id == '' || isNaN(id))
       res.status(422).end();
-    }
 
     let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
 
     if (td.length === 0) {
       res.status(422).end();
     }
-
-    await testDescriptorsDAO.deleteTestDescriptor(id);
-    res.status(204).end();
+    else{
+      await testDescriptorsDAO.deleteTestDescriptor(id);
+      res.status(204).end();  
+    }
   }
   catch (error) {
     res.status(503).end();
   }
 
 });
+//FUNZIONANTE
+
+
+
 
 
 //------------------------------------------------------------------------------------------------
