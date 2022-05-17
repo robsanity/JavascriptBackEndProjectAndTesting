@@ -1,12 +1,3 @@
 
-POST  /api/managerSessions
+DELETE  http://localhost:3001/api/users/Jordan/supplier
 Content-Type: application/json
-    
-    {
-        "username":"user1@ezwh.com",
-        "name":"Sim",
-        "surname" : "Rom",
-        "password" : "testpassword",
-        "type" : "customer"
-
-    }

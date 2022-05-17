@@ -879,6 +879,13 @@ app.delete('/api/users/:username/:type', async (req, res) => {
   }
 
 });
+
+
+//NON FUNZIONANTE TORNA 503, INOLTRE SONO PRESENTI UTENTI CON TYPE DIVERSO DA QUELLO NEI CONTROLLI SOPRA CHE NON SI POSSONO ELIMINARE
+
+
+
+
 //------------------------------------------------------------------------------------------------
 //                                      RESTOCK ORDERS
 //------------------------------------------------------------------------------------------------
