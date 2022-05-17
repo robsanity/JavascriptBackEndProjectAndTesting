@@ -8,6 +8,7 @@ const SKUsDAO = require('./modules/SKUsDAO');
 const SKUItemsDAO = require('./modules/SKUItemsDAO');
 const positionsDAO = require('./modules/positionsDAO');
 const returnOrdersDAO = require('./modules/returnOrdersDAO');
+const { resetWatchers } = require('nodemon/lib/monitor/watch');
 
 // init express
 const app = new express();
@@ -1074,36 +1075,57 @@ app.get('/api/returnOrders/:id', async (req, res) => {
   if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
     return res.status(422).end();
   }
+  /*const id = await returnOrdersDAO.getRetID();
+  let k = 0
+  let s = 0
+  while (k < id.length){  
+    if (req.params.id == id[k].idReturnOrder){
+      s++;
+    }
+    k++;
+  }
+  if (s === 0){
+    res.status(404).end();
+  }
+  else {*/
   try {
     const returnOrders = await returnOrdersDAO.findRetOrder(req.params.id);
-    if (returnOrders === null)
-      res.status(404).end();
     res.status(200).json(returnOrders);
   }
   catch (error) {
     res.status(500).json(error);
   }
-});
+}
+);
 
 //Creates a new return order.
 app.post('/api/returnOrder', async (req, res) => {
-  if (Object.keys(req.header).length === 0
-    || req.body.returnDate === undefined
+  if ( req.body.returnDate === undefined
     || req.body.products === undefined
     || req.body.restockOrderId === undefined)
     return res.status(422).end();
 
   //404 Not Found (no restock order associated to restockOrderId) DA IMPLEMENTARE
+  
   let returnDate = req.body.returnDate;
-  let products = req.body.products;
+  const products = req.body.products;
+  let k = products.length;
+  let z = req.body.products;
   let restockOrderId = req.body.restockOrderId;
-
-  try {
-    await returnOrdersDAO.createRetOrder(returnDate, products, restockOrderId);
+  let s = 0;
+  const id = await returnOrdersDAO.mfazcamamt();
+  
+  while(s < k){
+    let RFID = z[s].RFID;
+    
+  //try {
+    await returnOrdersDAO.createRetOrder(id,returnDate, restockOrderId, RFID);
     res.status(201).end();
-  }
+    s++;
+  /*}
   catch (error) {
     res.status(503).json(error);
+  }*/
   }
 
 });
