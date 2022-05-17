@@ -136,13 +136,6 @@ Version:
 
 
 
-
-[//]: #-------------------------------------------------------------------------------------------------------------------
-[//]: #-------------------------------------------------------------------------------------------------------------------
-[//]: #-------------------------------------------------------------------------------------------------------------------
-
-
-
 ### **Class SKU - method *PUT***
 **Criteria for method *id*:**
 
@@ -245,19 +238,183 @@ Version:
 |              |  Not allowed  | -          | -                   | I                | T4( id: 123 ,clerk logged )    |   |   |   |   |   |   |   |
 | do not exist | -             | -          | -                   | I                | T5( id: 1245 ,manager logged ) |   |   |   |   |   |   |   |
 | wrong type   | -             | -          | -                   | I                | T6( id: 1dd ,manager logged )  |   |   |   |   |   |   |   |
-|              |               |            |                     |                  |                                |   |   |   |   |   |   |   |
-|              |               |            |                     |                  |                                |   |   |   |   |   |   |   |
-|              |               |            |                     |                  |                                |   |   |   |   |   |   |   |
-
 
 
 
 ## Class SKU ITEM
 
 ### **Class SKU ITEM - method *GET***
+**Predicates for method *skuitems**
+**Criteria for method *skuitems*:**
+	
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+
+
+**Combination of predicates**:
+
+
+| DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|connection up  |allowed     |v|T1{ manager}|||
+|               |not allowed |v|T2{ Customer}|||
+|               |not exist   |I|T3{ CEO}|||
+|connection down|  -         |v|T4{ Customer}|  ||
+**Predicates for method *:id*:**
+**Criteria for method *id*:**
+
+
+ -  number of id 
+  -check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**Predicates for method *id*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID                        |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{  id:"556", user: manager} ,T12B{  id:"0", user: manager},T13B{  id:"maxValueType", user: manager} |||
+||                         |not allowed |v|T2{id:"44",  Customer},|||
+||                         |not exist   |I|T3{id:"456" , CEO}|||
+||connection down|  -                   |v|T4{ id:"456",  Customer}|  ||
+|not exist|connection up   |allowed     |v|T5{id:"456" , manager}|||
+||                         |not allowed |v|T6{id:"456" , Customer}|||
+||                         |not exist   |I|T7{id:"666", CEO}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{id:"xyz" , manager}|||
+||                         |not allowed |v|T10{ id:"A56" , Customer}|||
+||                         |not exist   |I|T11{ id:"A89" ,CEO}|||
+||connection down|  -                   |v|T4{ id:"A56"Customer}|  ||
+
+
+
+
+**Predicates for method *rfid*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID                        |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{  id:"556", user: manager} ,T12B{  id:"0", user: manager},T13B{  id:"maxValueType", user: manager} |||
+||                         |not allowed |v|T2{id:"12345678901234567890123456789015",  Customer},|||
+||                         |not exist   |I|T3{id:"12345678901234567890123456789015" , CEO}|||
+||connection down|  -                   |v|T4{ id:"12345678901234567890123456789015",  Customer}|  ||
+|not exist|connection up   |allowed     |v|T5{id:"12345678901234567890123456789015" , manager}|||
+||                         |not allowed |v|T6{id:"12345678901234567890123456789015" , Customer}|||
+||                         |not exist   |I|T7{id:"12345678901234567890123456789015", CEO}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{id:"sdsfsaf78901234567890123456789015" , manager}|||
+||                         |not allowed |v|T10{ id:"sdsfsaf78901234567890123456789015" , Customer}|||
+||                         |not exist   |I|T11{ id:"sdsfsaf78901234567890123456789015" ,CEO}|||
+||connection down|  -                   |v|T4{ id:"sdsfsaf78901234567890123456789015"Customer}|  ||
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### **Class SKU ITEM- method *POST***
+**Predicates for method *skuitems**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### **Class SKU ITEM - method *PUT***
+
+**Predicates for method *:rfid:**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### **Class SKU ITEM - method *DELETE***
+**Predicates for method *:rfid:**
 
 
 ## Class POSITION
@@ -282,14 +439,12 @@ Version:
 ### **Class TEST Result - method *DELETE***
 
 ## Class user
-
 ### **Class user - method *GET***
 ### **Class user- method  *POST***
 ### **Class user - method *PUT***
 ### **Class user - method *DELETE***
 
 ## Class Restock order
-
 ### **Class Restock order - method *GET***
 ### **Class Restock order- method  *POST***
 ### **Class Restock order - method *PUT***
@@ -299,18 +454,17 @@ Version:
 ## Class Return order
 
 ### **Class Return order - method *GET***
-
-
-
 ### **Class Return order- method  *POST***
 ### **Class Return order - method *PUT***
 ### **Class Return order - method *DELETE***
-## Class Internal order
 
+## Class Internal order
 ### **Class Internal order - method *GET***
 ### **Class Internal order- method  *POST***
 ### **Class Internal order - method *PUT***
 ### **Class Internal order - method *DELETE***
+
+
 ## Class Item
 ### **Class Internal order - method *GET***
 ### **Class Internal order- method  *POST***
