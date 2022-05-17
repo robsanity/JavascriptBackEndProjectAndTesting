@@ -128,6 +128,6 @@ function deleteSKU(idSKU) {
     });
 };
 
-//funzionante
+//tutto funzionante
 
 module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU}

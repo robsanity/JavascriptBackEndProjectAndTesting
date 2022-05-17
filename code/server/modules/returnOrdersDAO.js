@@ -145,6 +145,7 @@ function deleteRetOrder(idReturnOrder){
 })
 };
 
+// tutto funzionante
 
 
 module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder }
