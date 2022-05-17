@@ -770,27 +770,30 @@ app.delete('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
 app.get('/api/suppliers', async (req, res) => {
   try {
     const suppliers = await usersDAO.getSuppliers();
-    res.status(200).json(suppliers)
+    return res.status(200).json(suppliers)
   } catch (error) {
-    res.status(500).json();
+    return res.status(500).json();
   }
 });
+//FUNZIONANTE
 
-app.get('/api/users', async (req, res) => {
+app.get('/api/userinfo', async (req, res) => {
   try {
     const users = await usersDAO.getUsers();
-    res.status(200).json(users)
+    return res.status(200).json(users)
   } catch (error) {
-    res.status(500).json();
+    return res.status(500).json();
   }
 });
+//FUNZIONANTE
+
+
+
 
 //--------------------------------------|   POST   |------------------------------------------------
 app.post('/api/newUser', async (req, res) => {
   try {
-    if (Object.keys(req.body).length === 0) {
-      res.status(422).end();
-    }
+
     let username = req.body.username
     let name = req.body.name;
     let surname = req.body.surname;
@@ -804,32 +807,29 @@ app.post('/api/newUser', async (req, res) => {
     }
 
     let user = await usersDAO.checkUser(username, type);
-
     if (user.length !== 0) {
-      res.status(409).end();
+      return res.status(409).end();
     }
-
-    await usersDAO.insertUser(username, name, surname, type);
-    res.status(201).end();
+    else{
+      await usersDAO.insertUser(username, name, surname, type);
+      return res.status(201).end();  
+    }
   }
   catch (error) {
-    res.status(503).end();
+    return res.status(503).end();
   }
 });
+//NON FUNZIONANTE RITORNA 409
+
+
+
 //--------------------------------------|   PUT   |-------------------------------------------------
 app.put('/api/users/:username', async (req, res) => {
   try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
 
     let username = req.params.username;
     if (username === undefined || username === '') {
-      res.status(422).end();
-    }
-
-    if (Object.keys(req.body).length === 0) {
-      res.status(422).end();
+      return  res.status(422).end();
     }
 
     let oldType = req.body.oldType;
@@ -837,47 +837,45 @@ app.put('/api/users/:username', async (req, res) => {
 
     if (oldType === undefined || oldType == '' || !(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier") ||
       newType === undefined || newType == '' || !(newType === "customer" || newType === "qualityEmployee" || newType === "clerk" || newType === "deliveryEmployee" || newType === "supplier")) {
-      res.status(422).end();
+        return res.status(422).end();
     }
 
     let userWithOldType = await usersDAO.checkUser(username, oldType);
     let userWithNewType = await usersDAO.checkUser(username, newType);
     if (userWithOldType.length === 0 || userWithNewType.length !== 0) {
-      res.status(409).end();
+      return res.status(409).end();
     }
-
+    else{
     await usersDAO.updateUser(username, userWithType.name, userWithType.surname, oldType, newType);
-    res.status(200).end();
+    return res.status(200).end();      
+    }
   }
   catch (error) {
-    res.status(503).end()
+    return res.status(503).end()
   }
 });
 //--------------------------------------|   DELETE   |----------------------------------------------
 app.delete('/api/users/:username/:type', async (req, res) => {
   try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
-
     let username = req.params.username;
     let type = req.params.type;
     if (username === undefined || username === '' ||
       type === undefined || type == '' || !(type === "customer" || type === "qualityEmployee" || type === "clerk" || type === "deliveryEmployee" || type === "supplier")) {
-      res.status(422).end();
+        return  res.status(422).end();
     }
 
     let user = await usersDAO.checkUser(username, oldType);
 
     if (user.length === 0) {
-      res.status(422).end();
+      return res.status(422).end();
     }
-
+    else{
     await usersDAO.deleteUser(username, type);
-    res.status(204).end();
+    return res.status(204).end();      
+    }
   }
   catch (error) {
-    res.status(503).end();
+    return res.status(503).end();
   }
 
 });
