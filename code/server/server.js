@@ -1215,15 +1215,16 @@ app.post('/api/returnOrder', async (req, res) => {
       res.status(503).json(error);
     }
   }
-  try{
+  /*try{
   await returnOrdersDAO.updateProducts();
   res.status(201).end();
   }
   catch (error) {
     res.status(503).json(error);
   }
-  
+  */
   });
+  
   
    
     

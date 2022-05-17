@@ -130,5 +130,21 @@ function getIDMax() {
     });
 };
 
+function deleteRetOrder(idReturnOrder){
+    return new Promise((resolve,reject)=>{
+        const sql = "DELETE FROM ReturnOrders WHERE idReturnOrder = ?"
+        db.run(sql,[idReturnOrder], function(err){
+        if(err){
+            reject({error : "no data to delete"});
+            return;
+        }
+        else {
+            resolve(this.lastID);
+        }
+    });
+})
+};
 
-module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts }
+
+
+module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder }
