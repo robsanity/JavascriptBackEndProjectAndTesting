@@ -1,3 +1,16 @@
 
+<<<<<<< HEAD
 GET  http://localhost:3001/api/skuitems/80012345/testResults
 Content-Type: application/json
+=======
+POST  http://localhost:3001/api/item
+Content-Type: application/json
+
+    {
+        "id" : 12,
+        "description" : "a new item",
+        "price" : 10.99,
+        "SKUId" : 1,
+        "supplierId" : 2
+    }
+>>>>>>> bd63657d4245479bfb5565bd918f38254aecbbcb

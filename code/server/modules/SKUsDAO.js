@@ -15,6 +15,8 @@ function listSKUs() {
     });
 };
 
+//funzionate
+
 function findSKU(idSKU) {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM SKUs WHERE idSKU = ?`;
@@ -29,6 +31,9 @@ function findSKU(idSKU) {
     });
 };
 
+//funzionante
+
+
 function createSKU(description, weight, volume, notes, availableQuantity, price) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO SKUs (description,weight,volume,notes,availableQuantity,price) values (?,?,?,?,?,?)';
@@ -42,6 +47,8 @@ function createSKU(description, weight, volume, notes, availableQuantity, price)
         })
     });
 };
+
+//funzionate
 
 function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU,idSKU2,idSKU3,idSKU4) {
     return new Promise((resolve, reject) => {
@@ -70,6 +77,10 @@ function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU
         })
     });
 };
+
+//funzionante
+
+
 function updatePosition(idSKU1,idSKU2,idSKU3,idPosition,idSKU4,idSKU5,idSKU6,idPosition2) {
     return new Promise((resolve, reject) => {
         const sql =  "UPDATE Positions SET occupiedWeight = Positions.occupiedWeight - (SELECT weight FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?),  occupiedVolume = Positions.occupiedVolume - (SELECT volume FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?) WHERE idPosition = (SELECT idPosition FROM SKUs WHERE idSKU = ?)";
@@ -101,6 +112,8 @@ function updatePosition(idSKU1,idSKU2,idSKU3,idPosition,idSKU4,idSKU5,idSKU6,idP
     });
 };
 
+//funzionante
+
 function deleteSKU(idSKU) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM SKUs WHERE idSKU = ?"
@@ -114,5 +127,7 @@ function deleteSKU(idSKU) {
         })
     });
 };
+
+//funzionante
 
 module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU}
