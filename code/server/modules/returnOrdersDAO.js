@@ -145,7 +145,7 @@ function deleteRetOrder(idReturnOrder){
 })
 };
 
-// tutto funzionante
+// tutto funzionante, imlementare updatePRoducts o no?
 
 
 module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder }
