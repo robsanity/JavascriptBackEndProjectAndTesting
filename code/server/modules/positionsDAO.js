@@ -45,7 +45,7 @@ function createPositions(positionID, aisleID, row, col, maxWeight, maxVolume) {
 
 function modifyPosition(positionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) {
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE Positions SET aisleId=?, row=?, newCol=?, col=?, maxWeight=?, maxVolume=?, occupiedWeight=?, occupiedVolume=? WHERE idPosition=?";
+        const sql = "UPDATE Positions SET aisleId=?, row=?, col=?, maxWeight=?, maxVolume=?, occupiedWeight=?, occupiedVolume=? WHERE idPosition=?";
         db.all(sql, [newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume, positionID], (err, rows) => {
             if (err) {
                 reject({ error: "no update" });

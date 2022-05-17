@@ -360,6 +360,7 @@ app.put('/api/position/:positionID', async (req, res) => {
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
   if (checkPosition.length === 0) {
     res.status(404).end();
+    return;
   }
   try {
     await positionsDAO.modifyPosition(req.params.positionID, req.body.newAisleID, req.body.newRow, req.body.newCol, req.body.newMaxWeight, req.body.newMaxVolume, req.body.newOccupiedWeight, req.body.newOccupiedVolume);
