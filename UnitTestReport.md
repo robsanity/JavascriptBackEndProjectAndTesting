@@ -252,7 +252,6 @@ Version:
 
 
 
-
 **Predicates for method *GET*:**
 
 | Criteria | Predicate |
@@ -261,9 +260,7 @@ Version:
 |     permission              |    allowed, not allowed, user do not exist       |
 
 
-
 **Combination of predicates**:
-
 
 | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|
@@ -278,21 +275,6 @@ Version:
  -  number of id 
   -check Database conection where is stored all the array data
  - check if who want acess  have the correct right to do it permission
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 **Predicates for method *id*:**
@@ -378,23 +360,48 @@ Version:
 
 
 ### **Class SKU ITEM- method *POST***
-**Predicates for method *skuitems**
+**Predicates for method 
+**Criteria for method *skuitems*:**
+
+
+ -  number of RFID, SKUId,DateOfStock (RSD)
+ - SKU is already stored in the wharehouse
+  -check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it 
+ - number of object inside the body 
 
 
 
 
+**Predicates for method *POST*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Correct type     |  positive, negative      |  
+|   SKU  already stored    |  true,false     |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed       |
+|     number of object             |    =!3 , =3     |
 
 
 
+**Combination of predicates**:
 
 
+|   RSD    |SKU  already stored | db connection|permission|number of object |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|-------|
+| positive|T| up    |allowed|=6|v|  T1{12345678901234567890123456789015,1, 2021/11/29 12:30},,manager manager|-------|
+| positive|T| up    |allowed|=!6|I| T2{,1, 2021/11/29 12:30}|-------|
+| positive|T| up    |not allowed|-|-|T3{"12345678901234567890123456789015,1, 2021/11/29 12:30},clerk|-------|
+| positive|T| down   |-|- |v| T4{12345678901234567890123456789015,1, 2021/11/29 12:30}|-------|
+| positive|F| up    |allowed|=6|v|T4{12345678901234567890123456789015,1, 2021/11/29 12:30}|-------|
+| positive|F| up    |allowed|=!6|I|T5{ 2021/11/29 12:30}|-------|
+| positive|F| up    |not allowed|-|I|T6{12345678901234567890123456789015,1, 2021/11/29 12:30}-------|
+| positive|F| down    |-|- |-|T7{12345678901234567890123456789015,1, 2021/11/29 12:30},clerk|-------|
+| negative |-| -    |-|- |i|-------|T8{12345678901sdsdsds90123456789015,1, 221/11/29 12:30},clerk|
 
 
-
-
-
-
-
+          
 ### **Class SKU ITEM - method *PUT***
 
 **Predicates for method *:rfid:**
@@ -413,8 +420,33 @@ Version:
 
 
 
+
 ### **Class SKU ITEM - method *DELETE***
 **Predicates for method *:rfid:**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Class POSITION
