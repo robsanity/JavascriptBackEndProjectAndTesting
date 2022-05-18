@@ -405,6 +405,36 @@ Version:
 ### **Class SKU ITEM - method *PUT***
 
 **Predicates for method *:rfid:**
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID                        |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{  id:"12345678901234567890123456789015", 1,2021/11/29 12:30  user: manager} ,T12B{  id:"0", user: manager},T13B{  id:"maxValueType", user: manager} |||
+||                         |not allowed |v|T2{id:"12345678901234567890123456789015" ,1,2021/11/29,  Customer},|||
+||                         |not exist   |I|T3{id:"12345678901234567890123456789015"  ,1,2021/11/29,, CEO}|||
+||connection down|  -                   |v|T4{ id:"12345678901234567890123456789015" ,1,2021/11/29,,  Customer}|  ||
+|not exist|connection up   |allowed     |v|T5{id:"12345678901234567890123456789015" ,1,2021/11/29, , manager}|||
+||                         |not allowed |v|T6{id:"12345678901234567890123456789015"  ,1,2021/11/29,, Customer}|||
+||                         |not exist   |I|T7{id:"12345678901234567890123456789015" ,1,2021/11/29,, CEO}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{id:"sdsfsaf78901234567890123456789015"  ,1,2021/11/29,, manager}|||
+||                         |not allowed |v|T10{ id:"sdsfsaf78901234567890123456789015" ,1,2021/11/29, , Customer}|||
+||                         |not exist   |I|T11{ id:"sdsfsaf78901234567890123456789015" ,1,2021/11/29, ,CEO}|||
+||connection down|  -                   |v|T4{ id:"sdsfsaf78901234567890123456789015"  ,1,2021/11/29, Customer}|  ||
 
 
 
@@ -425,6 +455,27 @@ Version:
 **Predicates for method *:rfid:**
 
 
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID       |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+|     sku stored           |    true, false    |
+
+
+
+
+
+**Combination of predicates**:
+
+| ID           |  permission   | sku stored | Database conection  |  Valid / Invalid | Description of the test case   |   |   |   |   |   |   |   |
+|--------------|---------------|------------|---------------------|------------------|--------------------------------|---|---|---|---|---|---|---|
+| exist        | allowed       | T          | up                  | v                | T1( id: 12345678901234567890123456789015 ,manager logged )  |   |   |   |   |   |   |   |
+|              |               |            | down                | I                | T2( id: 12345678901234567890123456789015,manager logged )  |   |   |   |   |   |   |   |
+|              |               | F          | -                   | I                | T3( id: 12345678901234567890123456789015 ,manager logged )  |   |   |   |   |   |   |   |
+|              |  Not allowed  | -          | -                   | I                | T4( id: 12345678901234567890123456789015 ,clerk logged )    |   |   |   |   |   |   |   |
+| do not exist | -             | -          | -                   | I                | T5( id: 12345678901234567890123456789015 ,manager logged ) |   |   |   |   |   |   |   |
+| wrong type   | -             | -          | -                   | I                | T6( id: 1dd123sddfdsvfv67890123456789015 ,manager logged )  |   |   |   |   |   |   |   |
 
 
 
