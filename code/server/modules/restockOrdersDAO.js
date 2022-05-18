@@ -74,6 +74,57 @@ function getToBeReturnRestockOrders(id) {
 }
 
 function createRestockOrder(issueDate, products, supplierId) {
+    return new Promise((resolve, reject) => {
+        let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
+        let idRestockOrder = "SELECT last_insert_rowid() as lastId";
+
+        db.all(idRestockOrder, [], (err, rows) => {
+            if (err) {
+                reject({ error: "no last id" });
+                return;
+            }
+            else {
+                idRestockOrder = rows[0];
+            }
+        });
+
+        db.all(sql, [issueDate, supplierId], (err, rows) => {
+            if (err) {
+                reject({ error: "no insert" });
+                return;
+            }
+        });
+        let idItemSQL = "SELECT last_insert_rowid() as lastId";
+        let idItem = 0;
+        sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
+        sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
+        products.forEach((p) => {
+            db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
+                if (err) {
+                    reject({ error: "no insert" });
+                    return;
+                }
+            });
+
+            db.all(idItemSQL, [], (err, rows) => {
+                if (err) {
+                    reject({ error: "no last id" });
+                    return;
+                }
+                else {
+                    idItem = rows[0];
+                }
+            });
+
+            db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
+                if (err) {
+                    reject({ error: "no insert" });
+                    return;
+                }
+            });
+        });
+        resolve(true);
+    });
 
 }
 
@@ -92,8 +143,24 @@ function putStateRestockOrder(id, newState) {
     });
 }
 
-function putSKUItemsRestockOrders(id, skuItems) {
+function putSkuItemsOfRestockOrder(id, skuItems) {
+    return new Promise((resolve, reject) => {
+        let sql = "UPDATE SKUItems SET available=1, restockOrderId=? WHERE RFID=? AND idSKU=?";
 
+        skuItems.forEach((si) => {
+
+            db.all(sql, [id, si.rfid, si.SKUId], (err, rows) => {
+                if (err) {
+                    reject({ error: "no update" });
+
+                }
+            });
+
+        })
+        
+        resolve(true);
+
+    });
 }
 
 function putTNRestockOrder(id, TN) {
@@ -109,6 +176,29 @@ function putTNRestockOrder(id, TN) {
     });
 }
 
+
+
+function deleteRestockOrder(id) {
+    return new Promise((resolve, reject) => {
+        let sql = "DELETE FROM RestockOrderItems WHERE idRestockOrder=?";
+        db.all(sql, [id], (err, rows) => {
+            if (err) {
+                reject({ error: "no delete" });
+                return;
+            }
+        });
+
+        sql = "DELETE FROM RestockOrders WHERE idRestockOrder=?";
+        db.all(sql, [id], (err, rows) => {
+            if (err) {
+                reject({ error: "no delete" });
+                return;
+            }
+        });
+
+        resolve(true);
+    });
+}
 
 
 function getRestockList() {
@@ -155,4 +245,7 @@ function getSkuItems() {
     });
 }
 
-module.exports = { getRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, putStateRestockOrder, putTNRestockOrder, putSKUItemsRestockOrders };
+
+
+
+module.exports = { getRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, createRestockOrder, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder };

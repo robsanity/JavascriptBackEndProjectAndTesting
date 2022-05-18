@@ -130,4 +130,18 @@ function deleteSKU(idSKU) {
 
 //tutto funzionante
 
-module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU}
+function createSKUWithOnlyId(id){
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO SKUs (id) values (?)';
+        db.all(sql, [id], function (err, rows) {
+            if (err) {
+                reject(err + 'Errore');
+            }
+            else {
+                resolve(true);
+            }
+        })
+    });
+}
+
+module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU, createSKUWithOnlyId}
