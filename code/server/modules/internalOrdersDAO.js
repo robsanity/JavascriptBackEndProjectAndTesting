@@ -5,8 +5,8 @@ const db = require("../db");
 async function listIntOrders() {
 
     try {
-        let notCompleted = await getCompleted();
-        let completed = await getNotCompleted();
+        let completed = await getCompleted();
+        let notCompleted = await getNotCompleted();
         let listProductsNotCompleted = await getProductsNotCompleted();
         let listProductsCompleted = await getProductsCompleted();
 
@@ -178,11 +178,11 @@ function updateIntOrder(id, newState, products) {
                 }
             });
 
-            //per ogni rfid SET available=0;
+            //per ogni rfid SET available=0 e collego l'item all'internal order;
 
-            sql = "UPDATE SKUItems SET available=0 WHERE rfid=?"
+            sql = "UPDATE SKUItems SET available=0, internalOrderId=? WHERE rfid=?"
             products.forEach((p) => {
-                db.all(sql, [p.rfid], (err, rows) => {
+                db.all(sql, [id, p.rfid], (err, rows) => {
                     if (err) {
                         reject({ error: "no update" });
                         return;
@@ -202,6 +202,7 @@ function updateIntOrder(id, newState, products) {
                     }
                 })
             })
+
 
             resolve(true);
         });
@@ -274,7 +275,7 @@ function getProductsNotCompleted() {
 
 function getProductsCompleted() {
     return new Promise((resolve, reject) => {
-        sql = "SELECT SK.idInternalOrder AS id, SK.idSKU AS SKUId, S.description AD description, S.price AS price, SK.RFID AS rfid FROM SKUItems SI, SKUs S WHERE SI.idSKU=S.idSKU WHERE SKUItems!= NULL "
+        sql = "SELECT SI.internalOrderId AS id, SI.idSKU AS SKUId, S.description AD description, S.price AS price, SI.RFID AS rfid FROM SKUItems SI, SKUs S WHERE SI.idSKU=S.idSKU AND internalOrderId!= NULL"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in database" });

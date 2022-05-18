@@ -44,6 +44,19 @@ function checkUser(username, type) {
     });
 }
 
+function findUser(id) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM Users WHERE idUser=?";
+        db.all(sql, [username, type], (err, rows) => {
+            if (err) {
+                reject({ error: "no users in database" });
+                return;
+            }
+            resolve(true);
+        });
+    });
+}
+
 function insertUser(username, name, surname, type) {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO Users (name, surname, email, type) values (?,?,?,?)";
@@ -84,4 +97,4 @@ function deleteUser(username, type) {
 }
 
 
-module.exports = { getSuppliers, getUsers, checkUser, insertUser, updateUser, deleteUser };
+module.exports = { getSuppliers, getUsers, checkUser, findUser, insertUser, updateUser, deleteUser };

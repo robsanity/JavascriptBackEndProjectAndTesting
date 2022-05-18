@@ -901,40 +901,8 @@ app.delete('/api/users/:username/:type', async (req, res) => {
 //--------------------------------------|   GET   |------------------------------------------------
 app.get('/api/restockOrders', async (req, res) => {
   try {
-    // state!=ISSUED
     let restockOrdersList = await restockOrdersDAO.getRestockOrders();
-
-    // idItems(RestockOrderItem) JOIN idItems(Items) - idSKU(Items) JOIN idSKU(SKU) - idSKU(SKUs) JOIN idSKU(SKUItems)
-    // SELECT idRestockOrder, idSKU, description, price, quantity, rfid
-    let productsQuery = getProductsRestockOrders();
-
-    let restockOrders = restockOrdersList.map((r) => ({
-      id: r.idRestockOrder,
-      issueDate: r.issueDate,
-      state: r.state,
-      products: productsQuery
-        .filter((p) => p.idRestockOrder == r.idRestockOrder)
-        .map(element => (
-          {
-            idSKU: element.idSKU,
-            description: element.description,
-            price: element.price,
-            qty: element.availableQuantity
-          }
-        )),
-      supplierId: r.supplierId,
-      transportNote: r.transportNote,
-      skuItems: productsQuery
-        .filter((p) => p.idRestockOrder == r.idRestockOrder)
-        .map(element => (
-          {
-            SKUId: element.idSKU,
-            rfid: element.rfid
-          }
-        ))
-    }));
-
-    return res.status(200).json(restockOrders)
+    return res.status(200).json(restockOrdersList)
   } catch (error) {
     return res.status(500).json();
   }
@@ -942,31 +910,8 @@ app.get('/api/restockOrders', async (req, res) => {
 
 app.get('/api/restockOrdersIssued', async (req, res) => {
   try {
-    let restockOrdersIssuedList = await restockOrdersDAO.getISSUEDRestockOrders();
-
-    // idItems(RestockOrderItem) JOIN idItems(Items) - idSKU(Items) JOIN idSKU(SKU)
-    // SELECT idRestockOrder, idSKU, description, price, quantity
-    let productsQuery = getProductsRestockOrders();
-
-    let restockOrders = restockOrdersIssuedList.map((r) => ({
-      id: r.idRestockOrder,
-      issueDate: r.issueDate,
-      state: r.state,
-      products: productsQuery
-        .filter((p) => p.idRestockOrder == r.idRestockOrder)
-        .map(element => (
-          {
-            idSKU: element.idSKU,
-            description: element.description,
-            price: element.price,
-            qty: element.availableQuantity
-          }
-        )),
-      transportNote: r.transportNote,
-      skuItems: []
-    }));
-
-    return res.status(200).json(restockOrders)
+    let restockOrdersListIssued = await restockOrdersDAO.getRestockOrders().filter((e)=>e.state=='ISSUED');
+    return res.status(200).json(restockOrdersListIssued)
   } catch (error) {
     return res.status(500).json();
   }
@@ -986,36 +931,9 @@ app.get('/api/restockOrders/:id', async (req, res) => {
       return res.status(404).end();
     }
 
-    let restockOrdersList = await restockOrdersDAO.getByIdRestockOrders(id);
+    let restockOrdersListIssued = await restockOrdersDAO.getRestockOrders().filter((e)=>e.id==id);
+    return res.status(200).json(restockOrdersListIssued)
 
-    // idItems(RestockOrderItem) JOIN idItems(Items) - idSKU(Items) JOIN idSKU(SKU) - idSKU(SKUs) JOIN idSKU(SKUItems)
-    // SELECT idRestockOrder, idSKU, description, price, quantity, rfid
-    let productsQuery = restockOrdersDAO.getProductsRestockOrders();
-
-    let restockOrders = restockOrdersList.map((r) => ({
-      issueDate: r.issueDate,
-      state: r.state,
-      products: productsQuery
-        .filter((p) => p.idRestockOrder == r.idRestockOrder)
-        .map(element => (
-          {
-            idSKU: element.idSKU,
-            description: element.description,
-            price: element.price,
-            qty: element.availableQuantity
-          }
-        )),
-      skuItems: productsQuery
-        .filter((p) => p.idRestockOrder == r.idRestockOrder)
-        .map(element => (
-          {
-            SKUId: element.idSKU,
-            rfid: element.rfid
-          }
-        ))
-    }));
-
-    return res.status(200).json(restockOrders)
   } catch (error) {
     return res.status(500).json();
   }
@@ -1033,10 +951,13 @@ app.get('/api/restockOrders/:id/returnItems', async (req, res) => {
     if (rO.length === 0) {
       return res.status(404).end();
     }
+    if (rO.state != 'COMPLETEDRETURN') {
+      return res.status(422).end();
+    }
 
-    await restockOrdersDAO.getToBeReturnRestockOrders(id);
-
-    //TODO
+    let restockOrdersListIssued = await restockOrdersDAO.getToBeReturnRestockOrders(id);
+    return res.status(200).json(restockOrdersListIssued)
+    
 
 
 
@@ -1045,6 +966,32 @@ app.get('/api/restockOrders/:id/returnItems', async (req, res) => {
   }
 })
 //--------------------------------------|   POST   |------------------------------------------------
+app.post('/api/restockOrder', async (res, req)=> {
+  try {
+    if (req.body.issueDate === undefined
+      || req.body.products === undefined
+      || req.body.supplierId === undefined)
+      return res.status(422).end();
+
+      let issueDate=req.body.issueDate;
+      let products=req.body.products;
+      let supplierId=req.body.supplierId;
+
+      if (await usersDAO.findUser(supplierId) != true) {
+        return res.status(422).end();
+      }
+
+      await restockOrdersDAO.createRestockOrder(issueDate, products, supplierId);
+      return res.state(201).end()
+
+      
+      
+
+  }
+  catch(error) {
+
+  }
+})
 
 //--------------------------------------|   PUT   |-------------------------------------------------
 app.put('/api/restockOrder/:id', async (req, res) => {
@@ -1319,7 +1266,9 @@ app.post('/api/internalOrders', async (req, res) => {
   let issueDate = req.body.issueDate;
   let products = req.body.products;
   let customerId = req.body.customerId;
-
+if (await usersDAO.findUser(customerId) != true) {
+        return res.status(422).end();
+      }
 
   try {
     await internalOrdersDAO.createIntOrder(issueDate, products, customerId);
