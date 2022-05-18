@@ -482,30 +482,147 @@ Version:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Class POSITION
 
-### **Class POSITION - method *GET***
+
+### **Class position - method *GET***
+**Criteria  for method *position**
+
+	
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|connection up  |allowed     |v|T1{ manager}T5{ clerk}|||
+|               |not allowed |I|T2{ Customer}|||
+|               |not exist   |I|T3{ CEO}|||
+|connection down|  -         |I|T4{ Customer}|  ||
 ### **Class POSITION - method *POST***
+
+### **Class SKU ITEM- method *POST***
+**Predicates for method 
+**Criteria for method *skuitems*:**
+
+
+ -  number of RFID, SKUId,DateOfStock (RSD)
+ - SKU is already stored in the wharehouse
+  -check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it 
+ - number of object inside the body 
+
+
+
+
+**Predicates for method *POST*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Correct type     |  positive, negative      |  
+|   SKU  already stored    |  true,false     |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed       |
+|     number of object             |    =!6 , =6     |
+
+
+
+**Combination of predicates**:
+
+
+|   RSD    |SKU  already stored | db connection|permission|number of object |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|-------|
+| positive|T| up    |allowed|=6|v|  T1{"800234543412",8002","3454","3412",1000,1000},,manager manager|-------|
+| positive|T| up    |allowed|=!6|I| T2{8002}|-------|
+| positive|T| up    |not allowed|-|-|T3{"800234543412",8002","3454","3412",1000,1000},clerk|-------|
+| positive|T| down   |-|- |v| T4{"800234543412",8002","3454","3412",1000,1000}|-------|
+| positive|F| up    |allowed|=6|v|T4{"800234543412",8002","3454","3412",1000,1000}|-------|
+| positive|F| up    |allowed|=!6|I|T5{ "3454","3412",1000,1000}|-------|
+| positive|F| up    |not allowed|-|I|T6{"800234543412",8002","3454","3412",1000,1000}-------|
+| positive|F| down    |-|- |-|T7{800234543412,8002},clerk|-------|
+| negative |-| -    |-|- |i|-------|T8{800234543412,8002},clerk|
 ### **Class POSITION - method *PUT***
+**Criteria for method *id*:**
+
+
+ -  number of id 
+-check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+ -  number of all new element
+ - SKU is already stored in the wharehouse
+ - number of object inside the body 
+
+**Predicates for method *:positionID**
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID                        |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{ 3454","3412",1200, 600,200,100} ,T12B{  id:"0", user: manager},T13B{  id:"maxValueType", user: manager} |||
+||                         |not allowed |v|T2{3454","3412",1200, 600,200,100},|||
+||                         |not exist   |I|T3{3454","3412",1200, 600,200,100 CEO}|||
+||connection down|  -                   |v|T4{ i3454","3412",1200, 600,200,100  Customer}|  ||
+|not exist|connection up   |allowed     |v|T5{3454","3412",1200, 600,200,100 manager}|||
+||                         |not allowed |v|T6{3454","3412",1200, 600,200,100 Customer}|||
+||                         |not exist   |I|T7{3454","3412",1200, 600,200,100 CEO}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{3454","341sdsd2",1200, 600,200,100 manager}|||
+||                         |not allowed |v|T10{ id:"3454","3412",1200, 600,20sdsd0,100 Customer}|||
+||                         |not exist   |I|T11{ 3454","3412",1200, 600,200,10sdsdsd0,CEO}|||
+
 ### **Class POSITION - method *DELETE***
+**Criteria for method *id*:**
+  - ID   :      correct,do not exist,wrong type        
+  - Database conection :          connection up ,connection down        
+ -    permission       :           allowed, not allowed        
+ -  position stored    :         true, false  
+**Predicates for method *delete:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID       |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+|     position stored           |    true, false    |
+
+
+
+
+
+**Combination of predicates**:
+
+| ID           |  permission   | sku stored | Database conection  |  Valid / Invalid | Description of the test case   |   |   |   |   |   |   |   |
+|--------------|---------------|------------|---------------------|------------------|--------------------------------|---|---|---|---|---|---|---|
+| exist        | allowed       | T          | up                  | v                | T1( id: 123 ,manager logged )  |   |   |   |   |   |   |   |
+|              |               |            | down                | I                | T2( id: 123 ,manager logged )  |   |   |   |   |   |   |   |
+|              |               | F          | -                   | I                | T3( id: 123 ,manager logged )  |   |   |   |   |   |   |   |
+|              |  Not allowed  | -          | -                   | I                | T4( id: 123 ,clerk logged )    |   |   |   |   |   |   |   |
+| do not exist | -             | -          | -                   | I                | T5( id: 1245 ,manager logged ) |   |   |   |   |   |   |   |
+| wrong type   | -             | -          | -                   | I                | T6( id: 1dd ,manager logged )  |   |   |   |   |   |   |   |
+
 
 ## Class TEST DESCRIPTOR
 
