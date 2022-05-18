@@ -11,7 +11,7 @@ function getRestockOrders() {
             }
             const restockOrders = rows.map((t) => ({
                 id: t.id, issueDate: t.issueDate, state: t.state,
-                 supplierId: t.supplierId, transportNote: t.transportNote
+                supplierId: t.supplierId, transportNote: t.transportNote
             }));
             resolve(restockOrders);
         });
@@ -30,7 +30,7 @@ function getISSUEDRestockOrders() {
                 id: t.id, issueDate: t.issueDate, state: t.state,
                 supplierId: t.supplierId
             }));
-            
+
             resolve(restockOrdersISSUED);
         });
     });
@@ -55,7 +55,7 @@ function getByIdRestockOrders(id) {
 
 function getToBeReturnRestockOrders(id) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT SI.idSKU, rfid  FROM RestockOrders RO, RestockOrderItems ROI, Items I, SKUItems SI WHERE RO.idRestockOrder=? AND RO.idRestockOrder=ROI.idRestockOrder AND ROI.idItem=I.idItem AND I.idSKU=SI.idSKU";                  
+        const sql = "SELECT SI.idSKU, rfid  FROM RestockOrders RO, RestockOrderItems ROI, Items I, SKUItems SI WHERE RO.idRestockOrder=? AND RO.idRestockOrder=ROI.idRestockOrder AND ROI.idItem=I.idItem AND I.idSKU=SI.idSKU";
         db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject({ error: "no restock orders with the given id in database" });
@@ -67,6 +67,10 @@ function getToBeReturnRestockOrders(id) {
     });
 }
 
+function getProductsRestockOrders() {
+
+}
+
 
 
 
@@ -76,7 +80,7 @@ function putStateRestockOrder(id, newState) {
         db.all(sql, [newState, id], (err, rows) => {
             if (err) {
                 reject({ error: "no update" });
-                
+
             }
             resolve(true);
         });
@@ -84,7 +88,7 @@ function putStateRestockOrder(id, newState) {
 }
 
 function putSKUItemsRestockOrders(id, skuItems) {
-    
+
 }
 
 function putTNRestockOrder(id, TN) {
@@ -93,7 +97,7 @@ function putTNRestockOrder(id, TN) {
         db.all(sql, [TN, id], (err, rows) => {
             if (err) {
                 reject({ error: "no update" });
-                
+
             }
             resolve(true);
         });
@@ -104,4 +108,4 @@ function putTNRestockOrder(id, TN) {
 
 
 
-module.exports = { getRestockOrders, getISSUEDRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, putStateRestockOrder, putTNRestockOrder, putSKUItemsRestockOrders };
+module.exports = { getRestockOrders, getISSUEDRestockOrders, getProductsRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, putStateRestockOrder, putTNRestockOrder, putSKUItemsRestockOrders };

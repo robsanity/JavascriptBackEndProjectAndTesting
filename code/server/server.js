@@ -10,7 +10,7 @@ const positionsDAO = require('./modules/positionsDAO');
 const returnOrdersDAO = require('./modules/returnOrdersDAO');
 
 
-const dayjs = require('dayjs') 
+const dayjs = require('dayjs')
 // init express
 const app = new express();
 const port = 3001;
@@ -26,10 +26,10 @@ app.use(express.json());
 app.get('/api/skus', async (req, res) => {
   try {
     const listSKUs = await SKUsDAO.listSKUs();
-    res.status(200).json(listSKUs)
+    return res.status(200).json(listSKUs);
   }
   catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 
@@ -49,14 +49,14 @@ app.get('/api/skus/:id', async (req, res) => {
 
   try {
     const SKU = await SKUsDAO.findSKU(req.params.id)
-    
-    
-    if (SKU.length === 0){ 
-      res.status(404).end();
+
+
+    if (SKU.length === 0) {
+      return res.status(404).end();
     }
-    else{
-    res.status(200).json(SKU);
-    }
+
+    return res.status(200).json(SKU);
+
   }
   catch (error) {
     res.status(500).json(error);
@@ -88,10 +88,10 @@ app.post('/api/sku', async (req, res) => {
 
   try {
     await SKUsDAO.createSKU(description, weight, volume, notes, availableQuantity, price);
-    res.status(201).end();
+    return res.status(201).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 
 });
@@ -118,16 +118,16 @@ app.put('/api/sku/:id', async (req, res) => {
   let availableQuantity = req.body.availableQuantity;
 
   try {
-    let found = await SKUsDAO.updateSKU(description,weight,volume,notes,price,availableQuantity,req.params.id, req.params.id,req.params.id,req.params.id);
-    if(found.length === 0){
-      res.status(404).end();
+    let found = await SKUsDAO.updateSKU(description, weight, volume, notes, price, availableQuantity, req.params.id, req.params.id, req.params.id, req.params.id);
+    if (found.length === 0) {
+      return res.status(404).end();
     }
-    else{
-    res.status(200).end();
-    }
+
+    return res.status(200).end();
+
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
@@ -135,16 +135,16 @@ app.put('/api/sku/:id', async (req, res) => {
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
 //are modified according to the available quantity.
 app.put('/api/sku/:id/position', async (req, res) => {
-  if ( req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+  if (req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
     return res.status(422).end();
 
   //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
   try {
     await SKUsDAO.updatePosition(req.params.id, req.params.id, req.params.id, req.body.position, req.params.id, req.params.id, req.params.id, req.body.position);
-    res.status(200).end();
+    return res.status(200).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
@@ -156,10 +156,10 @@ app.delete('/api/skus/:id', async (req, res) => {
 
   try {
     await SKUsDAO.deleteSKU(req.params.id);
-    res.status(204).end();
+    return res.status(204).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
@@ -178,10 +178,10 @@ app.get('/api/skuitems', async (req, res) => {
 
   try {
     const listSKUItems = await SKUItemsDAO.listSKUItems();
-    res.status(200).json(listSKUItems);
+    return res.status(200).json(listSKUItems);
   }
   catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 
 });
@@ -194,16 +194,16 @@ app.get('/api/skuitems/sku/:id', async (req, res) => {
 
   try {
     const SKUItemsAvailable = await SKUItemsDAO.findSKUItems(req.params.id);
-    if (SKUItemsAvailable.length === 0){
-      res.status(404).end();
+    if (SKUItemsAvailable.length === 0) {
+      return res.status(404).end();
     }
-    else{
-    res.status(200).json(SKUItemsAvailable);      
+    else {
+      return res.status(200).json(SKUItemsAvailable);
     }
 
   }
   catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 
 });
@@ -220,15 +220,15 @@ app.get('/api/skuitems/:rfid', async (req, res) => {
   }
   try {
     const SKUItem = await SKUItemsDAO.findSKUItem(req.params.rfid);
-    if (SKUItem.length === 0){
-      res.status(404).end();      
+    if (SKUItem.length === 0) {
+      return res.status(404).end();
     }
-    else{
-    res.status(200).json(SKUItem)    
+    else {
+      return res.status(200).json(SKUItem)
     }
 
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 
 });
@@ -248,10 +248,10 @@ app.post('/api/skuitem', async (req, res) => {
 
   try {
     await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUId, req.body.DateOfStock);
-    res.status(201).end();
+    return res.status(201).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
@@ -261,24 +261,24 @@ app.post('/api/skuitem', async (req, res) => {
 
 //Modify RFID, available and date of stock fields of an existing SKU Item.
 app.put('/api/skuitems/:rfid', async (req, res) => {
-  if ( req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
+  if (req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
     return res.status(422).end();
 
   let checkSKUItems = await SKUItemsDAO.findSKUItem(req.params.rfid);
   if (checkSKUItems.length === 0) {
-    res.status(404).end();
+    return res.status(404).end();
   }
-  else{
+  else {
 
-  try {
-    await SKUItemsDAO.modifySKUItem(req.body.newRFID, req.body.newAvailable, req.body.newDateOfStock, req.params.rfid);
+    try {
+      await SKUItemsDAO.modifySKUItem(req.body.newRFID, req.body.newAvailable, req.body.newDateOfStock, req.params.rfid);
 
-    res.status(200).end();
+      return res.status(200).end();
+    }
+    catch (error) {
+      return res.status(500).json(error);
+    }
   }
-  catch (error) {
-    res.status(500).json(error);
-  }
-}
 });
 
 //Ora funzionante, ricordarsi che in input della richiesta la data bisogna scriverla "YYYY-DD-MM"
@@ -295,10 +295,10 @@ app.delete('/api/skuitems/:rfid', async (req, res) => {
 
   try {
     const SKU = await SKUItemsDAO.deleteSKUItem(req.params.rfid);
-    res.status(204).end();
+    return res.status(204).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
@@ -315,9 +315,9 @@ app.get('/api/positions', async (req, res) => {
 
   try {
     const listPositions = await positionsDAO.listPositions();
-    res.status(200).json(listPositions);
+    return res.status(200).json(listPositions);
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 
 });
@@ -336,10 +336,10 @@ app.post('/api/position', async (req, res) => {
 
   try {
     await positionsDAO.createPositions(req.body.positionID, req.body.aisleID, req.body.row, req.body.col, req.body.maxWeight, req.body.maxVolume);
-    res.status(201).end();
+    return res.status(201).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 
 });
@@ -353,12 +353,12 @@ app.post('/api/position', async (req, res) => {
 //Modify a position identified by positionID.
 app.put('/api/position/:positionID', async (req, res) => {
 
-  if ( req.body.newAisleID === null
-        || req.body.newRow === null || req.body.newCol === null
-        || req.body.newMaxWeight === null || req.body.newMaxVolume === null
-        || req.body.newOccupiedWeight === null || req.body.newOccupiedVolume === null
-        || req.params.positionID === undefined || req.params.positionID == ''
-        || isNaN(req.params.positionID))
+  if (req.body.newAisleID === null
+    || req.body.newRow === null || req.body.newCol === null
+    || req.body.newMaxWeight === null || req.body.newMaxVolume === null
+    || req.body.newOccupiedWeight === null || req.body.newOccupiedVolume === null
+    || req.params.positionID === undefined || req.params.positionID == ''
+    || isNaN(req.params.positionID))
     return res.status(422).end();
 
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
@@ -368,10 +368,10 @@ app.put('/api/position/:positionID', async (req, res) => {
   }
   try {
     await positionsDAO.modifyPosition(req.params.positionID, req.body.newAisleID, req.body.newRow, req.body.newCol, req.body.newMaxWeight, req.body.newMaxVolume, req.body.newOccupiedWeight, req.body.newOccupiedVolume);
-    res.status(200).end();
+    return res.status(200).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
@@ -390,20 +390,20 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
 
   let checkOldPosition = await positionsDAO.checkPosition(req.params.positionID);
   if (checkOldPosition.length === 0) {
-    res.status(404).end();
+    return res.status(404).end();
   }
 
   let checkNewPosition = await positionsDAO.checkPosition(req.body.newPositionID);
   if (checkNewPosition.length !== 0) {
-    res.status(422).end();
+    return res.status(422).end();
   }
 
   try {
     await positionsDAO.modifyPositionID(req.params.positionID, req.body.newPositionID);
-    res.status(200).end();
+    return res.status(200).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 });
 
@@ -414,22 +414,22 @@ app.put('/api/position/:positionID/changeID', async (req, res) => {
 //Delete a SKU item receiving his positionID.
 app.delete('/api/position/:positionID', async (req, res) => {
 
-  if ( req.params.positionID === undefined || req.params.positionID == '' || isNaN(req.params.positionID))
+  if (req.params.positionID === undefined || req.params.positionID == '' || isNaN(req.params.positionID))
     return res.status(422).end();
 
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
 
   if (checkPosition.length === 0) {
-    res.status(422).end();
+    return res.status(422).end();
   }
-  else{
+  else {
     try {
-    await positionsDAO.deletePosition(req.params.positionID);
-    res.status(204).end();
+      await positionsDAO.deletePosition(req.params.positionID);
+      return res.status(204).end();
     }
     catch (error) {
-    res.status(503).json(error);
-    }  
+      return res.status(503).json(error);
+    }
   }
 
 });
@@ -447,9 +447,9 @@ app.delete('/api/position/:positionID', async (req, res) => {
 app.get('/api/testDescriptors', async (req, res) => {
   try {
     let listTestDescriptors = await testDescriptorsDAO.getTestDescriptors();
-    res.status(200).json(listTestDescriptors)
+    return res.status(200).json(listTestDescriptors)
   } catch (error) {
-    res.status(500).json();
+    return res.status(500).json();
   }
 });
 //FUNZIONANTE
@@ -463,16 +463,16 @@ app.get('/api/testDescriptors/:id', async (req, res) => {
   try {
     let id = req.params.id;
     if (id === undefined || id == '' || isNaN(id))
-      res.status(422).end();
+      return res.status(422).end();
 
     let testDescriptor = await testDescriptorsDAO.getByIdTestDescriptors(id);
 
-    if(testDescriptor.length === 0){
-      res.status(404).end();
+    if (testDescriptor.length === 0) {
+      return res.status(404).end();
     }
-    else{
-    res.status(200).json(testDescriptor)      
-    }
+
+    return res.status(200).json(testDescriptor)
+
 
   }
   catch (error) {
@@ -502,15 +502,15 @@ app.post('/api/testDescriptor', async (req, res) => {
     let sku = await SKUsDAO.findSKU(idSKU);
 
     if (sku.length === 0) {
-      res.status(404).end();
+      return res.status(404).end();
     }
-    else{
-      await testDescriptorsDAO.insertTestDescriptor(name, procedureDescription, idSKU);
-      res.status(201).end();      
-    }
+
+    await testDescriptorsDAO.insertTestDescriptor(name, procedureDescription, idSKU);
+    return res.status(201).end();
+
   }
   catch (error) {
-    res.status(503).end();
+    return res.status(503).end();
   }
 });
 //FUNZIONANTE
@@ -525,11 +525,11 @@ app.post('/api/testDescriptor', async (req, res) => {
 
 //--------------------------------------|   PUT   |------------------------------------------------
 app.put('/api/testDescriptor/:id', async (req, res) => {
-  
+
   try {
     let id = req.params.id;
     if (id === undefined || id == '' || isNaN(id)) {
-      res.status(422).end();
+      return res.status(422).end();
     }
 
     let newName = req.body.newName;
@@ -545,15 +545,15 @@ app.put('/api/testDescriptor/:id', async (req, res) => {
     let sku = await SKUsDAO.findSKU(newIdSKU)
 
     if (td.length === 0 || sku.length === 0) {
-      res.status(404).end();
+      return res.status(404).end();
     }
-    else{
-      await testDescriptorsDAO.updateTestDescriptor(id, newName, newProcedureDescription, newIdSKU);
-      res.status(200).end();      
-    }
+
+    await testDescriptorsDAO.updateTestDescriptor(id, newName, newProcedureDescription, newIdSKU);
+    return res.status(200).end();
+
   }
   catch (error) {
-    res.status(503).end()
+    return res.status(503).end()
   }
 });
 
@@ -563,21 +563,21 @@ app.put('/api/testDescriptor/:id', async (req, res) => {
 
 //--------------------------------------|   DELETE   |------------------------------------------------
 app.delete('/api/testDescriptor/:id', async (req, res) => {
-  
+
   try {
     let id = req.params.id;
     if (id === undefined || id == '' || isNaN(id))
-      res.status(422).end();
+      return res.status(422).end();
 
     let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
 
     if (td.length === 0) {
-      res.status(422).end();
+      return res.status(422).end();
     }
-    else{
-      await testDescriptorsDAO.deleteTestDescriptor(id);
-      res.status(204).end();  
-    }
+
+    await testDescriptorsDAO.deleteTestDescriptor(id);
+    return res.status(204).end();
+
   }
   catch (error) {
     res.status(503).end();
@@ -596,7 +596,7 @@ app.delete('/api/testDescriptor/:id', async (req, res) => {
 
 //--------------------------------------|   GET   |-----------------------------------------------
 app.get('/api/skuitems/:rfid/testResults', async (req, res) => {
-  
+
   try {
     let rfid = req.params.rfid;
     if (rfid === undefined || rfid === '' || isNaN(rfid)) {
@@ -607,9 +607,9 @@ app.get('/api/skuitems/:rfid/testResults', async (req, res) => {
     if (checkRfid.length === 0) {
       return res.status(404).end()
     }
-    else{
+    else {
       const listTestResults = await testResultsDAO.getTestResults(rfid);
-      return res.status(200).json(listTestResults).end();      
+      return res.status(200).json(listTestResults).end();
     }
   }
   catch (error) {
@@ -667,7 +667,7 @@ app.post('/api/skuitems/testResult', async (req, res) => {
       idTestDescriptor === undefined || idTestDescriptor == '' || isNaN(idTestDescriptor) ||
       date === undefined || date == '' ||
       !(result == true || result == false)) {
-        console.log(rfid, idTestDescriptor, date, result)
+      console.log(rfid, idTestDescriptor, date, result)
 
       return res.status(422).end();
     }
@@ -718,9 +718,9 @@ app.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
     let newResult = req.body.newResult;
 
     if (newIdTestDescriptor === undefined || newIdTestDescriptor === '' || isNaN(newIdTestDescriptor) ||
-      newDate === undefined || newDate === ''||
-      !(newResult == true || newResult == false) ) {
-        return res.status(422).end();
+      newDate === undefined || newDate === '' ||
+      !(newResult == true || newResult == false)) {
+      return res.status(422).end();
     }
 
     let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
@@ -751,7 +751,7 @@ app.delete('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
     let id = req.params.id;
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
       id === undefined || id === '' || isNaN(id)) {
-        return res.status(422).end();
+      return res.status(422).end();
     }
 
     let tr = await testResultsDAO.getByIdTestResults(rfid, id);
@@ -819,10 +819,10 @@ app.post('/api/newUser', async (req, res) => {
     if (user.length !== 0) {
       return res.status(409).end();
     }
-    else{
-      await usersDAO.insertUser(username, name, surname, type);
-      return res.status(201).end();  
-    }
+
+    await usersDAO.insertUser(username, name, surname, type);
+    return res.status(201).end();
+
   }
   catch (error) {
     return res.status(503).end();
@@ -838,7 +838,7 @@ app.put('/api/users/:username', async (req, res) => {
 
     let username = req.params.username;
     if (username === undefined || username === '') {
-      return  res.status(422).end();
+      return res.status(422).end();
     }
 
     let oldType = req.body.oldType;
@@ -846,7 +846,7 @@ app.put('/api/users/:username', async (req, res) => {
 
     if (!(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier") ||
       !(newType === "customer" || newType === "qualityEmployee" || newType === "clerk" || newType === "deliveryEmployee" || newType === "supplier")) {
-        return res.status(422).end();
+      return res.status(422).end();
     }
 
     let userWithOldType = await usersDAO.checkUser(username, oldType);
@@ -854,10 +854,10 @@ app.put('/api/users/:username', async (req, res) => {
     if (userWithOldType.length === 0 || userWithNewType.length !== 0) {
       return res.status(409).end();
     }
-    else{
+
     await usersDAO.updateUser(username, userWithType.name, userWithType.surname, oldType, newType);
-    return res.status(200).end();      
-    }
+    return res.status(200).end();
+
   }
   catch (error) {
     return res.status(503).end()
@@ -870,7 +870,7 @@ app.delete('/api/users/:username/:type', async (req, res) => {
     let type = req.params.type;
     if (username === undefined || username === '' ||
       type === undefined || type == '' || !(type === "customer" || type === "qualityEmployee" || type === "clerk" || type === "deliveryEmployee" || type === "supplier")) {
-        return  res.status(422).end();
+      return res.status(422).end();
     }
 
     let user = await usersDAO.checkUser(username, oldType);
@@ -878,10 +878,10 @@ app.delete('/api/users/:username/:type', async (req, res) => {
     if (user.length === 0) {
       return res.status(422).end();
     }
-    else{
+
     await usersDAO.deleteUser(username, type);
-    return res.status(204).end();      
-    }
+    return res.status(204).end();
+
   }
   catch (error) {
     return res.status(503).end();
@@ -934,9 +934,9 @@ app.get('/api/restockOrders', async (req, res) => {
         ))
     }));
 
-    res.status(200).json(restockOrders)
+    return res.status(200).json(restockOrders)
   } catch (error) {
-    res.status(500).json();
+    return res.status(500).json();
   }
 });
 
@@ -966,33 +966,31 @@ app.get('/api/restockOrdersIssued', async (req, res) => {
       skuItems: []
     }));
 
-    res.status(200).json(restockOrders)
+    return res.status(200).json(restockOrders)
   } catch (error) {
-    res.status(500).json();
+    return res.status(500).json();
   }
 });
 
 app.get('/api/restockOrders/:id', async (req, res) => {
   try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
+
 
     let id = req.params.id;
     if (id === undefined || id === '' || isNaN(id)) {
-      res.status(422).end();
+      return res.status(422).end();
     }
 
     let rO = await restockOrdersDAO.getByIdRestockOrders(id);
     if (rO.length === 0) {
-      res.status(404).end();
+      return res.status(404).end();
     }
 
     let restockOrdersList = await restockOrdersDAO.getByIdRestockOrders(id);
 
     // idItems(RestockOrderItem) JOIN idItems(Items) - idSKU(Items) JOIN idSKU(SKU) - idSKU(SKUs) JOIN idSKU(SKUItems)
     // SELECT idRestockOrder, idSKU, description, price, quantity, rfid
-    let productsQuery = getProductsRestockOrders();
+    let productsQuery = restockOrdersDAO.getProductsRestockOrders();
 
     let restockOrders = restockOrdersList.map((r) => ({
       issueDate: r.issueDate,
@@ -1017,35 +1015,33 @@ app.get('/api/restockOrders/:id', async (req, res) => {
         ))
     }));
 
-    res.status(200).json(restockOrders)
+    return res.status(200).json(restockOrders)
   } catch (error) {
-    res.status(500).json();
+    return res.status(500).json();
   }
 });
 
 app.get('/api/restockOrders/:id/returnItems', async (req, res) => {
   try {
-    if (Object.keys(req.header).length === 0) {
-      res.status(422).end();
-    }
 
     let id = req.params.id;
     if (id === undefined || id === '' || isNaN(id)) {
-      res.status(422).end();
+      return res.status(422).end();
     }
 
     let rO = await restockOrdersDAO.getByIdRestockOrders(id);
     if (rO.length === 0) {
-      res.status(404).end();
+      return res.status(404).end();
     }
 
     await restockOrdersDAO.getToBeReturnRestockOrders(id);
 
+    //TODO
 
 
 
   } catch (error) {
-    res.status(500).json();
+    return res.status(500).json();
   }
 })
 //--------------------------------------|   POST   |------------------------------------------------
@@ -1053,9 +1049,6 @@ app.get('/api/restockOrders/:id/returnItems', async (req, res) => {
 //--------------------------------------|   PUT   |-------------------------------------------------
 app.put('/api/restockOrder/:id', async (req, res) => {
   try {
-    if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0) {
-      res.status(422).end();
-    }
 
     let id = req.params.id;
     if (id === undefined || id == '' || isNaN(id)) {
@@ -1070,11 +1063,11 @@ app.put('/api/restockOrder/:id', async (req, res) => {
     let rO = await restockOrdersDAO.getByIdRestockOrders(id);
 
     if (rO.length !== 0) {
-      res.status(404).end();
+      return res.status(404).end();
     }
 
     await restockOrdersDAO.putStateRestockOrder(id, newState);
-    res.status(200).end();
+    return res.status(200).end();
   }
   catch (error) {
     res.status(503).end();
@@ -1083,9 +1076,6 @@ app.put('/api/restockOrder/:id', async (req, res) => {
 
 app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
   try {
-    if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0) {
-      res.status(422).end();
-    }
 
     let id = req.params.id;
     if (id === undefined || id == '' || isNaN(id)) {
@@ -1099,7 +1089,7 @@ app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
 
     let rO = await restockOrdersDAO.getByIdRestockOrders(id);
     if (rO.length !== 0) {
-      res.status(404).end();
+      return res.status(404).end();
     }
 
     //check state delivered
@@ -1111,19 +1101,16 @@ app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
     }
 
     //put in RestockOrderItems but QUANTITY????
-    res.status(200).end();
+    return res.status(200).end();
   }
   catch (error) {
-    res.status(503).end();
+    return res.status(503).end();
   }
 });
 
 
 app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
   try {
-    if (Object.keys(req.header).length === 0 || Object.keys(req.body).length === 0) {
-      res.status(422).end();
-    }
 
     let id = req.params.id;
     if (id === undefined || id == '' || isNaN(id)) {
@@ -1137,17 +1124,17 @@ app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
 
     let rO = await restockOrdersDAO.getByIdRestockOrders(id);
     if (rO.length !== 0) {
-      res.status(404).end();
+      return res.status(404).end();
     }
 
     //check deliverydate after issuedate
     //check state delivered
 
     await restockOrdersDAO.putTNRestockOrder(id, newState);
-    res.status(200).end();
+    return res.status(200).end();
   }
   catch (error) {
-    res.status(503).end();
+    return res.status(503).end();
   }
 });
 
@@ -1179,35 +1166,36 @@ app.get('/api/returnOrders/:id', async (req, res) => {
   const id = await returnOrdersDAO.getRetID();
   let k = 0
   let s = 0
-  while (k < id.length){  
-    if (req.params.id == id[k].idReturnOrder){
+  while (k < id.length) {
+    if (req.params.id == id[k].idReturnOrder) {
       s++;
     }
     k++;
   }
-  if (s === 0){
+  if (s === 0) {
     res.status(404).end();
   }
   else {
-  try {
-    const returnOrders = await returnOrdersDAO.findRetOrder(req.params.id);
-    res.status(200).json(returnOrders);
+    try {
+      const returnOrders = await returnOrdersDAO.findRetOrder(req.params.id);
+      res.status(200).json(returnOrders);
+    }
+    catch (error) {
+      res.status(500).json(error);
+    }
   }
-  catch (error) {
-    res.status(500).json(error);
-  }
-}}
+}
 );
 
 //Creates a new return order.
 app.post('/api/returnOrder', async (req, res) => {
-  if ( req.body.returnDate === undefined
+  if (req.body.returnDate === undefined
     || req.body.products === undefined
     || req.body.restockOrderId === undefined)
     return res.status(422).end();
 
   //404 Not Found (no restock order associated to restockOrderId) DA IMPLEMENTARE
-  
+
   let returnDate = req.body.returnDate;
   const products = req.body.products;
   let restockOrderId = req.body.restockOrderId;
@@ -1215,15 +1203,15 @@ app.post('/api/returnOrder', async (req, res) => {
   console.log(id);
   var idfinale = id[0].idReturnOrder;
   console.log(idfinale);
-  idfinale = idfinale+1;
+  idfinale = idfinale + 1;
   let s = 0;
   console.log(s)
-  for(s=0; s<products.length;s++){
-  var RFID = products[s].RFID
+  for (s = 0; s < products.length; s++) {
+    var RFID = products[s].RFID
     try {
-      await returnOrdersDAO.createRetOrder(idfinale,returnDate, restockOrderId, RFID);
+      await returnOrdersDAO.createRetOrder(idfinale, returnDate, restockOrderId, RFID);
       res.status(201).end();
-      
+
     }
     catch (error) {
       res.status(503).json(error);
@@ -1237,12 +1225,12 @@ app.post('/api/returnOrder', async (req, res) => {
     res.status(503).json(error);
   }
   */
-  });
-  
-  
-   
-    
- 
+});
+
+
+
+
+
 
 
 
@@ -1324,8 +1312,8 @@ app.get('/api/internalOrders/:id', (req, res) => {
 //Creates a new internal order in state = ISSUED.
 app.post('/api/internalOrders', async (req, res) => {
   if (req.body.issueDate === undefined
-      || req.body.products === undefined
-      || req.body.customerId === undefined)
+    || req.body.products === undefined
+    || req.body.customerId === undefined)
     return res.status(422).end();
 
   let issueDate = req.body.issueDate;
@@ -1399,10 +1387,10 @@ app.delete('/api/internalOrders/:id', async (req, res) => {
 app.get('/api/items', async (req, res) => {
   try {
     const listItems = await itemsDAO.listItems();
-    res.status(200).json(listItems)
+    return res.status(200).json(listItems)
   }
   catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 
@@ -1414,22 +1402,22 @@ app.get('/api/items/:id', async (req, res) => {
   }
   try {
     const item = await itemsDAO.findItem(req.params.id);
-    if (item === null)
-      res.status(404).end();
-    res.status(200).json(item);
+    if (item.length === 0)
+      return res.status(404).end();
+    return res.status(200).json(item);
   }
   catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 
 //Creates a new Item.
 app.post('/api/item', async (req, res) => {
-  if ( req.body.description === undefined
-      || req.body.id === undefined
-      || req.body.SKUId === undefined
-      || req.body.supplierId === undefined
-      || req.body.price === undefined)
+  if (req.body.description === undefined
+    || req.body.id === undefined
+    || req.body.SKUId === undefined
+    || req.body.supplierId === undefined
+    || req.body.price === undefined)
     return res.status(422).end();
 
   let id = req.body.id;
@@ -1440,21 +1428,21 @@ app.post('/api/item', async (req, res) => {
 
   try {
     await itemsDAO.createItem(description, id, SKUId, supplierId, price);
-    res.status(201).end();
+    return res.status(201).end();
   }
   catch (error) {
-    res.status(503).json(error);
+    return res.status(503).json(error);
   }
 
 });
 
 //Modify an existing item.
 app.put('/api/item/:id', async (req, res) => {
-  if (  req.params.id === undefined
-        || req.params.id == ''
-        || isNaN(req.params.id)
-        || req.body.newDescription === undefined
-        || req.body.newPrice === undefined)
+  if (req.params.id === undefined
+    || req.params.id == ''
+    || isNaN(req.params.id)
+    || req.body.newDescription === undefined
+    || req.body.newPrice === undefined)
     return res.status(422).end();
 
   let description = req.body.newDescription;
@@ -1462,11 +1450,11 @@ app.put('/api/item/:id', async (req, res) => {
 
   try {
     let found = await itemsDAO.updateItem(req.params.id, description, price);
-    if (found.length === 0){
-      return res.status(404).end();      
+    if (found.length === 0) {
+      return res.status(404).end();
     }
-    else{
-      return res.status(200).end();      
+    else {
+      return res.status(200).end();
     }
   }
   catch (error) {
