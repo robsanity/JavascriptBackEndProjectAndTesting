@@ -244,7 +244,7 @@ Version:
 ## Class SKU ITEM
 
 ### **Class SKU ITEM - method *GET***
-**Predicates for method *skuitems**
+
 **Criteria for method *skuitems*:**
 	
 - check Database conection where is stored all the array data
@@ -863,10 +863,327 @@ Version:
 |     position stored           |    true, false    |
 
 
+
+
+
 ## Class user
 ### **Class user - method *GET***
+**Criteria for method *GET USER*:**
+	
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|connection up  |allowed     |v|T1{ manager},T5{ clerk},T1{ supplier}|||
+|               |not allowed |v|T2{ Customer}|||
+|               |not exist   |I|T3{ CEO}|||
+|connection down|  -         |v|T4{ Customer}|  ||
+
+**Criteria for method *GET Supplier*:**
+	
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|connection up  |allowed     |v|T1{ manager}|||
+|               |not allowed |v|T2{ Customer}|||
+|               |not exist   |I|T3{ CEO}|||
+|connection down|  -         |v|T4{ Customer}|  ||
+
+**Criteria for method *GET USER*:**
+	
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+
+**Predicates for method *GET user*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|connection up  |allowed     |v|T1{ manager}|||
+|               |not allowed |v|T2{ Customer}|||
+|               |not exist   |I|T3{ CEO}|||
+|connection down|  -         |v|T4{ Customer}|  ||
+
+
+
 ### **Class user- method  *POST***
+**Criteria for method *post*:**
+
+
+ -  name new user 
+ - user  is already stored in the wharehouse
+  -check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it 
+ - number of object inside the body 
+
+
+
+
+**Predicates for method *POST*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Correct type     |  positive, negative      |  
+|   new user   already stored    |  true,false     |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed       |
+|     number of object             |    =!5 , =5    |
+
+
+
+**Combination of predicates**:
+
+
+|   RSD    |TEST Result  already stored | db connection|permission|number of object |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|-------|
+| positive|T| up    |allowed|=5|v|  T1{"user1@ezwh.com","John","Smith", "testpassword", "customer"},manager |-------|
+| positive|T| up    |allowed|=!5|I| T2{8002}|-------|
+| positive|T| up    |not allowed|-|-|T3{"user1@ezwh.com","John","Smith", "testpassword", "customer"},clerk|-------|
+| positive|T| down   |-|- |v| T4{"user1@ezwh.com","John","Smith", "testpassword", "customer"}|-------|
+| positive|F| up    |allowed|=5|v|T9{"user1@ezwh.com","John","Smith", "testpassword", "customer"}|-------|
+| positive|F| up    |allowed|=!5|I|T5{ "testpassword", "customer"}|-------|
+| positive|F| up    |not allowed|-|I|T6{"user1@ezwh.com","John","Smith", "testpassword", "customer"}-------|
+| positive|F| down    |-|- |-|T7{"user1@ezwh.com","John","Smith", "testpassword", "customer"},clerk|-------|
+| negative |-| -    |-|- |i|-------|T8{"user1@ezwh.com","John","Smith", "testpassword", "customer"},clerk|
+
+**Criteria for method *managerSessions*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+- all body element is written correct
+-user name is actually an e-mail
+
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+|     number of object             |    =!3 , =3    |
+|     e-mail            |    T , F   |
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |number of object  | e-mail   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|connection up  |allowed  | =3|  T |v|T1{32615,jhon.clock@yahoo.com,jhon }, manager|
+|connection up  |allowed  | =!3|  - |I|T2{jhon.clock@yahoo.com,jhon} manager|
+|connection up  | not allowed  |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon } clerk|
+|connection down | n- |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon }|
+
+
+
+
+**Criteria for method *managerSessions*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+- all body element is written correct
+-user name is actually an e-mail
+
+
+**Predicates for method *customerSessions*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+|     number of object             |    =!3 , =3    |
+|     e-mail            |    T , F   |
+
+
+**Combination of predicates customerSessions**:
+
+| DB connection | permssion |number of object  | e-mail   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|connection up  |allowed  | =3|  T |v|T1{32615,jhon.clock@yahoo.com,jhon }, costumer|
+|connection up  |allowed  | =!3|  - |I|T2{jhon.clock@yahoo.com,jhon} costumer|
+|connection up  | not allowed  |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon } clerk|
+|connection down | n- |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon }|
+
+**Criteria for method *supplierSessions*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+- all body element is written correct
+-user name is actually an e-mail
+
+
+**Predicates for method *supplierSessions*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+|     number of object             |    =!3 , =3    |
+|     e-mail            |    T , F   |
+
+
+**Combination of predicatessupplierSessions*:
+
+| DB connection | permssion |number of object  | e-mail   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|connection up  |allowed  | =3|  T |v|T1{32615,jhon.clock@yahoo.com,jhon }, supplier|
+|connection up  |allowed  | =!3|  - |I|T2{jhon.clock@yahoo.com,jhon} supplier|
+|connection up  | not allowed  |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon } clerk|
+|connection down | n- |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon }|
+
+
+**Criteria for method *clerkSessions*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+- all body element is written correct
+-user name is actually an e-mail
+
+
+**Predicates for method *clerkSessions*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+|     number of object             |    =!3 , =3    |
+|     e-mail            |    T , F   |
+
+
+**Combination of predicates clerkSessions**:
+
+| DB connection | permssion |number of object  | e-mail   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|connection up  |allowed  | =3|  T |v|T1{32615,jhon.clock@yahoo.com,jhon }, clerk|
+|connection up  |allowed  | =!3|  - |I|T2{jhon.clock@yahoo.com,jhon}clerk |
+|connection up  | not allowed  |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon supplier} |
+|connection down | n- |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon }clerk|
+
+
+
+**Criteria for method *qualityEmployeeSessions*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+- all body element is written correct
+-user name is actually an e-mail
+
+
+**Predicates for method *quality EmployeeSessions:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+|     number of object         |    =!3 , =3    |
+|     e-mail            |    T , F   |
+
+
+**Combination of predicates qualityEmployeeSessions**:
+
+| DB connection | permssion |number of object  | e-mail   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|connection up  |allowed  | =3|  T |v|T1{32615,jhon.clock@yahoo.com,jhon }, quality Employee|
+|connection up  |allowed  | =!3|  - |I|T2{jhon.clock@yahoo.com,jhon} quality Employee |
+|connection up  | not allowed  |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon supplier} |
+|connection down | n- |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon } quality Employee|
+
+
+
+
+
+
+
+
+
+
+
+
+**Criteria for method **:**
+
+**Criteria for method *deliveryEmployeeSessions*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+- all body element is written correct
+-user name is actually an e-mail
+
+
+**Predicates for method *deliveryEmployeeSessions:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+|     number of object         |    =!3 , =3    |
+|     e-mail            |    T , F   |
+
+
+**Combination of predicates delivery EmployeeSessions**:
+
+| DB connection | permssion |number of object  | e-mail   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|connection up  |allowed  | =3|  T |v|T1{32615,jhon.clock@yahoo.com,jhon },delivery  Employee|
+|connection up  |allowed  | =!3|  - |I|T2{jhon.clock@yahoo.com,jhon} delivery Employee |
+|connection up  | not allowed  |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon supplier} |
+|connection down | n- |-|  - |I|T1{32615,jhon.clock@yahoo.com,jhon } delivery  Employee|
+
+
+
+
+
+**Criteria for method *logout*:**
+    
+  - Database conection :          connection up ,connection down        
+ -    permission       :           allowed, not allowed        
+
+**Predicates for method *delete:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+
+**Combination of predicates**:
+
+|  permission   | Database conection  |  Valid / Invalid | Description of the test case   |  
+|--------------|---------------|------------|---------------------|
+  | allowed       | T          | up                  | v                | T1( clerk)  |   
+  | allowed       | T          | -                  | I            | T2( clerk)  |  
+    |not allowed      | -          | -                  | I            | T3( clerk)  |  
+
 ### **Class user - method *PUT***
+
+
 ### **Class user - method *DELETE***
 
 ## Class Restock order
