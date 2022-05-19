@@ -47,7 +47,7 @@ function checkUser(username, type) {
 function findUser(id) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM Users WHERE idUser=?";
-        db.all(sql, [username, type], (err, rows) => {
+        db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject({ error: "no users in database" });
                 return;
