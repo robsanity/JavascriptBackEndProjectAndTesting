@@ -1032,7 +1032,7 @@ app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
     }
 
     let rO = await restockOrdersDAO.getByIdRestockOrders(id);
-    if (rO.length !== 0 ) {
+    if (rO.length !== 0) {
       return res.status(404).end();
     }
     if (rO.state != 'DELIVERED') {
@@ -1054,7 +1054,7 @@ app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
         return res.status(422).end();   //se presente RFID non univoco
       }
       else {
-        createSKUItemNoDate(si.rfid, si.SKUId)
+        SKUItemsDAO.createSKUItemNoDate(si.rfid, si.SKUId)
       }
     }
     )
@@ -1085,10 +1085,10 @@ app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
     }
 
     let rO = await restockOrdersDAO.getByIdRestockOrders(id);
-    if (rO.length !== 0 ) {
+    if (rO.length !== 0) {
       return res.status(404).end();
     }
-    if (rO.state!='DELIVERED' || dayjs(transportNote.deliveryDate).isBefore(dayjs(rO.issueDate))) {
+    if (rO.state != 'DELIVERED' || dayjs(transportNote.deliveryDate).isBefore(dayjs(rO.issueDate))) {
       return res.status(422).end();
     }
 

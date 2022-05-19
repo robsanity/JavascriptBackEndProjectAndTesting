@@ -96,8 +96,8 @@ function createRestockOrder(issueDate, products, supplierId) {
         });
         let idItemSQL = "SELECT last_insert_rowid() as lastId";
         let idItem = 0;
-        sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
-        sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
+        let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
+        let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
         products.forEach((p) => {
             db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
                 if (err) {
