@@ -510,7 +510,7 @@ Version:
 |               |not allowed |I|T2{ Customer}|||
 |               |not exist   |I|T3{ CEO}|||
 |connection down|  -         |I|T4{ Customer}|  ||
-### **Class POSITION - method *POST***
+
 
 ### **Class SKU ITEM- method *POST***
 **Predicates for method 
@@ -594,7 +594,7 @@ Version:
 ||                         |not exist   |I|T11{ 3454","3412",1200, 600,200,10sdsdsd0,CEO}|||
 
 ### **Class POSITION - method *DELETE***
-**Criteria for method *id*:**
+**Criteria for method *delete*:**
   - ID   :      correct,do not exist,wrong type        
   - Database conection :          connection up ,connection down        
  -    permission       :           allowed, not allowed        
@@ -627,16 +627,241 @@ Version:
 ## Class TEST DESCRIPTOR
 
 ### **Class TEST DESCRIPTOR - method *GET***
+**Criteria for method *get*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|connection up  |allowed     |v|T1{ manager}T5{ clerk}|||
+|               |not allowed |I|T2{ Customer}|||
+|               |not exist   |I|T3{ CEO}|||
+|connection down|  -         |I|T4{ Customer}|  ||
+
+
+**Predicates for method *get:id*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID                        |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{  id:"556", user: manager} ,T12B{  id:"0", user: manager},T13B{  id:"maxValueType", user: manager} |||
+||                         |not allowed |v|T2{id:"44",  Customer},|||
+||                         |not exist   |I|T3{id:"456" , CEO}|||
+||connection down|  -                   |v|T4{ id:"456",  Customer}|  ||
+|not exist|connection up   |allowed     |v|T5{id:"456" , manager}|||
+||                         |not allowed |v|T6{id:"456" , Customer}|||
+||                         |not exist   |I|T7{id:"666", CEO}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{id:"xyz" , manager}|||
+||                         |not allowed |v|T10{ id:"A56" , Customer}|||
+||                         |not exist   |I|T11{ id:"A89" ,CEO}|||
+||connection down|  -                   |v|T4{ id:"A56"Customer}|  ||
+
 ### **Class TEST DESCRIPTOR - method *POST***
-### **Class TEST DESCRIPTOR - method *PUT***
+
+**Criteria for method *post:**
+
+
+ -  number of RFID, SKUId,DateOfStock (RSD)
+ - SKU is already stored in the wharehouse
+  -check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it 
+ - number of object inside the body 
+
+
+
+
+**Predicates for method *POST*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Correct type     |  positive, negative      |  
+|   SKU  already stored    |  true,false     |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed       |
+|     number of object             |    =!3 , =3     |
+
+
+
+**Combination of predicates**:
+
+
+|   RSD    |SKU  already stored | db connection|permission|number of object |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|-------|
+| positive|T| up    |allowed|=3|v|  T1{test descriptor 3, This test is described by...,1|-------|
+| positive|T| up    |allowed|=!3|I| T2{test descriptor 3, This test is described by...,1}|-------|
+| positive|T| up    |not allowed|-|-|T3{test descriptor 3, This test is described by...,1},clerk|-------|
+| positive|T| down   |-|- |v| T4{test descriptor 3, This test is described by...,1}|-------|
+| positive|F| up    |allowed|=3|v|T10{test descriptor 3, This test is described by...,1}|-------|
+| positive|F| up    |allowed|=!3|I|T5{  This test is described by...,1}|-------|
+| positive|F| up    |not allowed|-|I|T6{"test descriptor 3, This test is described by...,1}-------|
+| positive|F| down    |-|- |-|T7{test descriptor 3, This test is described by...,1},clerk|-------|
+| negative |-| -    |-|- |i|-------|T8{test descriptor 3, This test is described by...,1},clerk|
+
+
+
 ### **Class TEST DESCRIPTOR- method *DELETE***
+**Criteria for method *delete*:**
+  - ID   :      correct,do not exist,wrong type        
+  - Database conection :          connection up ,connection down        
+ -    permission       :           allowed, not allowed        
+ -  position stored    :         true, false  
+**Predicates for method *delete:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID       |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+|     position stored           |    true, false    |
+
 
 ## Class TEST Result
 
 ### **Class TEST Result - method *GET***
+**Criteria for method *get*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+
+
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|connection up  |allowed     |v|T1{ manager}T5{ clerk} T5{ Quality Employee }|||
+|               |not allowed |I|T2{ Customer}|||
+|               |not exist   |I|T3{ CEO}|||
+|connection down|  -         |I|T4{ Customer}|  ||
+
+
+
 ### **Class TEST Result - method *POST***
+**Criteria for method *post*:**
+
+
+ -  number of RFID, SKUId,DateOfStock (RSD)
+ - TEST Result is already stored in the wharehouse
+  -check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it 
+ - number of object inside the body 
+
+
+
+
+**Predicates for method *POST*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Correct type     |  positive, negative      |  
+|   TEST Result  already stored    |  true,false     |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed       |
+|     number of object             |    =!4 , =4     |
+
+
+
+**Combination of predicates**:
+
+
+|   RSD    |TEST Result  already stored | db connection|permission|number of object |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|-------|
+| positive|T| up    |allowed|=4|v|  T1{12345678901234567890123456789016", 12,"2021/11/28",true},manager |-------|
+| positive|T| up    |allowed|=!4|I| T2{8002}|-------|
+| positive|T| up    |not allowed|-|-|T3{12345678901234567890123456789016", 12,"2021/11/28",true},clerk|-------|
+| positive|T| down   |-|- |v| T4{12345678901234567890123456789016", 12,"2021/11/28",true}|-------|
+| positive|F| up    |allowed|=4|v|T4{12345678901234567890123456789016", 12,"2021/11/28",true}|-------|
+| positive|F| up    |allowed|=!4|I|T5{ 12,"2021/11/28",true}|-------|
+| positive|F| up    |not allowed|-|I|T6{12345678901234567890123456789016", 12,"2021/11/28",true}-------|
+| positive|F| down    |-|- |-|T7{12345678901234567890123456789016", 12,"2021/11/28",true},clerk|-------|
+| negative |-| -    |-|- |i|-------|T8{12345678901234567890123456789016", 12,"2021/11/28",true},clerk|
+
+
 ### **Class TEST Result - method *PUT***
+**Predicates for method *:id:**
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID                        |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{  id:"12345678901234567890123456789015", 1,2021/11/29 12:30  user: manager} ,T12B{  id:"0", user: manager},T13B{  id:"maxValueType", user: manager} |||
+||                         |not allowed |v|T2{id:"12345678901234567890123456789015" ,1,2021/11/29,  Customer},|||
+||                         |not exist   |I|T3{id:"12345678901234567890123456789015"  ,1,2021/11/29,, CEO}|||
+||connection down|  -                   |v|T4{ id:"12345678901234567890123456789015" ,1,2021/11/29,,  Customer}|  ||
+|not exist|connection up   |allowed     |v|T5{id:"12345678901234567890123456789015" ,1,2021/11/29, , manager}|||
+||                         |not allowed |v|T6{id:"12345678901234567890123456789015"  ,1,2021/11/29,, Customer}|||
+||                         |not exist   |I|T7{id:"12345678901234567890123456789015" ,1,2021/11/29,, CEO}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{id:"sdsfsaf78901234567890123456789015"  ,1,2021/11/29,, manager}|||
+||                         |not allowed |v|T10{ id:"sdsfsaf78901234567890123456789015" ,1,2021/11/29, , Customer}|||
+||                         |not exist   |I|T11{ id:"sdsfsaf78901234567890123456789015" ,1,2021/11/29, ,CEO}|||
+||connection down|  -                   |v|T4{ id:"sdsfsaf78901234567890123456789015"  ,1,2021/11/29, Customer}|  ||
+
+
+
 ### **Class TEST Result - method *DELETE***
+**Criteria for method *delete*:**
+  - ID   :      correct,do not exist,wrong type        
+  - Database conection :          connection up ,connection down        
+ -    permission       :           allowed, not allowed        
+ -  position stored    :         true, false  
+**Predicates for method *delete:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID       |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+|     position stored           |    true, false    |
+
 
 ## Class user
 ### **Class user - method *GET***
