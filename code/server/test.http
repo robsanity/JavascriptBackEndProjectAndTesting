@@ -1,9 +1,3 @@
 
-PUT  http://localhost:3001/api/skuitems/12324
+GET  http://localhost:3001/api/skus
 Content-Type: application/json
-
- {
-    "newRFID":"9999",
-    "newAvailable":33,
-    "newDateOfStock":"2021-04-05"
-}
