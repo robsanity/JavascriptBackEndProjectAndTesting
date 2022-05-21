@@ -20,6 +20,7 @@ describe("Test user", () => {
 
     testGetUsers();
     testCheckUser("name.surname@ezwh.com", "name", "surname", "clerk");
+    testInsertUsers("a.b@gmail.com", "A", "B", "clerk");
     testUpdateUser("name.surname@ezwh.com", "name", "surname", "clerk", "supplier")
     testDeleteUser("name.surname@ezwh.com", "supplier");
 })
@@ -79,6 +80,28 @@ function testCheckUser(username, name, surname, type) {
         expect(checkUser[0].name).toStrictEqual(name);
         expect(checkUser[0].surname).toStrictEqual(surname);
         expect(checkUser[0].type).toStrictEqual(type);
+    })
+}
+
+function testInsertUsers(username, name, surname, type) {
+    test("insertUser", async () => {
+        let res = await usersDAO.getUsers();
+        expect(res.length).toStrictEqual(0);
+
+        let newUser = await usersDAO.insertUser(
+            username, 
+            name, 
+            surname, 
+            type
+        );
+        expect(newUser).toStrictEqual(true);
+        res = await usersDAO.getUsers();
+        expect(res.length).toStrictEqual(1);
+
+        expect(res[0].email).toStrictEqual(username);
+        expect(res[0].name).toStrictEqual(name);
+        expect(res[0].surname).toStrictEqual(surname);
+        expect(res[0].type).toStrictEqual(type);
     })
 }
 
