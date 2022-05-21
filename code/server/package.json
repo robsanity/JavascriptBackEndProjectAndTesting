@@ -13,6 +13,6 @@
   },
   "scripts": {
     "apiTest": "./node_modules/.bin/mocha test --exit",
-    "test": "jest"
+    "test": "jest" 
   }
 }
