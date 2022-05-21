@@ -97,5 +97,31 @@ function deleteTestResult(rfid, id) {
     });
 }
 
+function deleteALLTestResult() {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM TestResults ";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject({ error: "no delete" });
 
-module.exports = { getTestResults, getByIdTestResults, checkId, checkRfid, insertTestResult, updateTestResults, deleteTestResult };
+            }
+            resolve(true);
+        });
+    });
+}
+
+function getALLTestResults() {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM TestResults ";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject({ error: "no test results associated to sku item" });
+
+            }
+            const testResults = rows.map((t) => ({ id: t.idResults, idTestDescriptor: t.idTestDescriptor, date: t.date, result: (t.result == 1 ? true : false) }));
+            resolve(testResults);
+        });
+    });
+}
+
+module.exports = { getTestResults, getByIdTestResults, checkId, checkRfid, insertTestResult, updateTestResults, deleteTestResult, deleteALLTestResult, getALLTestResults };
