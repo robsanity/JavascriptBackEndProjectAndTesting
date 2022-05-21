@@ -112,7 +112,7 @@ router.get('/api/skus', async (req, res) => {
     let availableQuantity = req.body.availableQuantity;
   
     try {
-      let found = await SKUsDAO.updateSKU(description, weight, volume, notes, price, availableQuantity, req.params.id, req.params.id, req.params.id, req.params.id);
+      let found = await SKUsDAO.updateSKU(description, weight, volume, notes, price, availableQuantity, req.params.id/*, req.params.id, req.params.id, req.params.id*/);
       if (found.length === 0) {
         return res.status(404).end();
       }

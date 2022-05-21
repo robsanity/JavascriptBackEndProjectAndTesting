@@ -25,7 +25,7 @@ function findSKU(idSKU) {
                 reject({ error: `Database error during the retrieval of the SKUs` });
                 return;
             }
-            const SKUs = rows.map((t) => ({idSKU:t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, avaibleQuantity: t.avaibleQuantity, price: t.price }));
+            const SKUs = rows.map((t) => ({idSKU:t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, availableQuantity: t.availableQuantity, price: t.price }));
             resolve(SKUs);
         });
     });
@@ -50,10 +50,10 @@ function createSKU(description, weight, volume, notes, availableQuantity, price)
 
 //funzionate
 
-function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU,idSKU2,idSKU3,idSKU4) {
+function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU/*,idSKU2,idSKU3,idSKU4*/) {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE SKUs SET description = ?, weight = ?, volume = ?, notes = ?, price =  ?, availableQuantity = ? WHERE idSKU = ? "; 
-        const sql2 = "UPDATE Positions SET occupiedWeight = Positions.occupiedWeight + (SELECT weight FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?), occupiedVolume = occupiedVolume + (SELECT volume FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?) WHERE idPosition = (SELECT idPosition FROM SKUs WHERE idSKU = ?)  ";
+        //const sql2 = "UPDATE Positions SET occupiedWeight = Positions.occupiedWeight + (SELECT weight FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?), occupiedVolume = occupiedVolume + (SELECT volume FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?) WHERE idPosition = (SELECT idPosition FROM SKUs WHERE idSKU = ?)  ";
 
         db.run(sql, [description,weight,volume,notes,price,availableQuantity,idSKU], function(err){
             if (err){
@@ -66,16 +66,16 @@ function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU
 
         })
         
-        db.run(sql2, [idSKU2,idSKU3,idSKU4], function(err){
+        /*db.run(sql2, [idSKU2,idSKU3,idSKU4], function(err){
             if (err){
                 reject(err + 'Error');
             }
-            else{
-                
+            else if{
+                 
                 resolve (this.lastID);
             }
 
-        })
+        })*/
     });
 };
 
