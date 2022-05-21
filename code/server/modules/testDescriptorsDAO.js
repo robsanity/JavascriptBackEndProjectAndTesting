@@ -68,5 +68,18 @@ function deleteTestDescriptor(id) {
     });
 }
 
+function deleteALLTestDescriptor() {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM TestDescriptors";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject({ error: "no delete" });
+                
+            }
+            resolve(true);
+        });
+    });
+}
 
-module.exports = { getTestDescriptors, getByIdTestDescriptors, insertTestDescriptor, updateTestDescriptor, deleteTestDescriptor };
+
+module.exports = { getTestDescriptors, getByIdTestDescriptors, insertTestDescriptor, updateTestDescriptor, deleteTestDescriptor, deleteALLTestDescriptor };
