@@ -70,10 +70,10 @@ function insertUser(username, name, surname, type) {
     });
 }
 
-function updateUser(username, name, surname, oltType, newType) {
+function updateUser(username, oldType, newType) {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE Users SET type=? WHERE email=? AND type=?";
-        db.all(sql, [name, surname, username, newType, username, oltType], (err, rows) => {
+        db.all(sql, [newType, username, oldType], (err, rows) => {
             if (err) {
                 reject({ error: "no update" });
 
@@ -96,5 +96,17 @@ function deleteUser(username, type) {
     });
 }
 
+function deleteALLUser() {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM Users";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject({ error: "no delete" });
 
-module.exports = { getSuppliers, getUsers, checkUser, findUser, insertUser, updateUser, deleteUser };
+            }
+            resolve(true);
+        });
+    });
+}
+
+module.exports = { getSuppliers, getUsers, checkUser, findUser, insertUser, updateUser, deleteUser, deleteALLUser };

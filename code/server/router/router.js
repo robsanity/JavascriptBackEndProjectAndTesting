@@ -780,7 +780,7 @@ router.get('/api/skus', async (req, res) => {
   });
   //FUNZIONANTE
   
-  router.get('/api/userinfo', async (req, res) => {
+  router.get('/api/users', async (req, res) => {
     try {
       const users = await usersDAO.getUsers();
       return res.status(200).json(users)
@@ -849,7 +849,7 @@ router.get('/api/skus', async (req, res) => {
         return res.status(409).end();
       }
   
-      await usersDAO.updateUser(username, userWithType.name, userWithType.surname, oldType, newType);
+      await usersDAO.updateUser(username, oldType, newType);
       return res.status(200).end();
   
     }
