@@ -68,4 +68,18 @@ function deleteItem(id) {
     });
 }
 
-module.exports = { listItems, findItem, createItem, updateItem, deleteItem }
+
+function deleteALLItems() {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM Items";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject({ error: "no delete" });
+
+            }
+            resolve(true);
+        });
+    });
+}
+
+module.exports = { listItems, findItem, createItem, updateItem, deleteItem, deleteALLItems }
