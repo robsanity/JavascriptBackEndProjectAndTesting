@@ -65,6 +65,7 @@ function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU
             }
 
         })
+        
         db.run(sql2, [idSKU2,idSKU3,idSKU4], function(err){
             if (err){
                 reject(err + 'Error');
@@ -128,6 +129,20 @@ function deleteSKU(idSKU) {
     });
 };
 
+function deleteDatas(){
+    return new Promise((resolve,reject)=>{
+        const sql = "DELETE FROM SKUs";
+        db.run(sql,[], function(err){
+            if(err){
+                reject(err);
+            }
+            else {
+                resolve(this.lastID);
+            }
+        })
+    })
+}
+
 //tutto funzionante
 
 function createSKUWithOnlyId(id){
@@ -144,4 +159,4 @@ function createSKUWithOnlyId(id){
     });
 }
 
-module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU, createSKUWithOnlyId}
+module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU, createSKUWithOnlyId , deleteDatas}
