@@ -1181,38 +1181,178 @@ Version:
   | allowed       | T          | -                  | I            | T2( clerk)  |  
     |not allowed      | -          | -                  | I            | T3( clerk)  |  
 
-### **Class user - method *PUT***
 
+
+
+
+
+
+### **Class user - method *username***
+**Criteria for method *logout*:**
+- ID  old name to be change
+- Database conection 
+-permission 
+
+**Predicates for method *
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID                        |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{  qualityEmployee, clerk } ,T12B{  qualityEmployee, clerk},T13B{  id:"maxValueType", user: manager} |||
+||                         |not allowed |v|T2{qualityEmployee, clerk},|||
+||                         |not exist   |I|T3{qualityEmployee, clerk}|||
+||connection down|  -                   |v|T4{  qualityEmployee, clerk}|  ||
+|not exist|connection up   |allowed     |v|T5{qualityEmployee, clerk}|||
+||                         |not allowed |v|T6{qualityEmployee, clerk}|||
+||                         |not exist   |I|T7{qualityEmployee, clerk}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{qualityEmployee, clerk}|||
+||                         |not allowed |v|T10{ qualityEmployee, clerk}|||
+||                         |not exist   |I|T11{ qualityEmployee, clerk}|||
+||connection down|  -                   |v|T4{ qualityEmployee, clerk}|  ||
 
 ### **Class user - method *DELETE***
+**Predicates for method *delete:**
 
-## Class Restock order
-### **Class Restock order - method *GET***
-### **Class Restock order- method  *POST***
-### **Class Restock order - method *PUT***
-### **Class Restock order - method *DELETE***
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
 
+**Combination of predicates**:
 
-## Class Return order
+|  permission   | Database conection  |  Valid / Invalid | Description of the test case   |  
+|--------------|---------------|------------|---------------------|
+  | allowed       | T          | up                  | v                | T1( clerk)  |   
+  | allowed       | T          | -                  | I            | T2( clerk)  |  
+    |not allowed      | -          | -                  | I            | T3( clerk)  |  
 
-### **Class Return order - method *GET***
-### **Class Return order- method  *POST***
-### **Class Return order - method *PUT***
-### **Class Return order - method *DELETE***
-
-## Class Internal order
-### **Class Internal order - method *GET***
-### **Class Internal order- method  *POST***
-### **Class Internal order - method *PUT***
-### **Class Internal order - method *DELETE***
 
 
 ## Class Item
 ### **Class Internal order - method *GET***
-### **Class Internal order- method  *POST***
-### **Class Internal order - method *PUT***
-### **Class Internal order - method *DELETE***
+**Criteria for method *managerSessions*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+- all body element is written correct
+-user name is actually an e-mail
 
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+|     number of object             |    =!5 , =5    |
+
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |number of object    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|connection up  |allowed  | =5|  T |v|T1{1, "a new item",10.99,1,2 }, manager|
+|connection up  |allowed  | =!5|  - |I|T2{"a new item",10.99,1,2r|
+|connection up  | not allowed  |-|  - |I|T1{1, "a new item",10.99,1,2 } clerk|
+|connection down | n- |-|  - |I|T1{1, "a new item",10.99,1,2 }|
+
+### **Class Internal order- method  *POST***
+
+**Criteria for method *managerSessions*:**
+- check Database conection where is stored all the array data
+ - check if who want acess  have the correct right to do it permission
+- all body element is written correct
+-user name is actually an e-mail
+
+
+**Predicates for method *GET*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+|     number of object             |    =!5 , =5    |
+
+
+
+**Combination of predicates**:
+
+| DB connection | permssion |number of object    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|-------|
+|connection up  |allowed  | =5|  T |v|T1{12,"a new item",10.99,1,2}, manager|
+|connection up  |allowed  | =!5|  - |I|T2{12,"a new item",10.99,1,2|
+|connection up  | not allowed  |-|  - |I|T1{12,"a new item",10.99,1,2} clerk|
+|connection down | n- |-|  - |I|T8{12,"a new item",10.99,1,2 }|
+### **Class Internal order - method *PUT***
+**Criteria for method *logout*:**
+- ID  old name to be change
+- Database conection 
+-permission 
+
+**Predicates for method *
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID                        |  correct,do not exist,wrong type       |  
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed, user do not exist       |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    ID      |    [0 , maxValueType]             |
+
+
+**Combination of predicates**:
+
+
+|   ID       | DB connection | permssion |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+|correct|connection up     |allowed     |v|T1{  "a new sku",10.99 } ,T12B{ "a new sku",10.99},T13B{  "a new sku",10.99} |||
+||                         |not allowed |v|T2{"a new sku",10.99},|||
+||                         |not exist   |I|T3{"a new sku",10.99}|||
+||connection down|  -                   |v|T4{  "a new sku",10.99}|  ||
+|not exist|connection up   |allowed     |v|T5{"a new sku",10.99}|||
+||                         |not allowed |v|T6{"a new sku",10.99}|||
+||                         |not exist   |I|T7{"a new sku",10.99}|||
+||connection down|  -         |v|T8{ Customer}|  ||
+|wrong type|connection up  |allowed     |v|T9{"a new sku",10.99}|||
+||                         |not allowed |v|T10{ "a new sku",10.99}|||
+||                         |not exist   |I|T11{"a new sku",10.99}|||
+||connection down|  -                   |v|T12{ "a new sku",10.99}|  ||
+
+
+
+### **Class Internal order - method *DELETE***
+**Predicates for method *delete:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   Database conection        |   connection up ,connection down       |  
+|     permission              |    allowed, not allowed     |
+
+**Combination of predicates**:
+
+|  permission   | Database conection  |  Valid / Invalid | Description of the test case   |  
+|--------------|---------------|------------|---------------------|
+  | allowed       | T          | up                  | v                | T1( clerk)  |   
+  | allowed       | T          | -                  | I            | T2( clerk)  |  
+    |not allowed      | -          | -                  | I            | T3( clerk)  | 
 
 
 
