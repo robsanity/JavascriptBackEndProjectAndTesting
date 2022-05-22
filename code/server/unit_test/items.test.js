@@ -75,7 +75,7 @@ function testFindItem(id) {
         expect(findItem[0].description).toStrictEqual("a new item");
         expect(findItem[0].id).toStrictEqual(id);
         expect(findItem[0].SKUId).toStrictEqual(1);
-        expect(findItem[0].supplierId).toStrictEqual(2);
+        expect(findItem[0].suppliersId).toStrictEqual(2);
         expect(findItem[0].price).toStrictEqual(10.99);
     })
 }
