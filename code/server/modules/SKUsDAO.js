@@ -9,7 +9,7 @@ function listSKUs() {
                 reject({ error: `Database error during the retrieval of the SKUs` });
                 return;
             }
-            const SKUs = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, avaibleQuantity: t.avaibleQuantity, price: t.price }));
+            const SKUs = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, availableQuantity: t.availableQuantity, price: t.price }));
             resolve(SKUs);
         });
     });
@@ -82,11 +82,17 @@ function updateSKU(description,weight,volume,notes,price,availableQuantity,idSKU
 //funzionante
 
 
-function updatePosition(idSKU1,idSKU2,idSKU3,idPosition,idSKU4,idSKU5,idSKU6,idPosition2) {
+function updatePosition(idPosition3,idSKU1,idSKU2,idSKU3,idPosition,idSKU4,idSKU5,idSKU6,idPosition2) {
     return new Promise((resolve, reject) => {
         const sql =  "UPDATE Positions SET occupiedWeight = Positions.occupiedWeight - (SELECT weight FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?),  occupiedVolume = Positions.occupiedVolume - (SELECT volume FROM SKUs WHERE Positions.idPosition = SKUs.idPosition AND idSKU = ?) WHERE idPosition = (SELECT idPosition FROM SKUs WHERE idSKU = ?)";
         const sql2 = "UPDATE SKUs SET idPosition = ? WHERE idSKU = ?"
         const sql3 = "UPDATE Positions SET occupiedWeight = Positions.occupiedWeight + (SELECT weight FROM SKUs WHERE idSKU = ?), occupiedVolume = Positions.occupiedVolume + (SELECT volume FROM SKUs WHERE idSKU = ?) WHERE idPosition = ?";
+        const sql4 = "SELECT occupiedWeight,occupiedVolume FROM Positions WHERE idPosition = ?"
+        db.all(sql4,[idPosition3], (err,rows)=>{
+            if (err){
+                reject(err);
+            }
+            if (this.length !=0){
         db.run(sql, [idSKU1,idSKU2,idSKU3], function(err){
             if(err){
                 reject(err + 'Error');
@@ -95,6 +101,8 @@ function updatePosition(idSKU1,idSKU2,idSKU3,idPosition,idSKU4,idSKU5,idSKU6,idP
                 resolve(this.lastID)
             }
         })
+        resolve (this.length);
+    }
         db.run(sql2, [idPosition,idSKU4],function(err){
             if(err){
                 reject(err +'Error');
@@ -106,12 +114,13 @@ function updatePosition(idSKU1,idSKU2,idSKU3,idPosition,idSKU4,idSKU5,idSKU6,idP
             if(err){
                 reject(err+ 'Error');
             }else{
-                resolve(this.lastId);
+                resolve(this.lastID);
             }
         })
         //
     });
-};
+});
+}
 
 //funzionante
 
@@ -143,6 +152,20 @@ function deleteDatas(){
     })
 }
 
+function deleteDatasfromPositions(){
+    return new Promise((resolve,reject)=>{
+        const sql = "DELETE FROM Positions";
+        db.run(sql,[], function(err){
+            if(err){
+                reject(err);
+            }
+            else {
+                resolve(this.lastID);
+            }
+        })
+    })
+}
+
 //tutto funzionante
 
 function createSKUWithOnlyId(id){
@@ -158,5 +181,17 @@ function createSKUWithOnlyId(id){
         })
     });
 }
+function createPositionforSKU(positionID, aisleID, row, col, maxWeight, maxVolume){
+    return new Promise((resolve,reject)=>{
+        const sql = "INSERT INTO Positions (idPosition, aisleId, row, col, maxWeight, maxVolume) values (?,?,?,?,?,?)";
+        db.run(sql, [positionID, aisleID, row, col, maxWeight, maxVolume], function(err){
+            if (err) {
+                reject({ error: "no insert" });
 
-module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU, createSKUWithOnlyId , deleteDatas}
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+
+module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU, createSKUWithOnlyId , deleteDatas,createPositionforSKU, deleteDatasfromPositions }

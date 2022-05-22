@@ -17,14 +17,14 @@ describe("Test item", () => {
     })
 
     testGetItems();
-    /*testCheckItem();
-    testInsertItems();
-    testUpdateItem()
+    testFindItem(1);
+    /*testInsertItems(description, id, SKUId, supplierId, price);
+    testUpdateItem(description, id, SKUId, supplierId, price)
     testDeleteItem();*/
 })
 
 function testGetItems() {
-    test("getItems", async () => {
+    test("listItems and createItem", async () => {
         let res = await itemsDAO.listItems();
         expect(res.length).toStrictEqual(0);
 
@@ -50,5 +50,32 @@ function testGetItems() {
         res = await itemsDAO.listItems();
         expect(res.length).toStrictEqual(2);
 
+    })
+}
+
+function testFindItem(id) {
+    test("findItem", async () => {
+        let res = await itemsDAO.listItems();
+        expect(res.length).toStrictEqual(0);
+
+        let newItem = await itemsDAO.createItem(
+            "a new item",
+            id,
+            1,
+            2,
+            10.99
+        );
+        console.log(newItem.description); //stampa undefined
+        expect(newItem).toStrictEqual(true);
+        res = await itemsDAO.listItems();
+        expect(res.length).toStrictEqual(1);
+
+        let findItem = await itemsDAO.findItem(id);
+            console.log(findItem.description); //stampa undefined
+        expect(findItem[0].description).toStrictEqual("a new item");
+        expect(findItem[0].id).toStrictEqual(id);
+        expect(findItem[0].SKUId).toStrictEqual(1);
+        expect(findItem[0].supplierId).toStrictEqual(2);
+        expect(findItem[0].price).toStrictEqual(10.99);
     })
 }
