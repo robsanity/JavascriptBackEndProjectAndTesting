@@ -82,4 +82,17 @@ function deletePosition(positionID) {
     });
 };
 
-module.exports = { listPositions, checkPosition, createPositions, modifyPosition, modifyPositionID, deletePosition }
+function deleteALLPosition() {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM PositionS";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject({ error: "no delete" });
+
+            }
+            resolve(true);
+        });
+    });
+};
+
+module.exports = { listPositions, checkPosition, createPositions, modifyPosition, modifyPositionID, deletePosition, deleteALLPosition }

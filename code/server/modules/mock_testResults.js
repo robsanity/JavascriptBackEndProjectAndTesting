@@ -1,0 +1,9 @@
+exports.getTestResults= jest.fn(); 
+exports.getByIdTestResults= jest.fn(); 
+exports.checkId= jest.fn(); 
+exports.checkRfid= jest.fn(); 
+exports.insertTestResult= jest.fn(); 
+exports.updateTestResults= jest.fn(); 
+exports.deleteTestResult= jest.fn(); 
+exports.deleteALLTestResult= jest.fn();
+exports.getALLTestResults= jest.fn();
