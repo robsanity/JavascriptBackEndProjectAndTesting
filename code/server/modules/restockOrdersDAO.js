@@ -2,7 +2,7 @@
 const db = require('../db.js');
 
 async function getRestockOrders() {
-    try {
+    
         let restockList = await getRestockList();
         let listProducts = await getProducts();
         let listSkuItems = await getSkuItems();
@@ -37,11 +37,11 @@ async function getRestockOrders() {
 
         return restockOrders;
 
-    }
+   /* }
     catch (error) {
-        throw error;
+        throw error;*/
     }
-}
+
 
 function getByIdRestockOrders(id) {
     return new Promise((resolve, reject) => {
@@ -221,10 +221,10 @@ function getRestockList() {
 
 function getProducts() {
     return new Promise((resolve, reject) => {
-        sql = "SELECT ROI.idRestockOrder AS id, S.idSKU AS SKUId, S.description AD description, S.price AS price, ROI.quantity AS qty FROM RestockOrderItems ROI, Items I WHERE ROI.idItem=I.idItems "
+        const sql = "SELECT ROI.idRestockOrder AS id, I.idSKU AS SKUId, I.description AS description, I.price AS price, ROI.quantity AS qty FROM RestockOrderItems ROI, Items I WHERE ROI.idItem=I.idItems"
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: "error in database" });
+                reject({ error: "error in1 " });
                 return;
             }
             resolve(rows);
@@ -234,7 +234,7 @@ function getProducts() {
 
 function getSkuItems() {
     return new Promise((resolve, reject) => {
-        sql = "SELECT restockOrderId AS id, idSKU AS SKUId RFID AS rfid FROM SKUItems WHERE restockOrderId!= NULL"
+        const sql = "SELECT restockOrderId AS id, idSKU AS SKUId, RFID AS rfid FROM SKUItems WHERE restockOrderId!= NULL"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in database" });
@@ -245,7 +245,34 @@ function getSkuItems() {
     });
 }
 
+function deleteDatas(){
+    return new Promise((resolve,reject)=>{
+        const sql = "DELETE FROM RestockOrders";
+        db.run(sql,[], function(err){
+            if(err){
+                reject(err);
+            }
+            else {
+                resolve(this.lastID);
+            }
+        })
+    })
+}
+function initialize(){
+    return new Promise((resolve,reject)=>{
+        const sql = "INSERT INTO Users (idUser,name,surname,email,type) VALUES (1,'Giuseppe','Regina','gr@a.it','clerk'); INSERT INTO SKUs (idSKU,description,weight,volume,notes,availableQuantity,price) values (1,'ciao',12,13,'ciaao',10,12); INSERT INTO Items (idItems,idSKU,description,price,idSupplier) VALUES (1,1,'CIAO',77,1); INSERT INTO RestockOrders(idRestockOrder,issueDate,state,idSupplier,transportNote) VALUES (1,'2022-10-10','DELIVERED',1,'ciao'); INSERT INTO RestockOrderItems (idRestockOrder,idItem,quantity) VALUES (1,1,10);"
+        db.run(sql,[],function(err){
+            if (err){
+                reject(err);
+            }
+            else {
+                resolve(this.lastID);
+            }
+        });
+    });
+}
 
 
 
-module.exports = { getRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, createRestockOrder, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder };
+
+module.exports = { getRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, createRestockOrder, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder,getRestockList,getProducts,getSkuItems, deleteDatas,initialize };
