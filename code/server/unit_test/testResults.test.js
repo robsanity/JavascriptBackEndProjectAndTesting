@@ -1,6 +1,6 @@
 const testResultsDAO = require('../modules/testResultsDAO');
 
-describe("Test testDescriptors", () => {
+describe("Test testResults", () => {
     beforeAll(async () => {
         await testResultsDAO.deleteALLTestResult();
     })
