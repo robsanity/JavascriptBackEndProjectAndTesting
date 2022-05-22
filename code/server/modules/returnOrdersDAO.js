@@ -91,13 +91,13 @@ function createRetOrder(idReturnOrder, returnDate, idRestockOrder, idSKUItem) {
                 reject(err + 'Errore');
             }
             else {
-                resolve(this.lastID);
+                resolve(idReturnOrder);
             }
         })
     });
 };
 function updateProducts(){
-    return new Promise((resole,reject)=>{
+    return new Promise((resolve,reject)=>{
         const sql = "INSERT INTO Products (idSKU,description,price,RFID,idReturnOrder) VALUES (SELECT idSKU,description,price,RFID,idReturnOrder FROM SKUItems sku,SKU SK,ReturnOrders RO WHERE sku.RFID = RO.idSKUItems AND sku.idSKU = SK.idSKU"
         db.run(sql,[],function(err){
             if (err) {
@@ -146,6 +146,19 @@ function deleteRetOrder(idReturnOrder){
 };
 
 // tutto funzionante, imlementare updatePRoducts o no?
+function deleteDatas(){
+    return new Promise((resolve,reject)=>{
+        const sql = "DELETE FROM ReturnOrders";
+        db.run(sql,[], function(err){
+            if(err){
+                reject(err);
+            }
+            else {
+                resolve(this.lastID);
+            }
+        })
+    })
+}
 
 
-module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder }
+module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder, deleteDatas }

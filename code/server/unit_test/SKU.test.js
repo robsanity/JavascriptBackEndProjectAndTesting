@@ -7,6 +7,7 @@ const positionsDAO = require('../modules/positionsDAO');
 
 
 
+
 describe("Test SKUs", () => {
     beforeAll(() => {
         SKUsDAO.deleteDatas();
@@ -20,6 +21,7 @@ describe("Test SKUs", () => {
     })
     
     testlistSKUs();
+    testcreatesku("FRANCO",12,20,'ciccio',15,10.45);
     testFindSKU();
     testUpdateSKU('allora',12,15,'ciaociao',72.5,88);
     testupdatePosition(800211);
@@ -60,7 +62,6 @@ function testlistSKUs(){
     }
   
 
-
   function testFindSKU(){
     test('find SKU', async()=>{
       let res = await SKUsDAO.listSKUs();
@@ -82,6 +83,26 @@ function testlistSKUs(){
         expect(k).toStrictEqual(res);
     })
   }
+
+  function testcreatesku(description, weight, volume, notes, availableQuantity, price){
+    test('create sku test',async()=>{
+    let res = await SKUsDAO.listSKUs();
+        expect(res.length).toStrictEqual(0);
+        let newSKU = await SKUsDAO.createSKU(description, weight, volume, notes, availableQuantity, price);
+        
+    
+        res = await SKUsDAO.listSKUs();
+        expect(res.length).toStrictEqual(1);
+        expect(res[0].idSKU).toStrictEqual(newSKU);
+        expect(res[0].description).toStrictEqual(description);
+        expect(res[0].weight).toStrictEqual(weight);
+        expect(res[0].volume).toStrictEqual(volume);
+        expect(res[0].notes).toStrictEqual(notes);
+        expect(res[0].availableQuantity).toStrictEqual(availableQuantity);
+        expect(res[0].price).toStrictEqual(price);
+    })
+  }
+
   function testUpdateSKU(description,weight,volume,notes,price,availableQuantity){
     test('update SKU', async()=>{
       let z = await SKUsDAO.createSKU(
