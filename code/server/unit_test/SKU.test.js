@@ -17,6 +17,7 @@ describe("Test SKUs", () => {
     })
     
     testlistSKUs();
+    testFindSKU();
     testUpdateSKU('allora',12,15,'ciaociao',72.5,88);
 })
 
@@ -52,6 +53,29 @@ function testlistSKUs(){
         expect(res.length).toStrictEqual(2);
       });
     }
+
+
+  function testFindSKU(){
+    test('find SKU', async()=>{
+      let res = await SKUsDAO.listSKUs();
+        expect(res.length).toStrictEqual(0);
+    
+        let newSKU = await SKUsDAO.createSKU(
+          "FRANCO",
+          12,
+          20,
+          'ciccio',
+          15,
+          10.45      
+        );
+    
+        res = await SKUsDAO.listSKUs();
+        expect(res.length).toStrictEqual(1);
+        let z  = res[0].idSKU;
+        let k = await SKUsDAO.findSKU(z);
+        expect(k).toStrictEqual(res);
+    })
+  }
   function testUpdateSKU(description,weight,volume,notes,price,availableQuantity){
     test('update SKU', async()=>{
       let z = await SKUsDAO.createSKU(
@@ -78,4 +102,21 @@ function testlistSKUs(){
       expect(res[0].idSKU).toStrictEqual(z);      
     })
 
+  }
+  function testupdatePosition(){
+    test('update position test', async()=>{
+      let newsku = await SKUsDAO.createSKU(
+        'ciao',
+          10,
+          15,
+          'lello',
+          11,
+          22.30
+      );
+      let newPosition = await 
+      let z = await SKUsDAO.listSKUs();
+      expect(z.length).toStrictEqual(1);
+
+    
+    })
   }

@@ -9,7 +9,7 @@ function listSKUs() {
                 reject({ error: `Database error during the retrieval of the SKUs` });
                 return;
             }
-            const SKUs = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, avaibleQuantity: t.avaibleQuantity, price: t.price }));
+            const SKUs = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, availableQuantity: t.availableQuantity, price: t.price }));
             resolve(SKUs);
         });
     });
@@ -157,6 +157,11 @@ function createSKUWithOnlyId(id){
             }
         })
     });
+}
+function createPositionforSKU(){
+    return new Promise((resolve,reject)=>{
+        const sql = 'INSERT INTO '
+    })
 }
 
 module.exports = { listSKUs, findSKU, createSKU, updateSKU, updatePosition, deleteSKU, createSKUWithOnlyId , deleteDatas}
