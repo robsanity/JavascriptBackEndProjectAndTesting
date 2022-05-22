@@ -134,7 +134,7 @@ router.get('/api/skus', async (req, res) => {
   
     //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
     try {
-      await SKUsDAO.updatePosition(req.params.id, req.params.id, req.params.id, req.body.position, req.params.id, req.params.id, req.params.id, req.body.position);
+      await SKUsDAO.updatePosition(req.body.position,req.params.id, req.params.id, req.params.id, req.body.position, req.params.id, req.params.id, req.params.id, req.body.position);
       return res.status(200).end();
     }
     catch (error) {

@@ -1,5 +1,8 @@
 const SKUsDAO = require('../modules/SKUsDAO');
 const db = require ('../db.js');
+const positionsDAO = require('../modules/positionsDAO');
+
+
 
 
 
@@ -19,6 +22,8 @@ describe("Test SKUs", () => {
     testlistSKUs();
     testFindSKU();
     testUpdateSKU('allora',12,15,'ciaociao',72.5,88);
+    testupdatePosition(800211);
+    testdelete();
 })
 
 
@@ -53,6 +58,7 @@ function testlistSKUs(){
         expect(res.length).toStrictEqual(2);
       });
     }
+  
 
 
   function testFindSKU(){
@@ -93,7 +99,7 @@ function testlistSKUs(){
       let es = await SKUsDAO.listSKUs();
       expect(es.length).toStrictEqual(1);
       let res = await SKUsDAO.findSKU(z);
-      console.log(res);
+
       expect(res[0].availableQuantity).toStrictEqual(availableQuantity);
       expect(res[0].description).toStrictEqual(description);
       expect(res[0].weight).toStrictEqual(weight);
@@ -103,7 +109,9 @@ function testlistSKUs(){
     })
 
   }
-  function testupdatePosition(){
+
+
+  function testupdatePosition(idposition){
     test('update position test', async()=>{
       let newsku = await SKUsDAO.createSKU(
         'ciao',
@@ -113,10 +121,40 @@ function testlistSKUs(){
           11,
           22.30
       );
-      let newPosition = await 
+      await SKUsDAO.deleteDatasfromPositions();
+      let newPosition = await SKUsDAO.createPositionforSKU(800211,12,3,3,50,50);
       let z = await SKUsDAO.listSKUs();
       expect(z.length).toStrictEqual(1);
+      let idposition = newPosition;
+      let idsku = newsku;
+      await SKUsDAO.updatePosition(idposition,idsku,idsku,idsku,idposition,idsku,idsku,idsku,idposition);
+      let res = await SKUsDAO.findSKU(idsku);
 
-    
+      let respos = await positionsDAO.checkPosition(idposition)
+      
+      expect(res[0].idPosition).toStrictEqual(idposition);
+      expect(res[0].weight).toStrictEqual(respos[0].occupiedWeight);
+      expect(res[0].volume).toStrictEqual(respos[0].occupiedVolume);
+      
     })
   }
+
+
+  function testdelete(){
+    test('delete sku', async()=>{
+      let z = await SKUsDAO.createSKU(
+        'ciao',
+          10,
+          15,
+          'lello',
+          11,
+          22.30
+      );
+    
+    let gigi = await SKUsDAO.listSKUs();
+    expect(gigi.length).toStrictEqual(1);
+    await SKUsDAO.deleteSKU(z);
+    let fre2 = await SKUsDAO.listSKUs();
+    expect(fre2.length).toStrictEqual(0);
+  });
+}
