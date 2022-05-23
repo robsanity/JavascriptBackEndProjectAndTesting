@@ -73,8 +73,8 @@ function getToBeReturnRestockOrders(id) {
     });
 }
 
-async function createRestockOrder(issueDate, products, supplierId) {
-    return new Promise(async (resolve, reject) => {
+function createRestockOrder(issueDate, products, supplierId) {
+    return new Promise((resolve, reject) => {
         let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
         let idRestockOrder = "SELECT last_insert_rowid() as lastId";
 
@@ -103,7 +103,7 @@ async function createRestockOrder(issueDate, products, supplierId) {
                         let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
                         products.forEach(async p => {
         
-                            await db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
+                            db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
                                 if (err) {
                                     reject({ error: "no insert" });
                                     return;
@@ -111,7 +111,7 @@ async function createRestockOrder(issueDate, products, supplierId) {
                                 else {
                                     console.log("INSERITO ITEM" + p.SKUId)
                                     //se inserito in Items
-                                    await db.all(idItemSQL, [], (err, rows) => {
+                                    db.all(idItemSQL, [], (err, rows) => {
                                         if (err) {
                                             reject({ error: "no last id" });
                                             return;
@@ -120,7 +120,7 @@ async function createRestockOrder(issueDate, products, supplierId) {
                                             //acquisito idItem
                                             idItem = rows[0].lastId;
                                             console.log("ID ITEM" + idItem);
-                                            await db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
+                                            db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
                                                 if (err) {
                                                     reject({ error: "no insert" });
                                                     return;
