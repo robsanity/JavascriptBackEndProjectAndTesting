@@ -85,6 +85,7 @@ function createRestockOrder(issueDate, products, supplierId) {
 function insertRO(issueDate, supplierId) {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
+        let idRestockOrderSQL = "SELECT last_insert_rowid() as lastId";
         db.all(sql, [issueDate, supplierId], (err, rows) => {
             if (err) {
                 reject({ error: "no insert" });
@@ -93,7 +94,7 @@ function insertRO(issueDate, supplierId) {
             else {
                 //se inserito restock order continua
                 console.log("INSERITO RESTOCK ORDER")
-                db.all(idRestockOrder, [], (err, rows) => {
+                db.all(idRestockOrderSQL, [], (err, rows) => {
                     if (err) {
                         reject({ error: "no last id" });
                         return;
@@ -111,7 +112,8 @@ function insertRO(issueDate, supplierId) {
 
 function insertI(SKUId, description, price, supplierId) {
     return new Promise((resolve, reject) => {
-        let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
+        let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)";
+        let idItemSQL = "SELECT last_insert_rowid() as lastId";
         db.all(sqlI, [SKUId, description, price, supplierId], (err, rows) => {
             if (err) {
                 reject({ error: "no insert" });
