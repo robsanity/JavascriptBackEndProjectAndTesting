@@ -73,7 +73,7 @@ function getToBeReturnRestockOrders(id) {
     });
 }
 
-function createRestockOrder(issueDate, products, supplierId) {
+async function createRestockOrder(issueDate, products, supplierId) {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
         let idRestockOrder = "SELECT last_insert_rowid() as lastId";
