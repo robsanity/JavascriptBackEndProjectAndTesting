@@ -74,7 +74,7 @@ function getToBeReturnRestockOrders(id) {
 }
 
 async function createRestockOrder(issueDate, products, supplierId) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
         let idRestockOrder = "SELECT last_insert_rowid() as lastId";
 
