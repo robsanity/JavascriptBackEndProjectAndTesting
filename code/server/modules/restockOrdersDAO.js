@@ -101,9 +101,9 @@ function createRestockOrder(issueDate, products, supplierId) {
                         let idItem = 0;
                         let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
                         let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
-                        products.forEach((p) => {
+                        products.forEach(async p => {
         
-                            db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
+                            await db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
                                 if (err) {
                                     reject({ error: "no insert" });
                                     return;
@@ -111,7 +111,7 @@ function createRestockOrder(issueDate, products, supplierId) {
                                 else {
                                     console.log("INSERITO ITEM" + p.SKUId)
                                     //se inserito in Items
-                                    db.all(idItemSQL, [], (err, rows) => {
+                                    await db.all(idItemSQL, [], (err, rows) => {
                                         if (err) {
                                             reject({ error: "no last id" });
                                             return;
@@ -120,7 +120,7 @@ function createRestockOrder(issueDate, products, supplierId) {
                                             //acquisito idItem
                                             idItem = rows[0].lastId;
                                             console.log("ID ITEM" + idItem);
-                                            db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
+                                            await db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
                                                 if (err) {
                                                     reject({ error: "no insert" });
                                                     return;
