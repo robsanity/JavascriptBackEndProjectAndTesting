@@ -84,52 +84,65 @@ function createRestockOrder(issueDate, products, supplierId) {
                 reject({ error: "no insert" });
                 return;
             }
-        });
-
-        db.all(idRestockOrder, [], async (err, rows) => {
-            if (err) {
-                reject({ error: "no last id" });
-                return;
-            }
             else {
-                idRestockOrder = rows[0].lastId;
-
-                let idItemSQL = "SELECT last_insert_rowid() as lastId";
-                let idItem = 0;
-                let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
-                let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
-                products.forEach((p) => {
-
-                    db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
-                        if (err) {
-                            reject({ error: "no insert" });
-                            return;
-                        }
-                    });
-
-                    db.all(idItemSQL, [], (err, rows) => {
-                        if (err) {
-                            reject({ error: "no last id" });
-                            return;
-                        }
-                        else {
-                            idItem = rows[0].lastId;
-                            console.log(idItem);
-                            db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
+                //se inserito restock order continua
+                console.log("INSERITO RESTOCK ORDER")
+                db.all(idRestockOrder, [], (err, rows) => {
+                    if (err) {
+                        reject({ error: "no last id" });
+                        return;
+                    }
+                    else {
+                        //acquisito id Restock Order
+                        idRestockOrder = rows[0].lastId;
+                        console.log("ID RESTOCK ORDER" + idRestockOrder);
+        
+                        let idItemSQL = "SELECT last_insert_rowid() as lastId";
+                        let idItem = 0;
+                        let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
+                        let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
+                        products.forEach((p) => {
+        
+                            db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
                                 if (err) {
                                     reject({ error: "no insert" });
                                     return;
                                 }
+                                else {
+                                    console.log("INSERITO ITEM" + p.SKUId)
+                                    //se inserito in Items
+                                    db.all(idItemSQL, [], (err, rows) => {
+                                        if (err) {
+                                            reject({ error: "no last id" });
+                                            return;
+                                        }
+                                        else {
+                                            //acquisito idItem
+                                            idItem = rows[0].lastId;
+                                            console.log("ID ITEM" + idItem);
+                                            db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
+                                                if (err) {
+                                                    reject({ error: "no insert" });
+                                                    return;
+                                                }
+                                                else {
+                                                    console.log("INSERITO IN RO ITEMS" + idRestockOrder+idItem)
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                             });
-                        }
-                    });
+        
+                            
+        
+        
+                        });
+                    }
+                }); 
 
-
-                });
             }
         });
-
-
         resolve(true);
     });
 
