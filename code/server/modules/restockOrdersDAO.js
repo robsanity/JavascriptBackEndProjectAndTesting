@@ -73,7 +73,7 @@ function getToBeReturnRestockOrders(id) {
         });
     });
 }
-function createRestockOrder(issueDate, products, supplierId) {
+async function createRestockOrder(issueDate, products, supplierId) {
     let idRestockOrder=await insertRO(issueDate, supplierId);
 
     for (let p of products) {
