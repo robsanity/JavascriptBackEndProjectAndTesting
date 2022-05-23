@@ -16,18 +16,18 @@ async function getRestockOrders() {
                 state: ro.state,
                 products:
                     listProducts
-                        .filter((p) => p.id = ro.id)
+                        .filter((p) => p.id == ro.id)
                         .map(element => ({
                             SKUId: element.SKUId,
                             description: element.description,
                             price: element.price,
                             qty: element.qty
                         })),
-                supplierId: nt.supplierId,
-                transportNote: (ro.state != 'ISSUED' ? {} : ro.transportNote),
-                skuItems: ((ro.state == 'ISSUED' || ro.state == 'DELIVERED') ? {} :
+                supplierId: ro.supplierId,
+                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
+                skuItems: ((ro.state == 'ISSUED') ? {} :
                     listSkuItems
-                        .filter((si) => si.id = ro.id)
+                        .filter((si) => si.id == ro.id)
                         .map(element => ({
                             SKUId: element.SKUId,
                             rfid: element.rfid
@@ -93,16 +93,12 @@ function insertRO(issueDate, supplierId) {
                 return;
             }
             else {
-                //se inserito restock order continua
-                console.log("INSERITO RESTOCK ORDER")
                 db.all(idRestockOrderSQL, [], (err, rows) => {
                     if (err) {
                         reject({ error: "no last id" });
                         return;
                     }
                     else {
-                        //acquisito id Restock Order
-                        console.log("ID RESTOCK ORDER " + rows[0].lastId);
                         resolve(rows[0].lastId);
                     }
                 })
@@ -121,16 +117,12 @@ function insertI(SKUId, description, price, supplierId) {
                 return;
             }
             else {
-                console.log("INSERITO ITEM " + SKUId)
-                //se inserito in Items
                 db.all(idItemSQL, [], (err, rows) => {
                     if (err) {
                         reject({ error: "no last id" });
                         return;
                     }
                     else {
-                        //acquisito idItem
-                        console.log("ID ITEM " + idItem);
                         resolve(rows[0].lastId);
                     }
                 })
@@ -148,86 +140,11 @@ function insertROI(idRestockOrder, idItem, qty) {
                 return;
             }
             else {
-                console.log("INSERITO IN RO ITEMS " + idRestockOrder+ " "+idItem)
                 resolve(true);
             }
         });
     });
 }
-
-
-/*
-function createRestockOrder_template(issueDate, products, supplierId) {
-    return new Promise((resolve, reject) => {
-        let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
-        let idRestockOrder = "SELECT last_insert_rowid() as lastId";
-
-
-        db.all(sql, [issueDate, supplierId], (err, rows) => {
-            if (err) {
-                reject({ error: "no insert" });
-                return;
-            }
-            else {
-                //se inserito restock order continua
-                console.log("INSERITO RESTOCK ORDER")
-                db.all(idRestockOrder, [], (err, rows) => {
-                    if (err) {
-                        reject({ error: "no last id" });
-                        return;
-                    }
-                    else {
-                        //acquisito id Restock Order
-                        idRestockOrder = rows[0].lastId;
-                        console.log("ID RESTOCK ORDER" + idRestockOrder);
-        
-                        let idItemSQL = "SELECT last_insert_rowid() as lastId";
-                        let idItem = 0;
-                        let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
-                        let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
-                        
-                        for (let p of products) {
-                            db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
-                                if (err) {
-                                    reject({ error: "no insert" });
-                                    return;
-                                }
-                                else {
-                                    console.log("INSERITO ITEM" + p.SKUId)
-                                    //se inserito in Items
-                                    db.all(idItemSQL, [], (err, rows) => {
-                                        if (err) {
-                                            reject({ error: "no last id" });
-                                            return;
-                                        }
-                                        else {
-                                            //acquisito idItem
-                                            idItem = rows[0].lastId;
-                                            console.log("ID ITEM" + idItem);
-                                            db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
-                                                if (err) {
-                                                    reject({ error: "no insert" });
-                                                    return;
-                                                }
-                                                else {
-                                                    console.log("INSERITO IN RO ITEMS" + idRestockOrder+idItem)
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    }
-                }); 
-
-            }
-        });
-        resolve(true);
-    });
-
-}
-*/
 
 
 function putStateRestockOrder(id, newState) {
@@ -310,7 +227,7 @@ function getRestockList() {
                 return;
             }
             const restockOrders = rows.map((t) => ({
-                id: t.id, issueDate: t.issueDate, state: t.state,
+                id: t.idRestockOrder, issueDate: t.issueDate, state: t.state, transportNote: t.transportNote,
                 supplierId: t.supplierId
             }));
 
@@ -334,7 +251,7 @@ function getProducts() {
 
 function getSkuItems() {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT restockOrderId AS id, idSKU AS SKUId, RFID AS rfid FROM SKUItems WHERE restockOrderId!= NULL"
+        const sql = "SELECT restockOrderId AS id, idSKU AS SKUId, RFID AS rfid FROM SKUItems"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in database" });

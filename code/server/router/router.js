@@ -903,8 +903,10 @@ router.get('/api/skus', async (req, res) => {
   
   router.get('/api/restockOrdersIssued', async (req, res) => {
     try {
-      let restockOrdersListIssued = await restockOrdersDAO.getRestockOrders().filter((e) => e.state == 'ISSUED');
-      return res.status(200).json(restockOrdersListIssued)
+      let restockOrdersListIssued = await restockOrdersDAO.getRestockOrders();
+      restockOrdersListIssued = restockOrdersListIssued.filter((e) => e.state == 'ISSUED');
+
+      return res.status(200).json(restockOrdersListIssued);
     } catch (error) {
       return res.status(500).json();
     }
@@ -924,7 +926,8 @@ router.get('/api/skus', async (req, res) => {
         return res.status(404).end();
       }
   
-      let restockOrdersListIssued = await restockOrdersDAO.getRestockOrders().filter((e) => e.id == id);
+      let restockOrdersListIssued = await restockOrdersDAO.getRestockOrders();
+      restockOrdersListIssued = restockOrdersListIssued.filter((e) => e.id == id);
       return res.status(200).json(restockOrdersListIssued)
   
     } catch (error) {
@@ -950,9 +953,6 @@ router.get('/api/skus', async (req, res) => {
   
       let restockOrdersListIssued = await restockOrdersDAO.getToBeReturnRestockOrders(id);
       return res.status(200).json(restockOrdersListIssued)
-  
-  
-  
   
     } catch (error) {
       return res.status(500).json();
@@ -993,15 +993,14 @@ router.get('/api/skus', async (req, res) => {
       if (id === undefined || id == '' || isNaN(id)) {
         return res.status(422).end();
       }
-  
+
       let newState = req.body.newState;
       if (newState === undefined || newState == '') {
         return res.status(422).end();
       }
   
       let rO = await restockOrdersDAO.getByIdRestockOrders(id);
-  
-      if (rO.length !== 0) {
+      if (rO.length == 0) {
         return res.status(404).end();
       }
   
@@ -1027,10 +1026,10 @@ router.get('/api/skus', async (req, res) => {
       }
   
       let rO = await restockOrdersDAO.getByIdRestockOrders(id);
-      if (rO.length !== 0) {
+      if (rO.length == 0) {
         return res.status(404).end();
       }
-      if (rO.state != 'DELIVERED') {
+      if (rO[0].state != 'DELIVERED') {
         return res.status(422).end();
       }
   
@@ -1080,10 +1079,10 @@ router.get('/api/skus', async (req, res) => {
       }
   
       let rO = await restockOrdersDAO.getByIdRestockOrders(id);
-      if (rO.length !== 0) {
+      if (rO.length == 0) {
         return res.status(404).end();
       }
-      if (rO.state != 'DELIVERED' || dayjs(transportNote.deliveryDate).isBefore(dayjs(rO.issueDate))) {
+      if (rO[0].state != 'DELIVERED' || dayjs(transportNote.deliveryDate).isBefore(dayjs(rO[0].issueDate))) {
         return res.status(422).end();
       }
   
@@ -1098,7 +1097,7 @@ router.get('/api/skus', async (req, res) => {
   });
   
   //--------------------------------------|   DELETE   |----------------------------------------------
-  router.delete('', async (res, req) => {
+  router.delete('/api/restockOrder/:id', async (req, res) => {
     if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
       return res.status(422).end();
   
