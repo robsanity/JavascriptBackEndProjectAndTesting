@@ -1,3 +1,4 @@
 
-GET  http://localhost:3001/api/skus
+DELETE  http://localhost:3001/api/restockOrder/34
 Content-Type: application/json
+        

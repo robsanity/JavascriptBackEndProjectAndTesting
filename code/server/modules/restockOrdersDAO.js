@@ -2,45 +2,45 @@
 const db = require('../db.js');
 
 async function getRestockOrders() {
-    
-        let restockList = await getRestockList();
-        let listProducts = await getProducts();
-        let listSkuItems = await getSkuItems();
 
-        let restockOrders =
-            restockList.map(
-                (ro) => ({
-                    id: ro.id,
-                    issueDate: ro.issueDate,
-                    state: ro.state,
-                    products:
-                        listProducts
-                            .filter((p) => p.id = ro.id)
-                            .map(element => ({
-                                SKUId: element.SKUId,
-                                description: element.description,
-                                price: element.price,
-                                qty: element.qty
-                            })),
-                    supplierId: nt.supplierId,
-                    transportNote: (ro.state != 'ISSUED' ? {} : ro.transportNote),
-                    skuItems: ((ro.state == 'ISSUED' || ro.state == 'DELIVERED') ? {} :
-                        listSkuItems
-                            .filter((si) => si.id = ro.id)
-                            .map(element => ({
-                                SKUId: element.SKUId,
-                                rfid: element.rfid
-                            }))
-                    )
-                })
-            )
+    let restockList = await getRestockList();
+    let listProducts = await getProducts();
+    let listSkuItems = await getSkuItems();
 
-        return restockOrders;
+    let restockOrders =
+        restockList.map(
+            (ro) => ({
+                id: ro.id,
+                issueDate: ro.issueDate,
+                state: ro.state,
+                products:
+                    listProducts
+                        .filter((p) => p.id == ro.id)
+                        .map(element => ({
+                            SKUId: element.SKUId,
+                            description: element.description,
+                            price: element.price,
+                            qty: element.qty
+                        })),
+                supplierId: ro.supplierId,
+                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
+                skuItems: ((ro.state == 'ISSUED') ? {} :
+                    listSkuItems
+                        .filter((si) => si.id == ro.id)
+                        .map(element => ({
+                            SKUId: element.SKUId,
+                            rfid: element.rfid
+                        }))
+                )
+            })
+        )
 
-   /* }
-    catch (error) {
-        throw error;*/
-    }
+    return restockOrders;
+
+    /* }
+     catch (error) {
+         throw error;*/
+}
 
 
 function getByIdRestockOrders(id) {
@@ -72,62 +72,78 @@ function getToBeReturnRestockOrders(id) {
         });
     });
 }
+async function createRestockOrder(issueDate, products, supplierId) {
+    let idRestockOrder=await insertRO(issueDate, supplierId);
 
-function createRestockOrder(issueDate, products, supplierId) {
+    for (let p of products) {
+        let idItem = await insertI(p.SKUId, p.description, p.price, supplierId);
+        await insertROI(idRestockOrder, idItem, p.qty);
+    }
+    return;
+}
+
+function insertRO(issueDate, supplierId) {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
-        let idRestockOrder = "SELECT last_insert_rowid() as lastId";
-
-        db.all(idRestockOrder, [], (err, rows) => {
-            if (err) {
-                reject({ error: "no last id" });
-                return;
-            }
-            else {
-                idRestockOrder = rows[0];
-            }
-        });
-
+        let idRestockOrderSQL = "SELECT last_insert_rowid() as lastId";
         db.all(sql, [issueDate, supplierId], (err, rows) => {
             if (err) {
                 reject({ error: "no insert" });
                 return;
             }
-        });
-        let idItemSQL = "SELECT last_insert_rowid() as lastId";
-        let idItem = 0;
-        let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
-        let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
-        products.forEach((p) => {
-            db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
-                if (err) {
-                    reject({ error: "no insert" });
-                    return;
-                }
-            });
-
-            db.all(idItemSQL, [], (err, rows) => {
-                if (err) {
-                    reject({ error: "no last id" });
-                    return;
-                }
-                else {
-                    idItem = rows[0];
-                }
-            });
-
-            db.all(sqlROI, [idRestockOrder, idItem, p.qty], (err, rows) => {
-                if (err) {
-                    reject({ error: "no insert" });
-                    return;
-                }
-            });
-        });
-        resolve(true);
+            else {
+                db.all(idRestockOrderSQL, [], (err, rows) => {
+                    if (err) {
+                        reject({ error: "no last id" });
+                        return;
+                    }
+                    else {
+                        resolve(rows[0].lastId);
+                    }
+                })
+            }
+        })
     });
-
 }
 
+function insertI(SKUId, description, price, supplierId) {
+    return new Promise((resolve, reject) => {
+        let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)";
+        let idItemSQL = "SELECT last_insert_rowid() as lastId";
+        db.all(sqlI, [SKUId, description, price, supplierId], (err, rows) => {
+            if (err) {
+                reject({ error: "no insert" });
+                return;
+            }
+            else {
+                db.all(idItemSQL, [], (err, rows) => {
+                    if (err) {
+                        reject({ error: "no last id" });
+                        return;
+                    }
+                    else {
+                        resolve(rows[0].lastId);
+                    }
+                })
+            }
+        })
+    });
+}
+
+function insertROI(idRestockOrder, idItem, qty) {
+    return new Promise((resolve, reject) => {
+        let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
+        db.all(sqlROI, [idRestockOrder, idItem, qty], (err, rows) => {
+            if (err) {
+                reject({ error: "no insert" });
+                return;
+            }
+            else {
+                resolve(true);
+            }
+        });
+    });
+}
 
 
 function putStateRestockOrder(id, newState) {
@@ -157,7 +173,7 @@ function putSkuItemsOfRestockOrder(id, skuItems) {
             });
 
         })
-        
+
         resolve(true);
 
     });
@@ -210,7 +226,7 @@ function getRestockList() {
                 return;
             }
             const restockOrders = rows.map((t) => ({
-                id: t.id, issueDate: t.issueDate, state: t.state,
+                id: t.idRestockOrder, issueDate: t.issueDate, state: t.state, transportNote: t.transportNote,
                 supplierId: t.supplierId
             }));
 
@@ -234,7 +250,7 @@ function getProducts() {
 
 function getSkuItems() {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT restockOrderId AS id, idSKU AS SKUId, RFID AS rfid FROM SKUItems WHERE restockOrderId!= NULL"
+        const sql = "SELECT restockOrderId AS id, idSKU AS SKUId, RFID AS rfid FROM SKUItems"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in database" });
@@ -245,11 +261,11 @@ function getSkuItems() {
     });
 }
 
-function deleteDatas(){
-    return new Promise((resolve,reject)=>{
+function deleteDatas() {
+    return new Promise((resolve, reject) => {
         const sql = "DELETE FROM RestockOrders";
-        db.run(sql,[], function(err){
-            if(err){
+        db.run(sql, [], function (err) {
+            if (err) {
                 reject(err);
             }
             else {
@@ -258,11 +274,11 @@ function deleteDatas(){
         })
     })
 }
-function initialize(){
-    return new Promise((resolve,reject)=>{
+function initialize() {
+    return new Promise((resolve, reject) => {
         const sql = "INSERT INTO Users (idUser,name,surname,email,type) VALUES (1,'Giuseppe','Regina','gr@a.it','clerk'); INSERT INTO SKUs (idSKU,description,weight,volume,notes,availableQuantity,price) values (1,'ciao',12,13,'ciaao',10,12); INSERT INTO Items (idItems,idSKU,description,price,idSupplier) VALUES (1,1,'CIAO',77,1); INSERT INTO RestockOrders(idRestockOrder,issueDate,state,idSupplier,transportNote) VALUES (1,'2022-10-10','DELIVERED',1,'ciao'); INSERT INTO RestockOrderItems (idRestockOrder,idItem,quantity) VALUES (1,1,10);"
-        db.run(sql,[],function(err){
-            if (err){
+        db.run(sql, [], function (err) {
+            if (err) {
                 reject(err);
             }
             else {
@@ -275,4 +291,4 @@ function initialize(){
 
 
 
-module.exports = { getRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, createRestockOrder, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder,getRestockList,getProducts,getSkuItems, deleteDatas,initialize };
+module.exports = { getRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, createRestockOrder, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, initialize };
