@@ -1,6 +1,5 @@
 'use strict'
 const db = require('../db.js');
-const { insertTestDescriptor } = require('./testDescriptorsDAO.js');
 
 async function getRestockOrders() {
 
