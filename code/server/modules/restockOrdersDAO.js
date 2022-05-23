@@ -101,7 +101,7 @@ function createRestockOrder(issueDate, products, supplierId) {
                         let idItem = 0;
                         let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
                         let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
-                        products.forEach(async p => {
+                        products.forEach(p => {
         
                             db.all(sqlI, [p.SKUId, p.description, p.price, supplierId], (err, rows) => {
                                 if (err) {
