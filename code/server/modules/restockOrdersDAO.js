@@ -1,5 +1,6 @@
 'use strict'
 const db = require('../db.js');
+const { insertTestDescriptor } = require('./testDescriptorsDAO.js');
 
 async function getRestockOrders() {
 
@@ -72,8 +73,88 @@ function getToBeReturnRestockOrders(id) {
         });
     });
 }
-
 function createRestockOrder(issueDate, products, supplierId) {
+    let idRestockOrder=await insertRO(issueDate, supplierId);
+
+    for (let p of products) {
+        let idItem = await insertI(p.SKUId, p.description, p.price, supplierId);
+        await insertROI(idRestockOrder, idItem, p.qty);
+    }
+    return;
+}
+function insertRO(issueDate, supplierId) {
+    return new Promise((resolve, reject) => {
+        let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
+        db.all(sql, [issueDate, supplierId], (err, rows) => {
+            if (err) {
+                reject({ error: "no insert" });
+                return;
+            }
+            else {
+                //se inserito restock order continua
+                console.log("INSERITO RESTOCK ORDER")
+                db.all(idRestockOrder, [], (err, rows) => {
+                    if (err) {
+                        reject({ error: "no last id" });
+                        return;
+                    }
+                    else {
+                        //acquisito id Restock Order
+                        console.log("ID RESTOCK ORDER " + rows[0].lastId);
+                        resolve(rows[0].lastId);
+                    }
+                })
+            }
+        })
+    });
+}
+
+function insertI(SKUId, description, price, supplierId) {
+    return new Promise((resolve, reject) => {
+        let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)"
+        db.all(sqlI, [SKUId, description, price, supplierId], (err, rows) => {
+            if (err) {
+                reject({ error: "no insert" });
+                return;
+            }
+            else {
+                console.log("INSERITO ITEM " + SKUId)
+                //se inserito in Items
+                db.all(idItemSQL, [], (err, rows) => {
+                    if (err) {
+                        reject({ error: "no last id" });
+                        return;
+                    }
+                    else {
+                        //acquisito idItem
+                        console.log("ID ITEM " + idItem);
+                        resolve(rows[0].lastId);
+                    }
+                })
+            }
+        })
+    });
+}
+
+function insertROI(idRestockOrder, idItem, qty) {
+    return new Promise((resolve, reject) => {
+        let sqlROI = "INSERT INTO RestockOrderItems (idRestockOrder, idItem, quantity) values (?,?,?)"
+        db.all(sqlROI, [idRestockOrder, idItem, qty], (err, rows) => {
+            if (err) {
+                reject({ error: "no insert" });
+                return;
+            }
+            else {
+                console.log("INSERITO IN RO ITEMS " + idRestockOrder+ " "+idItem)
+                resolve(true);
+            }
+        });
+    });
+}
+
+
+/*
+function createRestockOrder_template(issueDate, products, supplierId) {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
         let idRestockOrder = "SELECT last_insert_rowid() as lastId";
@@ -143,7 +224,7 @@ function createRestockOrder(issueDate, products, supplierId) {
     });
 
 }
-
+*/
 
 
 function putStateRestockOrder(id, newState) {
