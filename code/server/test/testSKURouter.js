@@ -14,7 +14,7 @@ describe('test', () =>{
     })
   
     getSKU();
-    newSKU(200,'ciao',12,12,'we',12,12);
+    newSKU(201,'ciao',12,12,'we',12,12);
 });
 
 function newSKU(expectedHTTPStatus,description, weight, volume, notes, availableQuantity, price){
@@ -26,7 +26,6 @@ function newSKU(expectedHTTPStatus,description, weight, volume, notes, available
                     done();
                     res.should.have.status(expectedHTTPStatus);
                     res.body.should.equal(k);
-                    console.log(k);
                 })
                 
                 });
@@ -34,8 +33,10 @@ function newSKU(expectedHTTPStatus,description, weight, volume, notes, available
             }
 
 function getSKU(){
-it('GETsku', function (done) {
-    let k = SKUsDAO.createSKU('ciao',12,12,'we',12,12);
+    
+    it('GETsku', function (done) {
+        newSKU(201,'ciao',12,12,'we',12,12);
+        done();
         agent.get('/api/skus')
             .then(function (res) {
                 console.log(res.body[0].description
@@ -52,5 +53,6 @@ it('GETsku', function (done) {
                 res.body.length.should.equal(1);
             })
          });
-}
+        }
+
 
