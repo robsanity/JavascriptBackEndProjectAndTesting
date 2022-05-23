@@ -661,7 +661,6 @@ router.get('/api/skus', async (req, res) => {
         idTestDescriptor === undefined || idTestDescriptor == '' || isNaN(idTestDescriptor) ||
         date === undefined || date == '' ||
         !(result == true || result == false)) {
-        console.log(rfid, idTestDescriptor, date, result)
   
         return res.status(422).end();
       }
@@ -960,7 +959,7 @@ router.get('/api/skus', async (req, res) => {
     }
   })
   //--------------------------------------|   POST   |------------------------------------------------
-  router.post('/api/restockOrder', async (res, req) => {
+  router.post('/api/restockOrder', async (req, res) => {
     try {
       if (req.body.issueDate === undefined
         || req.body.products === undefined
@@ -970,16 +969,18 @@ router.get('/api/skus', async (req, res) => {
       let issueDate = req.body.issueDate;
       let products = req.body.products;
       let supplierId = req.body.supplierId;
-  
+
+
       if (await usersDAO.findUser(supplierId) != true) {
         return res.status(422).end();
       }
   
       await restockOrdersDAO.createRestockOrder(issueDate, products, supplierId);
-      return res.state(201).end()
+      return res.status(201).end();
   
     }
     catch (error) {
+
       return res.status(500).end();
     }
   })
