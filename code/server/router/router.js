@@ -975,7 +975,7 @@ router.get('/api/skus', async (req, res) => {
         return res.status(422).end();
       }
   
-      await restockOrdersDAO.createRestockOrder(issueDate, products, supplierId);
+      restockOrdersDAO.createRestockOrder(issueDate, products, supplierId);
       return res.status(201).end();
   
     }

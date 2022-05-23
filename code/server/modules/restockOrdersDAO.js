@@ -73,7 +73,7 @@ function getToBeReturnRestockOrders(id) {
         });
     });
 }
-function createRestockOrder(issueDate, products, supplierId) {
+async function createRestockOrder(issueDate, products, supplierId) {
     let idRestockOrder=await insertRO(issueDate, supplierId);
 
     for (let p of products) {
@@ -82,6 +82,7 @@ function createRestockOrder(issueDate, products, supplierId) {
     }
     return;
 }
+
 function insertRO(issueDate, supplierId) {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO RestockOrders (issueDate, idSupplier) values (?,?)";
