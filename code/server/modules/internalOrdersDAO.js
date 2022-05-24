@@ -282,7 +282,7 @@ function getNotCompleted() {
                 reject(err);
                 return;
             }
-            let notCompleted = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, customerId: t.customerId }));
+            let notCompleted = rows.map((t) => ({ id: t.idInternalOrder, issueDate: t.date, state: t.state, customerId: t.idCustomer }));
             resolve(notCompleted);
         });
     });
@@ -296,7 +296,7 @@ function getCompleted() {
                 reject(err);
                 return;
             }
-            let completed = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, customerId: t.customerId }));
+            let completed = rows.map((t) => ({ id: t.idInternalOrder, issueDate: t.date, state: t.state, customerId: t.idCustomer }));
             resolve(completed);
         });
     });
@@ -336,7 +336,7 @@ function getIssued() {
                 reject(err);
                 return;
             }
-            let issued = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, customerId: t.customerId }));
+            let issued = rows.map((t) => ({ id: t.idInternalOrder, issueDate: t.date, state: t.state, customerId: t.idCustomer }));
             resolve(issued);
         });
     });
@@ -350,7 +350,7 @@ function getAccepted() {
                 reject(err);
                 return;
             }
-            let accepted = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, customerId: t.customerId }));
+            let accepted = rows.map((t) => ({ id: t.idInternalOrder, issueDate: t.date, state: t.state, customerId: t.idCustomer }));
             resolve(accepted);
         });
     });
