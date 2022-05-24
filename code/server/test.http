@@ -1,7 +1,3 @@
 
-PUT  http://localhost:3001/api/internalOrders/1
+GET  http://localhost:3001/api/internalOrders
 Content-Type: application/json
-        
-        {
-            "newState":"ACCEPTED"
-        }

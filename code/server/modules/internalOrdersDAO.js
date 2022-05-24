@@ -196,7 +196,7 @@ function updateIntOrder(id, newState, products) {
     if (newState !== 'COMPLETED') {
         return new Promise((resolve, reject) => {
             let sql = "UPDATE InternalOrders SET state=? WHERE idInternalOrder=?"
-            db.all(sql, [state, id], (err, rows) => {
+            db.all(sql, [newState, id], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
@@ -213,7 +213,7 @@ function updateIntOrder(id, newState, products) {
         return new Promise((resolve, reject) => {
             //update state
             let sql = "UPDATE InternalOrders SET state=? WHERE idInternalOrder=?"
-            db.all(sql, [state, id], (err, rows) => {
+            db.all(sql, [newState, id], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
@@ -235,9 +235,9 @@ function updateIntOrder(id, newState, products) {
 
             //elimino da internalorderskus
 
-            sql = "DELETE FROM InternalOrdersItems WHERE rfid=? AND idInternalOrder=?"
+            sql = "DELETE FROM InternalOrdersSKUs WHERE idSKU=? AND idInternalOrder=?"
             products.forEach((p) => {
-                db.all(sql, [p.rfid, id], (err, rows) => {
+                db.all(sql, [p.SkuID, id], (err, rows) => {
                     if (err) {
                         reject(err);
                         return;
