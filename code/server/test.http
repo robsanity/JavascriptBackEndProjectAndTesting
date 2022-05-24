@@ -1,10 +1,8 @@
 
-POST  http://localhost:3001/api/restockOrder
+PUT  http://localhost:3001/api/restockOrder/25/skuItems
 Content-Type: application/json
         
         {
-            "issueDate":"2021/11/29 09:33",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-                        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],
-            "supplierId" : 1
+            "skuItems" : [{"SKUId":12,"rfid":"99988"},
+            {"SKUId":12,"rfid":"99977"}]
         }

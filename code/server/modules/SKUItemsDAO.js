@@ -89,7 +89,7 @@ function deleteSKUItem(rfid) {
 function createSKUItemNoDate(rfid, SKUId) {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO SKUItems (RFID, idSKU) VALUES (?,?)";
-        db.run(sql, [rfid, SKUId, date], function(err) {
+        db.run(sql, [rfid, SKUId], function(err) {
             if(err) {
                 reject({ error: "no insert" });
             }

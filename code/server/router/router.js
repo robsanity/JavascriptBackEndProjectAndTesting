@@ -1030,6 +1030,7 @@ router.get('/api/skus', async (req, res) => {
         return res.status(404).end();
       }
       if (rO[0].state != 'DELIVERED') {
+       
         return res.status(422).end();
       }
   
@@ -1037,7 +1038,7 @@ router.get('/api/skus', async (req, res) => {
       let checkSKUs;
       let checkSKUItems;
       //controlli per crezione / inseirmento skus e skuitems
-      for (si in skuItems) {
+      for (let si in skuItems) {
         checkSKUs = await SKUsDAO.findSKU(si.SKUId);
         if (checkSKUs.length == 0) {
           await SKUsDAO.createSKUWithOnlyId(si.SKUId);
@@ -1057,6 +1058,7 @@ router.get('/api/skus', async (req, res) => {
       return res.status(200).end();
     }
     catch (error) {
+      console.log(error);
       return res.status(503).end();
     }
   });

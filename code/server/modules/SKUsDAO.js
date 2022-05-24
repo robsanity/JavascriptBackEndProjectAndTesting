@@ -170,10 +170,10 @@ function deleteDatasfromPositions(){
 
 function createSKUWithOnlyId(id){
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO SKUs (id) values (?)';
+        const sql = 'INSERT INTO SKUs (idSKU) values (?)';
         db.all(sql, [id], function (err, rows) {
             if (err) {
-                reject(err + 'Errore');
+                reject(err + ' Errore');
             }
             else {
                 resolve(true);
