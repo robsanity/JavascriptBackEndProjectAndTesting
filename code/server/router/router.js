@@ -1472,10 +1472,10 @@ CONTROLLO FUNZIONAMENTO CON CONCAT
   
     //aggiungere controlli su body
   
-    if (newState !== 'ACCEPTED' || newState !== 'COMPLETED') {
+/*     if (newState !== 'ACCEPTED' || newState !== 'COMPLETED') {
       res.status(422).end();
       return;
-    }
+    } */
   
     try {
       let found = await internalOrdersDAO.listIntOrders().filter(e => e.id = req.params.id);
@@ -1488,6 +1488,7 @@ CONTROLLO FUNZIONAMENTO CON CONCAT
       return;
     }
     catch (error) {
+      console.log(error);
       res.status(503).json(error);
     }
   });

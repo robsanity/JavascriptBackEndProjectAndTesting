@@ -178,7 +178,7 @@ function insertIO(issueDate, customerId) {
 
 function insertIOS(id, SKUId, qty){
     return new Promise((resolve, reject) => {
-        sql = "INSERT INTO InternalOrdersSKUs (idInternalOrder, idSKU, quantity) values (?,?,?)";
+        let sql = "INSERT INTO InternalOrdersSKUs (idInternalOrder, idSKU, quantity) values (?,?,?)";
         
             db.all(sql, [id, SKUId, qty], (err, rows) => {
                 if (err) {
