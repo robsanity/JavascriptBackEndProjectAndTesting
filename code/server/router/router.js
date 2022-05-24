@@ -851,6 +851,7 @@ router.get('/api/skus', async (req, res) => {
   
     }
     catch (error) {
+
       return res.status(503).end()
     }
   });
@@ -1447,13 +1448,14 @@ CONTROLLO FUNZIONAMENTO CON CONCAT
     }
   
     try {
-      let idIntOrder=await insertIO(issueDate, customerId);
+      let idIntOrder=await internalOrdersDAO.insertIO(issueDate, customerId);
         for (let p of products) {
-            await insertIOS(idIntOrder, p.SKUId, p.qty);
+            await internalOrdersDAO.insertIOS(idIntOrder, p.SKUId, p.qty);
         }
       res.status(201).end();
     }
     catch (error) {
+      console.log(error);
       res.status(503).json(error);
     }
   

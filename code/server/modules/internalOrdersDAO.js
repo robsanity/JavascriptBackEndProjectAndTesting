@@ -159,12 +159,12 @@ function insertIO(issueDate, customerId) {
         let lastID = "SELECT last_insert_rowid() as lastId";
         db.all(sql, [issueDate, customerId], (err, rows) => {
             if (err) {
-                reject({ error: "no insert" });
+                reject(err);
                 return;
             } else {
                 db.all(lastID, [], (err, rows) => {
                     if (err) {
-                        reject({ error: "no insert" });
+                        reject(err);
                         return;
                     }
                     else {
@@ -182,7 +182,7 @@ function insertIOS(id, SKUId, qty){
         
             db.all(sql, [id, SKUId, qty], (err, rows) => {
                 if (err) {
-                    reject({ error: "no insert" });
+                    reject(err);
                     return;
                 }
                 else {
@@ -198,7 +198,7 @@ function updateIntOrder(id, newState, products) {
             let sql = "UPDATE InternalOrders SET state=? WHERE idInternalOrder=?"
             db.all(sql, [state, id], (err, rows) => {
                 if (err) {
-                    reject({ error: "no update" });
+                    reject(err);
                     return;
                 }
                 else {
@@ -215,7 +215,7 @@ function updateIntOrder(id, newState, products) {
             let sql = "UPDATE InternalOrders SET state=? WHERE idInternalOrder=?"
             db.all(sql, [state, id], (err, rows) => {
                 if (err) {
-                    reject({ error: "no update" });
+                    reject(err);
                     return;
                 }
             });
@@ -226,7 +226,7 @@ function updateIntOrder(id, newState, products) {
             products.forEach((p) => {
                 db.all(sql, [id, p.rfid], (err, rows) => {
                     if (err) {
-                        reject({ error: "no update" });
+                        reject(err);
                         return;
                     }
                 })
@@ -239,7 +239,7 @@ function updateIntOrder(id, newState, products) {
             products.forEach((p) => {
                 db.all(sql, [p.rfid, id], (err, rows) => {
                     if (err) {
-                        reject({ error: "no delete" });
+                        reject(err);
                         return;
                     }
                 })
@@ -256,7 +256,7 @@ function deleteIntOrder(id) {
         let sql = "DELETE FROM InternalOrdersSKUs WHERE idInternalOrder=?";
         db.all(sql, [id], (err, rows) => {
             if (err) {
-                reject({ error: "no delete" });
+                reject(err);
                 return;
             }
         });
@@ -264,7 +264,7 @@ function deleteIntOrder(id) {
         sql = "DELETE FROM InternalOrders WHERE idInternalOrder=?";
         db.all(sql, [id], (err, rows) => {
             if (err) {
-                reject({ error: "no delete" });
+                reject(err);
                 return;
             }
         });
