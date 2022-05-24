@@ -9,7 +9,7 @@ function getSuppliers() {
                 reject({ error: "no suppliers in database" });
                 return;
             }
-            const suppliers = rows.map((t) => ({ id: t.id, name: t.name, surname: t.surname, email: t.email }));
+            const suppliers = rows.map((t) => ({ id: t.idUser, name: t.name, surname: t.surname, email: t.email }));
             resolve(suppliers);
         });
     });
@@ -23,7 +23,7 @@ function getUsers() {
                 reject({ error: "no users in database" });
                 return;
             }
-            const users = rows.map((t) => ({ id: t.id, name: t.name, surname: t.surname, email: t.email, type: t.type }));
+            const users = rows.map((t) => ({ id: t.idUser, name: t.name, surname: t.surname, email: t.email, type: t.type }));
             resolve(users);
         });
     });
@@ -38,7 +38,7 @@ function checkUser(username, type) {
                 reject({ error: "no users in database" });
                 return;
             }
-            const users = rows.map((t) => ({ id: t.id, name: t.name, surname: t.surname, email: t.email, type: t.type }));
+            const users = rows.map((t) => ({ id: t.idUser, name: t.name, surname: t.surname, email: t.email, type: t.type }));
             resolve(users);
         });
     });
@@ -67,6 +67,21 @@ function insertUser(username, name, surname, type) {
             }
             resolve(true);
         });
+    });
+}
+
+function login(username, password, type){
+    const sql = "SELECT * FROM user WHERE type=? AND email=? AND password=?";
+    return new Promise((resolve, reject) => {
+        db.all(sql, [type, username, password], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(
+                    rows.map((u) => ({id: u.idUser, name: u.name, surname: u.surname, email: u.email, type: u.type}))
+                )
+            }
+        })
     });
 }
 
