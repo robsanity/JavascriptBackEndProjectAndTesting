@@ -1052,8 +1052,10 @@ router.get('/api/skus', async (req, res) => {
         }
       }
       
-
-      await restockOrdersDAO.putSkuItemsOfRestockOrder(id, skuItems);
+      for (let si of skuItems) {
+        await restockOrdersDAO.putSkuItemsOfRestockOrder(id, si.rfid, si.SKUId);
+      }
+      
   
       return res.status(200).end();
     }

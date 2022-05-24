@@ -158,18 +158,20 @@ function putStateRestockOrder(id, newState) {
     });
 }
 
-function putSkuItemsOfRestockOrder(id, skuItems) {
+function putSkuItemsOfRestockOrder(id, id, rfid, SKUId) {
     return new Promise((resolve, reject) => {
         let sql = "UPDATE SKUItems SET available=1, restockOrderId=? WHERE RFID=? AND idSKU=?";
-for(let si of skuItems){
-db.all(sql, [id, si.rfid, si.SKUId], (err, rows) => {
+
+        db.all(sql, [id, rfid, SKUId], (err, rows) => {
                 if (err) {
                     reject({ error: "no update" });
 
                 }
+                else {
+                    resolve (true);
+                }
             });    
-}
-        resolve(true);
+
 
     });
 }
