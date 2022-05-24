@@ -820,8 +820,110 @@ router.post('/api/newUser', async (req, res) => {
     return res.status(503).end();
   }
 });
-//NON FUNZIONANTE RITORNA 409
+//FUNZIONANTE
 
+router.post('/api/managerSessions', async (req, res) => {
+  try {
+
+    let username = req.body.username
+    let password = req.body.password;
+
+    let manager = await usersDAO.login(username, password, 'manager');
+    if (manager.length != 0)
+      return res.status(200).json(manager);
+    else
+      return res.status(401).end();
+  }
+  catch (error) {
+    return res.status(500).end();
+  }
+});
+
+
+router.post('/api/customerSessions', async (req, res) => {
+  try {
+
+    let username = req.body.username
+    let password = req.body.password;
+
+    let customer = await usersDAO.login(username, password, 'customer');
+    if (customer.length != 0)
+      return res.status(200).json(customer);
+    else
+      return res.status(401).end();
+  }
+  catch (error) {
+    return res.status(500).end();
+  }
+});
+
+router.post('/api/supplierSessions', async (req, res) => {
+  try {
+
+    let username = req.body.username
+    let password = req.body.password;
+
+    let supplier = await usersDAO.login(username, password, 'supplier');
+    if (supplier.length != 0)
+      return res.status(200).json(supplier);
+    else
+      return res.status(401).end();
+  }
+  catch (error) {
+    return res.status(500).end();
+  }
+});
+
+router.post('/api/clerkSessions', async (req, res) => {
+  try {
+
+    let username = req.body.username
+    let password = req.body.password;
+
+    let clerk = await usersDAO.login(username, password, 'clerk');
+    if (clerk.length != 0)
+      return res.status(200).json(clerk);
+    else
+      return res.status(401).end();
+  }
+  catch (error) {
+    return res.status(500).end();
+  }
+});
+
+router.post('/api/qualityEmployeeSessions', async (req, res) => {
+  try {
+
+    let username = req.body.username
+    let password = req.body.password;
+
+    let qualityE = await usersDAO.login(username, password, 'qualityEmployee');
+    if (qualityE.length != 0)
+      return res.status(200).json(qualityE);
+    else
+      return res.status(401).end();
+  }
+  catch (error) {
+    return res.status(500).end();
+  }
+});
+
+router.post('/api/deliveryEmployeeSessions', async (req, res) => {
+  try {
+
+    let username = req.body.username
+    let password = req.body.password;
+
+    let deliveryE = await usersDAO.login(username, password, 'deliveryEmployee');
+    if (deliveryE.length != 0)
+      return res.status(200).json(deliveryE);
+    else
+      return res.status(401).end();
+  }
+  catch (error) {
+    return res.status(500).end();
+  }
+});
 
 
 //--------------------------------------|   PUT   |-------------------------------------------------
@@ -856,13 +958,15 @@ router.put('/api/users/:username', async (req, res) => {
     return res.status(503).end()
   }
 });
+//FUNZIONANTE
+
 //--------------------------------------|   DELETE   |----------------------------------------------
 router.delete('/api/users/:username/:type', async (req, res) => {
   try {
     let username = req.params.username;
-    let type = req.params.type;
+    let oldType = req.params.type;
     if (username === undefined || username === '' ||
-      type === undefined || type == '' || !(type === "customer" || type === "qualityEmployee" || type === "clerk" || type === "deliveryEmployee" || type === "supplier")) {
+      oldType === undefined || oldType == '' || !(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier")) {
       return res.status(422).end();
     }
 
@@ -872,18 +976,19 @@ router.delete('/api/users/:username/:type', async (req, res) => {
       return res.status(422).end();
     }
 
-    await usersDAO.deleteUser(username, type);
+    await usersDAO.deleteUser(username, oldType);
     return res.status(204).end();
 
   }
   catch (error) {
+    console.log(error);
     return res.status(503).end();
   }
 
 });
 
 
-//NON FUNZIONANTE TORNA 503, INOLTRE SONO PRESENTI UTENTI CON TYPE DIVERSO DA QUELLO NEI CONTROLLI SOPRA CHE NON SI POSSONO ELIMINARE
+// FUNZIONANTE
 
 
 
@@ -899,32 +1004,32 @@ router.get('/api/restockOrders', async (req, res) => {
     let listSkuItems = await restockOrdersDAO.getSkuItems();
 
     let restockOrders =
-        restockList.map(
-            (ro) => ({
-                id: ro.id,
-                issueDate: ro.issueDate,
-                state: ro.state,
-                products:
-                    listProducts
-                        .filter((p) => p.id == ro.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            description: element.description,
-                            price: element.price,
-                            qty: element.qty
-                        })),
-                supplierId: ro.supplierId,
-                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
-                skuItems: ((ro.state == 'ISSUED') ? {} :
-                    listSkuItems
-                        .filter((si) => si.id == ro.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            rfid: element.rfid
-                        }))
-                )
-            })
-        )
+      restockList.map(
+        (ro) => ({
+          id: ro.id,
+          issueDate: ro.issueDate,
+          state: ro.state,
+          products:
+            listProducts
+              .filter((p) => p.id == ro.id)
+              .map(element => ({
+                SKUId: element.SKUId,
+                description: element.description,
+                price: element.price,
+                qty: element.qty
+              })),
+          supplierId: ro.supplierId,
+          transportNote: (ro.state == 'ISSUED' ? {} : { deliveryDate: ro.transportNote }),
+          skuItems: ((ro.state == 'ISSUED') ? {} :
+            listSkuItems
+              .filter((si) => si.id == ro.id)
+              .map(element => ({
+                SKUId: element.SKUId,
+                rfid: element.rfid
+              }))
+          )
+        })
+      )
 
 
 
@@ -941,32 +1046,32 @@ router.get('/api/restockOrdersIssued', async (req, res) => {
     let listSkuItems = await restockOrdersDAO.getSkuItems();
 
     let restockOrders =
-        restockList.map(
-            (ro) => ({
-                id: ro.id,
-                issueDate: ro.issueDate,
-                state: ro.state,
-                products:
-                    listProducts
-                        .filter((p) => p.id == ro.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            description: element.description,
-                            price: element.price,
-                            qty: element.qty
-                        })),
-                supplierId: ro.supplierId,
-                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
-                skuItems: ((ro.state == 'ISSUED') ? {} :
-                    listSkuItems
-                        .filter((si) => si.id == ro.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            rfid: element.rfid
-                        }))
-                )
-            })
-        )
+      restockList.map(
+        (ro) => ({
+          id: ro.id,
+          issueDate: ro.issueDate,
+          state: ro.state,
+          products:
+            listProducts
+              .filter((p) => p.id == ro.id)
+              .map(element => ({
+                SKUId: element.SKUId,
+                description: element.description,
+                price: element.price,
+                qty: element.qty
+              })),
+          supplierId: ro.supplierId,
+          transportNote: (ro.state == 'ISSUED' ? {} : { deliveryDate: ro.transportNote }),
+          skuItems: ((ro.state == 'ISSUED') ? {} :
+            listSkuItems
+              .filter((si) => si.id == ro.id)
+              .map(element => ({
+                SKUId: element.SKUId,
+                rfid: element.rfid
+              }))
+          )
+        })
+      )
     let restockOrdersListIssued = restockOrders.filter((e) => e.state == 'ISSUED');
 
     return res.status(200).json(restockOrdersListIssued);
@@ -994,32 +1099,32 @@ router.get('/api/restockOrders/:id', async (req, res) => {
     let listSkuItems = await restockOrdersDAO.getSkuItems();
 
     let restockOrders =
-        restockList.map(
-            (ro) => ({
-                id: ro.id,
-                issueDate: ro.issueDate,
-                state: ro.state,
-                products:
-                    listProducts
-                        .filter((p) => p.id == ro.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            description: element.description,
-                            price: element.price,
-                            qty: element.qty
-                        })),
-                supplierId: ro.supplierId,
-                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
-                skuItems: ((ro.state == 'ISSUED') ? {} :
-                    listSkuItems
-                        .filter((si) => si.id == ro.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            rfid: element.rfid
-                        }))
-                )
-            })
-        )
+      restockList.map(
+        (ro) => ({
+          id: ro.id,
+          issueDate: ro.issueDate,
+          state: ro.state,
+          products:
+            listProducts
+              .filter((p) => p.id == ro.id)
+              .map(element => ({
+                SKUId: element.SKUId,
+                description: element.description,
+                price: element.price,
+                qty: element.qty
+              })),
+          supplierId: ro.supplierId,
+          transportNote: (ro.state == 'ISSUED' ? {} : { deliveryDate: ro.transportNote }),
+          skuItems: ((ro.state == 'ISSUED') ? {} :
+            listSkuItems
+              .filter((si) => si.id == ro.id)
+              .map(element => ({
+                SKUId: element.SKUId,
+                rfid: element.rfid
+              }))
+          )
+        })
+      )
     let restockOrdersById = restockOrders.filter((e) => e.id == id);
     return res.status(200).json(restockOrdersById)
 
@@ -1068,12 +1173,12 @@ router.post('/api/restockOrder', async (req, res) => {
       return res.status(422).end();
     }
 
-    let idRestockOrder=await restockOrdersDAO.insertRO(issueDate, supplierId);
-    let idItem=0;
+    let idRestockOrder = await restockOrdersDAO.insertRO(issueDate, supplierId);
+    let idItem = 0;
     for (let p of products) {
       idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, supplierId);
       await insertROI(idRestockOrder, idItem, p.qty);
-    } 
+    }
     return res.status(201).end();
 
   }
@@ -1335,7 +1440,7 @@ router.get('/api/internalOrders', async (req, res) => {
     let notCompleted = await internalOrdersDAO.getNotCompleted();
     let listProductsNotCompleted = await internalOrdersDAO.getProductsNotCompleted();
     let listProductsCompleted = await internalOrdersDAO.getProductsCompleted();
-    
+
 
     let listNotCompleted = notCompleted.map((nt) => ({
       id: nt.id,

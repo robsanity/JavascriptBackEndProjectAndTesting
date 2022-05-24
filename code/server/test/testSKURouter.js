@@ -18,7 +18,7 @@ describe('test', () => {
     getSKU(201, 'iao', 12, 12, 'we', 12, 12);
     update(200, 'bella', 10, 10, 'campione', 8, 30);
     updateSkuPosition(200, 800211);
-    deletesku();
+    //deletesku();
 
 });
 
