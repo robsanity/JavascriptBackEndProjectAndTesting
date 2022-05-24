@@ -1247,7 +1247,7 @@ console.log(listProductsCompleted);
       products:
         (nt.state != "COMPLETED" ?
           listProductsNotCompleted
-            .filter((p) => p.id = nt.id)
+            .filter((p) => p.id == nt.id)
             .map(element => ({
               SKUId: element.SKUId,
               description: element.description,
@@ -1256,7 +1256,7 @@ console.log(listProductsCompleted);
             }))
           :
           listProductsCompleted
-            .filter((p) => p.id = nt.id)
+            .filter((p) => p.id == nt.id)
             .map(element => ({
               SKUId: element.SKUId,
               description: element.description,
