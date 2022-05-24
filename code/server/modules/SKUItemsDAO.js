@@ -91,6 +91,7 @@ function createSKUItemNoDate(rfid, SKUId) {
         const sql = "INSERT INTO SKUItems (RFID, idSKU) VALUES (?,?)";
         db.run(sql, [rfid, SKUId], function(err) {
             if(err) {
+                console.log(err);
                 reject({ error: "no insert" });
             }
             else

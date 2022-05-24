@@ -7,6 +7,7 @@ const SKUsDAO = require('../modules/SKUsDAO');
 const SKUItemsDAO = require('../modules/SKUItemsDAO');
 const positionsDAO = require('../modules/positionsDAO');
 const returnOrdersDAO = require('../modules/returnOrdersDAO');
+const internalOrdersDAO = require('../modules/internalOrdersDAO');
 const dayjs = require('dayjs');
 var express = require('express');
 var router = express.Router();
@@ -626,13 +627,11 @@ router.get('/api/skus', async (req, res) => {
   
       let checkRfid = await testResultsDAO.checkRfid(rfid);
       if (checkRfid.length === 0) {
-        console.log("1");
         return res.status(404).end()
       }
   
       let checkId = await testResultsDAO.checkId(id);
       if (checkId.length === 0) {
-        console.log("2");
         return res.status(404).end()
       }
   
@@ -678,7 +677,6 @@ router.get('/api/skus', async (req, res) => {
   
       let checkTR = await testResultsDAO.getByIdTestResults(rfid, idTestDescriptor);
       if (checkTR.length !== 0) {
-        console.log("2")
         return res.status(422).end()
       }
   
@@ -1021,6 +1019,7 @@ router.get('/api/skus', async (req, res) => {
       }
   
       let skuItems = req.body.skuItems;
+      console.log(skuItems);
       if (skuItems === undefined || skuItems === '' || skuItems.length === 0) {
         return res.status(422).end();
       }
@@ -1038,17 +1037,18 @@ router.get('/api/skus', async (req, res) => {
       let checkSKUs;
       let checkSKUItems;
       //controlli per crezione / inseirmento skus e skuitems
-      for (let si in skuItems) {
-        checkSKUs = await SKUsDAO.findSKU(si.SKUId);
+      for (let si of skuItems) {
+        /*checkSKUs = await SKUsDAO.findSKU(si.SKUId);
         if (checkSKUs.length == 0) {
           await SKUsDAO.createSKUWithOnlyId(si.SKUId);
-        }
+        }*/
         checkSKUItems = await SKUItemsDAO.findSKUItem(si.rfid)
         if (checkSKUItems != 0) {
           return res.status(422).end();   //se presente RFID non univoco
         }
         else {
-          SKUItemsDAO.createSKUItemNoDate(si.rfid, si.SKUId)
+          console.log(si.rfid, si.SKUId);
+          await SKUItemsDAO.createSKUItemNoDate(si.rfid, si.SKUId)
         }
       }
       
@@ -1170,12 +1170,12 @@ router.get('/api/skus', async (req, res) => {
     const products = req.body.products;
     let restockOrderId = req.body.restockOrderId;
     let id = await returnOrdersDAO.getIDMax();
-    console.log(id);
+
     var idfinale = id[0].idReturnOrder;
-    console.log(idfinale);
+ 
     idfinale = idfinale + 1;
     let s = 0;
-    console.log(s)
+
     for (s = 0; s < products.length; s++) {
       var RFID = products[s].RFID
       try {
@@ -1234,6 +1234,7 @@ router.get('/api/skus', async (req, res) => {
       res.status(200).json(listInternalOrders)
     }
     catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   });
@@ -1294,7 +1295,7 @@ router.get('/api/skus', async (req, res) => {
     }
   
     try {
-      internalOrdersDAO.createIntOrder(issueDate, products, customerId);
+      await internalOrdersDAO.createIntOrder(issueDate, products, customerId);
       res.status(201).end();
     }
     catch (error) {
@@ -1320,7 +1321,7 @@ router.get('/api/skus', async (req, res) => {
     }
   
     try {
-      let found = internalOrdersDAO.listIntOrders().filter(e => e.id = req.params.id);
+      let found = await internalOrdersDAO.listIntOrders().filter(e => e.id = req.params.id);
       if (found.length === 0) {
         res.status(404).end();
         return;

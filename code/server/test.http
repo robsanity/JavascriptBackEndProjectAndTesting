@@ -1,8 +1,4 @@
 
-PUT  http://localhost:3001/api/restockOrder/25/skuItems
+GET  http://localhost:3001/api/internalOrders
 Content-Type: application/json
         
-        {
-            "skuItems" : [{"SKUId":12,"rfid":"99988"},
-            {"SKUId":12,"rfid":"99977"}]
-        }

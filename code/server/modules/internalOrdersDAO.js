@@ -4,7 +4,6 @@ const db = require("../db");
 
 async function listIntOrders() {
 
-    try {
         let completed = await getCompleted();
         let notCompleted = await getNotCompleted();
         let listProductsNotCompleted = await getProductsNotCompleted();
@@ -51,16 +50,12 @@ async function listIntOrders() {
         internalOrder.sort((a, b) => a.id - b.id);
 
         return internalOrder;
-    }
-    catch (error) {
-        throw error;
-    }
 
 }
 
 
 async function findIntOrderIssued() {
-    try {
+
         let productsIssued = await getProductsNotCompleted();
         let IOIssued = await getIssued();
 
@@ -82,13 +77,11 @@ async function findIntOrderIssued() {
         ));
 
         return issuedInternalOrder;
-    } catch (error) {
-        throw error;
-    }
+
 }
 
-function findIntOrderAccepted() {
-    try {
+async function findIntOrderAccepted() {
+
         let productsAccepted = await getProductsNotCompleted();
         let IOAccepted = await getAccepted();
 
@@ -109,9 +102,7 @@ function findIntOrderAccepted() {
         }
         ));
         return acceptedInternalOrder;
-    } catch (error) {
-        throw error;
-    }
+
 }
 
 /*
@@ -153,16 +144,13 @@ function createIntOrder(issueDate, products, customerId) {
 */
 
 async function createIntOrder(issueDate, products, customerId) {
-    try {
+
         let idIntOrder=await insertIO(issueDate, customerId);
         for (let p in products) {
             await insertIOS(idIntOrder, p.SKUId, p.qty);
         }
         return true;
-    }
-    catch (error){
-        throw error;
-    }
+
     
 }
 
@@ -303,7 +291,7 @@ function getNotCompleted() {
 
 function getCompleted() {
     return new Promise((resolve, reject) => {
-        sql = "SELECT * FROM InternalOrders WHERE state=='COMPLETED'"
+        let sql = "SELECT * FROM InternalOrders WHERE state=='COMPLETED'"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in database" });
@@ -317,7 +305,7 @@ function getCompleted() {
 
 function getProductsNotCompleted() {
     return new Promise((resolve, reject) => {
-        sql = "SELECT IOS.idInternalOrder AS id, S.idSKU AS SKUId, S.description AD description, S.price AS price, IOS.quantity AS qty FROM InternalOrdersSKUs IOS, SKUs S WHERE IOS.idSKU=S.idSKU "
+        let sql = "SELECT IOS.idInternalOrder AS id, S.idSKU AS SKUId, S.description AD description, S.price AS price, IOS.quantity AS qty FROM InternalOrdersSKUs IOS, SKUs S WHERE IOS.idSKU=S.idSKU "
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in database" });
@@ -369,4 +357,4 @@ function getAccepted() {
     });
 }
 
-module.exports = { listIntOrders, findIntOrderIssued, findIntOrderAccepted, findIntOrder, createIntOrder, updateIntOrder, deleteIntOrder }
+module.exports = { listIntOrders, findIntOrderIssued, findIntOrderAccepted, createIntOrder, updateIntOrder, deleteIntOrder }

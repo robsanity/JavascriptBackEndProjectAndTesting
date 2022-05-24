@@ -158,7 +158,7 @@ function putStateRestockOrder(id, newState) {
     });
 }
 
-function putSkuItemsOfRestockOrder(id, id, rfid, SKUId) {
+function putSkuItemsOfRestockOrder(id, rfid, SKUId) {
     return new Promise((resolve, reject) => {
         let sql = "UPDATE SKUItems SET available=1, restockOrderId=? WHERE RFID=? AND idSKU=?";
 
