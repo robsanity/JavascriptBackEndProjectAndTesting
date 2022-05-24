@@ -1478,7 +1478,18 @@ CONTROLLO FUNZIONAMENTO CON CONCAT
     } */
   
     try {
-      let found = await internalOrdersDAO.listIntOrders().filter(e => e.id = req.params.id);
+
+      let completed = await internalOrdersDAO.getCompleted();
+      let notCompleted = await internalOrdersDAO.getNotCompleted();
+
+      let found = completed.map(e=>({
+        id: e.id
+      }))
+      .concat(notCompleted.map(e=>({
+        id: e.id
+      })))
+      .filter(e => e.id = req.params.id);
+
       if (found.length === 0) {
         res.status(404).end();
         return;
