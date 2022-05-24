@@ -356,4 +356,4 @@ function getAccepted() {
     });
 }
 
-module.exports = {insertIO, updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted }
+module.exports = {insertIO, insertIOS, updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted }
