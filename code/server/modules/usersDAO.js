@@ -78,7 +78,7 @@ function login(username, password, type){
                 reject(err);
             } else {
                 resolve(
-                    rows.map((u) => ({id: u.idUser, name: u.name, surname: u.surname, email: u.email, type: u.type}))
+                    rows.map((u) => ({id: u.idUser, username: u.email, name: u.name}))
                 )
             }
         })
