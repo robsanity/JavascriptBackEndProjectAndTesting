@@ -1228,10 +1228,55 @@ router.get('/api/skus', async (req, res) => {
   //Possible states: ISSUED, ACCEPTED, REFUSED, CANCELED, COMPLETED
   
   //Return an array containing all SKUs.
-  router.get('/api/internalOrders', (req, res) => {
+  router.get('/api/internalOrders', async (req, res) => {
     try {
-      const listInternalOrders = internalOrdersDAO.listIntOrders();
-      res.status(200).json(listInternalOrders)
+
+        let completed = await internalOrdersDAO.getCompleted();
+        let notCompleted = await internalOrdersDAO.getNotCompleted();
+        let listProductsNotCompleted = await internalOrdersDAO.getProductsNotCompleted();
+        let listProductsCompleted = await internalOrdersDAO.getProductsCompleted();
+
+
+        let listNotCompleted = notCompleted.map((nt) => ({
+            id: nt.id,
+            issueDate: nt.issueDate,
+            state: nt.state,
+            products:
+                listProductsNotCompleted
+                    .filter((p) => p.id = nt.id)
+                    .map(element => ({
+                        SKUId: element.SKUId,
+                        description: element.description,
+                        price: element.price,
+                        qty: element.qty
+                    })),
+            customerId: nt.customerId
+        }
+        ));
+
+        let listCompleted = completed.map((nt) => ({
+            id: nt.id,
+            issueDate: nt.issueDate,
+            state: nt.state,
+            products:
+                listProductsCompleted
+                    .filter((p) => p.id = nt.id)
+                    .map(element => ({
+                        SKUId: element.SKUId,
+                        description: element.description,
+                        price: element.price,
+                        rfid: element.rfid
+                    })),
+            customerId: nt.customerId
+        }
+        ));
+
+        let internalOrder = []
+        internalOrder.push(listCompleted);
+        internalOrder.push(listNotCompleted);
+        internalOrder.sort((a, b) => a.id - b.id);
+
+      res.status(200).json(internalOrder);
     }
     catch (error) {
       console.log(error);
@@ -1240,11 +1285,30 @@ router.get('/api/skus', async (req, res) => {
   });
   
   //Return an array containing all internal orders in state = ISSUED.
-  router.get('/api/internalOrdersIssued', (req, res) => {
+  router.get('/api/internalOrdersIssued', async (req, res) => {
   
     try {
-      const internalOrdersIssued = internalOrdersDAO.findIntOrderIssued();
-      res.status(200).json(internalOrdersIssued);
+
+      let productsIssued = await internalOrdersDAO.getProductsNotCompleted();
+        let IOIssued = await internalOrdersDAO.getIssued();
+
+        let issuedInternalOrder = IOIssued.map((o) => ({
+            id: o.id,
+            issueDate: o.issueDate,
+            state: o.state,
+            products:
+                productsIssued
+                    .filter((p) => p.id = o.id)
+                    .map(element => ({
+                        SKUId: element.SKUId,
+                        description: element.description,
+                        price: element.price,
+                        qty: element.qty
+                    })),
+            customerId: o.customerId
+        }
+        ));
+      res.status(200).json(issuedInternalOrder);
     }
     catch (error) {
       res.status(500).json(error);
@@ -1252,11 +1316,32 @@ router.get('/api/skus', async (req, res) => {
   });
   
   //Return an array containing all internal orders in state = ACCEPTED.
-  router.get('/api/internalOrdersAccepted', (req, res) => {
+  router.get('/api/internalOrdersAccepted', async (req, res) => {
   
     try {
-      const internalOrdersAccepted = internalOrdersDAO.findIntOrderAccepted();
-      res.status(200).json(internalOrdersAccepted);
+      let productsAccepted = await internalOrdersDAO.getProductsNotCompleted();
+      let IOAccepted = await internalOrdersDAO.getAccepted();
+
+      let acceptedInternalOrder = IOAccepted.map((o) => ({
+          id: o.id,
+          issueDate: o.issueDate,
+          state: o.state,
+          products:
+              productsAccepted
+                  .filter((p) => p.id = o.id)
+                  .map(element => ({
+                      SKUId: element.SKUId,
+                      description: element.description,
+                      price: element.price,
+                      qty: element.qty
+                  })),
+          customerId: o.customerId
+      }
+      ));
+
+
+      
+      res.status(200).json(acceptedInternalOrder);
     }
     catch (error) {
       res.status(500).json(error);
@@ -1264,16 +1349,64 @@ router.get('/api/skus', async (req, res) => {
   });
   
   //Return an internal order, given its id.
-  router.get('/api/internalOrders/:id', (req, res) => {
+  router.get('/api/internalOrders/:id', async (req, res) => {
   
     if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
       return res.status(422).end();
     }
     try {
-      const internalOrder = internalOrdersDAO.listIntOrders().filter(e => e.id = req.params.id);
-      if (internalOrder.length === 0)
+
+      let completed = await internalOrdersDAO.getCompleted();
+        let notCompleted = await internalOrdersDAO.getNotCompleted();
+        let listProductsNotCompleted = await internalOrdersDAO.getProductsNotCompleted();
+        let listProductsCompleted = await internalOrdersDAO.getProductsCompleted();
+
+
+        let listNotCompleted = notCompleted.map((nt) => ({
+            id: nt.id,
+            issueDate: nt.issueDate,
+            state: nt.state,
+            products:
+                listProductsNotCompleted
+                    .filter((p) => p.id = nt.id)
+                    .map(element => ({
+                        SKUId: element.SKUId,
+                        description: element.description,
+                        price: element.price,
+                        qty: element.qty
+                    })),
+            customerId: nt.customerId
+        }
+        ));
+
+        let listCompleted = completed.map((nt) => ({
+            id: nt.id,
+            issueDate: nt.issueDate,
+            state: nt.state,
+            products:
+                listProductsCompleted
+                    .filter((p) => p.id = nt.id)
+                    .map(element => ({
+                        SKUId: element.SKUId,
+                        description: element.description,
+                        price: element.price,
+                        rfid: element.rfid
+                    })),
+            customerId: nt.customerId
+        }
+        ));
+
+        let internalOrder = []
+        internalOrder.push(listCompleted);
+        internalOrder.push(listNotCompleted);
+        internalOrder.sort((a, b) => a.id - b.id);
+
+
+
+      let internalOrderById = internalOrder.filter(e => e.id = req.params.id);
+      if (internalOrderById.length === 0)
         res.status(404).end();
-      res.status(200).json(internalOrder);
+      res.status(200).json(internalOrderById);
     }
     catch (error) {
       res.status(500).json(error);
@@ -1295,7 +1428,10 @@ router.get('/api/skus', async (req, res) => {
     }
   
     try {
-      await internalOrdersDAO.createIntOrder(issueDate, products, customerId);
+      let idIntOrder=await insertIO(issueDate, customerId);
+        for (let p of products) {
+            await insertIOS(idIntOrder, p.SKUId, p.qty);
+        }
       res.status(201).end();
     }
     catch (error) {

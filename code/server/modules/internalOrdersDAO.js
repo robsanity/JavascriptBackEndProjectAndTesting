@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require("../db");
-
+/*
 async function listIntOrders() {
 
         let completed = await getCompleted();
@@ -52,8 +52,8 @@ async function listIntOrders() {
         return internalOrder;
 
 }
-
-
+*/
+/*
 async function findIntOrderIssued() {
 
         let productsIssued = await getProductsNotCompleted();
@@ -79,7 +79,8 @@ async function findIntOrderIssued() {
         return issuedInternalOrder;
 
 }
-
+*/
+/*
 async function findIntOrderAccepted() {
 
         let productsAccepted = await getProductsNotCompleted();
@@ -104,7 +105,7 @@ async function findIntOrderAccepted() {
         return acceptedInternalOrder;
 
 }
-
+*/
 /*
 function createIntOrder(issueDate, products, customerId) {
     return new Promise((resolve, reject) => {
@@ -142,7 +143,7 @@ function createIntOrder(issueDate, products, customerId) {
     });
 }
 */
-
+/*
 async function createIntOrder(issueDate, products, customerId) {
 
         let idIntOrder=await insertIO(issueDate, customerId);
@@ -151,7 +152,7 @@ async function createIntOrder(issueDate, products, customerId) {
         }
 
 }
-
+*/
 function insertIO(issueDate, customerId) {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO InternalOrders (date, idCustomer) values (?,?)";
@@ -355,4 +356,4 @@ function getAccepted() {
     });
 }
 
-module.exports = { listIntOrders, findIntOrderIssued, findIntOrderAccepted, createIntOrder, updateIntOrder, deleteIntOrder }
+module.exports = {updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted }
