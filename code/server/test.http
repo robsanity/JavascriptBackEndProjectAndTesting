@@ -1,4 +1,6 @@
 
-DELETE  http://localhost:3001/api/restockOrder/34
+PUT  http://localhost:3001/api/sku/697/position
 Content-Type: application/json
+
+{"position" : 800211}
         
