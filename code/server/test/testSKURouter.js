@@ -18,7 +18,7 @@ describe('test', () => {
     getSKU(201, 'iao', 12, 12, 'we', 12, 12);
     update(200, 'bella', 10, 10, 'campione', 8, 30);
     updateSkuPosition(200, 800211);
-    deletesku();
+    //deletesku();
 
 });
 
@@ -80,16 +80,18 @@ function update(expectedHTTPStatus, description, weight, volume, notes, price, a
 }
 
 function updateSkuPosition(expectedHTTPStatus, position) {
-    it("Update an sku position", async function () {
-        let id = await SKUsDAO.createSKU("a", 10, 5, "f", 10.99, 50);
-        let z = { position: position };
+    it("Update an sku position", function (done) {
+        SKUsDAO.createSKU("a", 10, 5, "f", 10.99, 50)
+        .then((res)=>{
+        let body = { position: position };
         agent
-            .put("/api/sku/" + id + "/position")
-            .send(z)
+            .put("/api/sku/" + res + "/position")
+            .send(body)
             .then(function (res) {
                 res.should.have.status(expectedHTTPStatus);
                 done();
             });
+        });
     });
 }
 
