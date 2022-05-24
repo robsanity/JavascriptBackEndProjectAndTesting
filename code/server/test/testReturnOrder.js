@@ -12,6 +12,9 @@ describe('testreturn', () => {
         await returnOrdersDAO.deleteDatas()
     })
     newRet(201,"2021-02-02",5);
+    testlistReturnOrders(200);
+    testfindRetOrder(200,3);
+    testDeleteRetOrd(204,3);
 });
 
 function newRet(expectedHTTPStatus,returnDate,idRestockOrder){
@@ -29,5 +32,43 @@ function newRet(expectedHTTPStatus,returnDate,idRestockOrder){
         })
         
          
+    })
+}
+
+function testlistReturnOrders(expectedHTTPStatus){
+    it('get all retord', function(done){
+        returnOrdersDAO.createRetOrder(3,"2023-11-11",3,9999)
+            agent.get('/api/returnOrders')
+            .then(function (res){
+                res.should.have.status(expectedHTTPStatus);
+                done();
+            }) 
+        })
+}
+
+function testfindRetOrder(expectedHTTPStatus,idReturnOrder){
+    it('get retOrdby his id',function(done){
+        returnOrdersDAO.createRetOrder(3,"2021-11-11",5,9999)
+        .then((res)=>{
+            agent.get('/api/returnOrders/' + res)
+            .then(function(res){
+                res.should.have.status(expectedHTTPStatus);
+                done();
+                
+            })
+        })
+    })
+}
+function testDeleteRetOrd(expectedHTTPStatus,idReturnOrder){
+    it('get retOrdby his id',function(done){
+        returnOrdersDAO.createRetOrder(3,"2021-11-11",5,9999)
+        .then((res)=>{
+            agent.delete('/api/returnOrder/' + res)
+            .then(function(res){
+                res.should.have.status(expectedHTTPStatus);
+                done();
+                
+            })
+        })
     })
 }
