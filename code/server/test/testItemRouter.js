@@ -45,14 +45,12 @@ function getItem(expectedHTTPStatus, description, id, SKUId, supplierId, price) 
             .send(k)
             .then(function (r) {
                 r.should.have.status(expectedHTTPStatus);
-                
+                agent.get('/api/items/' + id)
+                    .then(function (res) {
+                        res.should.have.status(200);
+                        done();
+                    })
             })
-        agent.get('/api/items/'+ id)
-            .then(function (res) {
-                res.should.have.status(200);
-            
-            }).catch(done);
-
     });
 }
 
@@ -79,7 +77,7 @@ function updateItem(expectedHTTPStatus, description, id, SKUId, supplierId, pric
 
 function deleteItem(description, id, SKUId, supplierId, price) {
     it("delete item", async function () {
-         await itemsDAO.createItem(description, id, SKUId, supplierId, price); //???
+        await itemsDAO.createItem(description, id, SKUId, supplierId, price); //???
         agent
             .delete("/api/items/" + id)
             .send(id)
