@@ -321,11 +321,12 @@ Database -> SKU_ITEM  : stores RFID and changed the state
 ```
 ## Scenario 9-1 
 ```plantuml
-User(custumer) -> internal_order: new Internal Order 
-User(custumer) -> SKU: adds every SKU he wants
-internal_order ->User(custumer): ask confermation
-User(custumer) -> internal_order: confermation
-internal_order ->User(custumer):  System issue IO with status
+
+User -> internal_order: new Internal Order 
+User -> SKU: adds every SKU he wants
+internal_order ->User: ask confermation
+User -> internal_order: confermation
+internal_order ->User:  System issue IO with status
 internal_order ->manager:  checks IO and accepts it
-manager -> User(custumer): confermation
+manager -> User: confermation
 ```
