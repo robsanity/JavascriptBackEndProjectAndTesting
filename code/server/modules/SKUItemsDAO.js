@@ -101,5 +101,17 @@ function createSKUItemNoDate(rfid, SKUId) {
         });
     });
 };
+function deleteALLSKUItems() {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM SKUItems";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject({ error: "no delete" });
 
-module.exports = { listSKUItems, findSKUItems, findSKUItem, createSKUItem, modifySKUItem, deleteSKUItem, createSKUItemNoDate }
+            }
+            resolve(true);
+        });
+    });
+}
+
+module.exports = { listSKUItems, findSKUItems, findSKUItem, createSKUItem, deleteALLSKUItems, modifySKUItem, deleteSKUItem, createSKUItemNoDate }

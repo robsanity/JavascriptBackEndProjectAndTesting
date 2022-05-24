@@ -247,7 +247,7 @@ router.post('/api/skuitem', async (req, res) => {
     return res.status(201).end();
   }
   catch (error) {
-    return res.status(503).json(error);
+    return res.status(500).json(error);
   }
 });
 
