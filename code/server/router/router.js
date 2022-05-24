@@ -1037,7 +1037,7 @@ router.get('/api/skus', async (req, res) => {
       let checkSKUs;
       let checkSKUItems;
       //controlli per crezione / inseirmento skus e skuitems
-      skuItems.forEach((si) => {
+      for (si in skuItems) {
         checkSKUs = await SKUsDAO.findSKU(si.SKUId);
         if (checkSKUs.length == 0) {
           await SKUsDAO.createSKUWithOnlyId(si.SKUId);
@@ -1050,7 +1050,7 @@ router.get('/api/skus', async (req, res) => {
           SKUItemsDAO.createSKUItemNoDate(si.rfid, si.SKUId)
         }
       }
-      )
+      
 
       await restockOrdersDAO.putSkuItemsOfRestockOrder(id, skuItems);
   
