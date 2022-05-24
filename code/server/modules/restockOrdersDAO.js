@@ -1,6 +1,7 @@
 'use strict'
 const db = require('../db.js');
 
+/*
 async function getRestockOrders() {
  
         let restockList = await getRestockList();
@@ -38,6 +39,7 @@ async function getRestockOrders() {
         return restockOrders;
 
 }
+*/
 
 
 function getByIdRestockOrders(id) {
@@ -69,6 +71,8 @@ function getToBeReturnRestockOrders(id) {
         });
     });
 }
+
+/*
 async function createRestockOrder(issueDate, products, supplierId) {
 
             let idRestockOrder=await insertRO(issueDate, supplierId);
@@ -79,6 +83,7 @@ async function createRestockOrder(issueDate, products, supplierId) {
         } 
          return;
 }
+*/
 
 function insertRO(issueDate, supplierId) {
     return new Promise((resolve, reject) => {
@@ -288,4 +293,4 @@ function initialize() {
 
 
 
-module.exports = { getRestockOrders, getByIdRestockOrders, getToBeReturnRestockOrders, createRestockOrder, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, initialize };
+module.exports = { getByIdRestockOrders, getToBeReturnRestockOrders, insertRO, insertI, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, initialize, getRestockList, getProducts, getSkuItems };

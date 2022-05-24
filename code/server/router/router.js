@@ -893,8 +893,41 @@ router.delete('/api/users/:username/:type', async (req, res) => {
 //--------------------------------------|   GET   |------------------------------------------------
 router.get('/api/restockOrders', async (req, res) => {
   try {
-    let restockOrdersList = await restockOrdersDAO.getRestockOrders();
-    return res.status(200).json(restockOrdersList)
+    let restockList = await restockOrdersDAO.getRestockList();
+    let listProducts = await restockOrdersDAO.getProducts();
+    let listSkuItems = await restockOrdersDAO.getSkuItems();
+
+    let restockOrders =
+        restockList.map(
+            (ro) => ({
+                id: ro.id,
+                issueDate: ro.issueDate,
+                state: ro.state,
+                products:
+                    listProducts
+                        .filter((p) => p.id == ro.id)
+                        .map(element => ({
+                            SKUId: element.SKUId,
+                            description: element.description,
+                            price: element.price,
+                            qty: element.qty
+                        })),
+                supplierId: ro.supplierId,
+                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
+                skuItems: ((ro.state == 'ISSUED') ? {} :
+                    listSkuItems
+                        .filter((si) => si.id == ro.id)
+                        .map(element => ({
+                            SKUId: element.SKUId,
+                            rfid: element.rfid
+                        }))
+                )
+            })
+        )
+
+
+
+    return res.status(200).json(restockOrders)
   } catch (error) {
     return res.status(500).json();
   }
@@ -902,8 +935,38 @@ router.get('/api/restockOrders', async (req, res) => {
 
 router.get('/api/restockOrdersIssued', async (req, res) => {
   try {
-    let restockOrdersListIssued = await restockOrdersDAO.getRestockOrders();
-    restockOrdersListIssued = restockOrdersListIssued.filter((e) => e.state == 'ISSUED');
+    let restockList = await restockOrdersDAO.getRestockList();
+    let listProducts = await restockOrdersDAO.getProducts();
+    let listSkuItems = await restockOrdersDAO.getSkuItems();
+
+    let restockOrders =
+        restockList.map(
+            (ro) => ({
+                id: ro.id,
+                issueDate: ro.issueDate,
+                state: ro.state,
+                products:
+                    listProducts
+                        .filter((p) => p.id == ro.id)
+                        .map(element => ({
+                            SKUId: element.SKUId,
+                            description: element.description,
+                            price: element.price,
+                            qty: element.qty
+                        })),
+                supplierId: ro.supplierId,
+                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
+                skuItems: ((ro.state == 'ISSUED') ? {} :
+                    listSkuItems
+                        .filter((si) => si.id == ro.id)
+                        .map(element => ({
+                            SKUId: element.SKUId,
+                            rfid: element.rfid
+                        }))
+                )
+            })
+        )
+    let restockOrdersListIssued = restockOrders.filter((e) => e.state == 'ISSUED');
 
     return res.status(200).json(restockOrdersListIssued);
   } catch (error) {
@@ -925,9 +988,39 @@ router.get('/api/restockOrders/:id', async (req, res) => {
       return res.status(404).end();
     }
 
-    let restockOrdersListIssued = await restockOrdersDAO.getRestockOrders();
-    restockOrdersListIssued = restockOrdersListIssued.filter((e) => e.id == id);
-    return res.status(200).json(restockOrdersListIssued)
+    let restockList = await restockOrdersDAO.getRestockList();
+    let listProducts = await restockOrdersDAO.getProducts();
+    let listSkuItems = await restockOrdersDAO.getSkuItems();
+
+    let restockOrders =
+        restockList.map(
+            (ro) => ({
+                id: ro.id,
+                issueDate: ro.issueDate,
+                state: ro.state,
+                products:
+                    listProducts
+                        .filter((p) => p.id == ro.id)
+                        .map(element => ({
+                            SKUId: element.SKUId,
+                            description: element.description,
+                            price: element.price,
+                            qty: element.qty
+                        })),
+                supplierId: ro.supplierId,
+                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
+                skuItems: ((ro.state == 'ISSUED') ? {} :
+                    listSkuItems
+                        .filter((si) => si.id == ro.id)
+                        .map(element => ({
+                            SKUId: element.SKUId,
+                            rfid: element.rfid
+                        }))
+                )
+            })
+        )
+    let restockOrdersById = restockOrders.filter((e) => e.id == id);
+    return res.status(200).json(restockOrdersById)
 
   } catch (error) {
     return res.status(500).json();
@@ -974,7 +1067,12 @@ router.post('/api/restockOrder', async (req, res) => {
       return res.status(422).end();
     }
 
-    restockOrdersDAO.createRestockOrder(issueDate, products, supplierId);
+    let idRestockOrder=await restockOrdersDAO.insertRO(issueDate, supplierId);
+    let idItem=0;
+    for (let p of products) {
+      idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, supplierId);
+      await insertROI(idRestockOrder, idItem, p.qty);
+    } 
     return res.status(201).end();
 
   }
@@ -1236,10 +1334,8 @@ router.get('/api/internalOrders', async (req, res) => {
     let notCompleted = await internalOrdersDAO.getNotCompleted();
     let listProductsNotCompleted = await internalOrdersDAO.getProductsNotCompleted();
     let listProductsCompleted = await internalOrdersDAO.getProductsCompleted();
-console.log(completed);
-console.log(notCompleted);
-console.log(listProductsNotCompleted);
-console.log(listProductsCompleted);
+    
+
     let listNotCompleted = notCompleted.map((nt) => ({
       id: nt.id,
       issueDate: nt.issueDate,
@@ -1409,43 +1505,57 @@ router.get('/api/internalOrders/:id', async (req, res) => {
       issueDate: nt.issueDate,
       state: nt.state,
       products:
-        listProductsNotCompleted
-          .filter((p) => p.id = nt.id)
-          .map(element => ({
-            SKUId: element.SKUId,
-            description: element.description,
-            price: element.price,
-            qty: element.qty
-          })),
+        (nt.state != "COMPLETED" ?
+          listProductsNotCompleted
+            .filter((p) => p.id == nt.id)
+            .map(element => ({
+              SKUId: element.SKUId,
+              description: element.description,
+              price: element.price,
+              qty: element.qty
+            }))
+          :
+          listProductsCompleted
+            .filter((p) => p.id == nt.id)
+            .map(element => ({
+              SKUId: element.SKUId,
+              description: element.description,
+              price: element.price,
+              rfid: element.rfid
+            }))),
       customerId: nt.customerId
     }
-    ));
+    ))
+      .concat(completed.map((nt) => ({
+        id: nt.id,
+        issueDate: nt.issueDate,
+        state: nt.state,
+        products:
+          (nt.state != "COMPLETED" ?
+            listProductsNotCompleted
+              .filter((p) => p.id == nt.id)
+              .map(element => ({
+                SKUId: element.SKUId,
+                description: element.description,
+                price: element.price,
+                qty: element.qty
+              }))
+            :
+            listProductsCompleted
+              .filter((p) => p.id == nt.id)
+              .map(element => ({
+                SKUId: element.SKUId,
+                description: element.description,
+                price: element.price,
+                rfid: element.rfid
+              }))),
+        customerId: nt.customerId
+      }
+      )))
 
-    let listCompleted = completed.map((nt) => ({
-      id: nt.id,
-      issueDate: nt.issueDate,
-      state: nt.state,
-      products:
-        listProductsCompleted
-          .filter((p) => p.id = nt.id)
-          .map(element => ({
-            SKUId: element.SKUId,
-            description: element.description,
-            price: element.price,
-            rfid: element.rfid
-          })),
-      customerId: nt.customerId
-    }
-    ));
-
-    let internalOrder = []
-    internalOrder.push(listCompleted);
-    internalOrder.push(listNotCompleted);
-    internalOrder.sort((a, b) => a.id - b.id);
 
 
-
-    let internalOrderById = internalOrder.filter(e => e.id = req.params.id);
+    let internalOrderById = listNotCompleted.filter(e => e.id = req.params.id);
     if (internalOrderById.length === 0)
       res.status(404).end();
     res.status(200).json(internalOrderById);
