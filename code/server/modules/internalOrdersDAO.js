@@ -146,12 +146,10 @@ function createIntOrder(issueDate, products, customerId) {
 async function createIntOrder(issueDate, products, customerId) {
 
         let idIntOrder=await insertIO(issueDate, customerId);
-        for (let p in products) {
+        for (let p of products) {
             await insertIOS(idIntOrder, p.SKUId, p.qty);
         }
-        return true;
 
-    
 }
 
 function insertIO(issueDate, customerId) {
