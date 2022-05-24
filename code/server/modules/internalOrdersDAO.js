@@ -317,7 +317,7 @@ function getProductsNotCompleted() {
 
 function getProductsCompleted() {
     return new Promise((resolve, reject) => {
-        let sql = "SELECT SI.internalOrderId AS id, SI.idSKU AS SKUId, S.description AS description, S.price AS price, SI.RFID AS rfid FROM SKUItems SI, SKUs S WHERE SI.idSKU=S.idSKU AND internalOrderId!= NULL"
+        let sql = "SELECT SI.internalOrderId AS id, SI.idSKU AS SKUId, S.description AS description, S.price AS price, SI.RFID AS rfid FROM SKUItems SI, SKUs S WHERE SI.idSKU=S.idSKU"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
