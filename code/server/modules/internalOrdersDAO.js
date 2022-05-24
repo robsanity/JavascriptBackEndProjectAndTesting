@@ -279,7 +279,7 @@ function getNotCompleted() {
         let sql = "SELECT * FROM InternalOrders WHERE state!='COMPLETED'";
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: "error in database" });
+                reject(err);
                 return;
             }
             let notCompleted = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, customerId: t.customerId }));
@@ -293,7 +293,7 @@ function getCompleted() {
         let sql = "SELECT * FROM InternalOrders WHERE state=='COMPLETED'"
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: "error in database" });
+                reject(err);
                 return;
             }
             let completed = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, customerId: t.customerId }));
@@ -304,10 +304,10 @@ function getCompleted() {
 
 function getProductsNotCompleted() {
     return new Promise((resolve, reject) => {
-        let sql = "SELECT IOS.idInternalOrder AS id, S.idSKU AS SKUId, S.description AD description, S.price AS price, IOS.quantity AS qty FROM InternalOrdersSKUs IOS, SKUs S WHERE IOS.idSKU=S.idSKU "
+        let sql = "SELECT IOS.idInternalOrder AS id, S.idSKU AS SKUId, S.description AS description, S.price AS price, IOS.quantity AS qty FROM InternalOrdersSKUs IOS, SKUs S WHERE IOS.idSKU=S.idSKU "
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: "error in database" });
+                reject(err);
                 return;
             }
             resolve(rows);
@@ -317,10 +317,10 @@ function getProductsNotCompleted() {
 
 function getProductsCompleted() {
     return new Promise((resolve, reject) => {
-        sql = "SELECT SI.internalOrderId AS id, SI.idSKU AS SKUId, S.description AD description, S.price AS price, SI.RFID AS rfid FROM SKUItems SI, SKUs S WHERE SI.idSKU=S.idSKU AND internalOrderId!= NULL"
+        let sql = "SELECT SI.internalOrderId AS id, SI.idSKU AS SKUId, S.description AS description, S.price AS price, SI.RFID AS rfid FROM SKUItems SI, SKUs S WHERE SI.idSKU=S.idSKU AND internalOrderId!= NULL"
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: "error in database" });
+                reject(err);
                 return;
             }
             resolve(rows);
@@ -330,10 +330,10 @@ function getProductsCompleted() {
 
 function getIssued() {
     return new Promise((resolve, reject) => {
-        sql = "SELECT * FROM InternalOrders WHERE state=='ISSUED'"
+        let sql = "SELECT * FROM InternalOrders WHERE state=='ISSUED'"
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: "error in database" });
+                reject(err);
                 return;
             }
             let issued = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, customerId: t.customerId }));
@@ -344,10 +344,10 @@ function getIssued() {
 
 function getAccepted() {
     return new Promise((resolve, reject) => {
-        sql = "SELECT * FROM InternalOrders WHERE state=='ACCEPTED'"
+        let sql = "SELECT * FROM InternalOrders WHERE state=='ACCEPTED'"
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: "error in database" });
+                reject(err);
                 return;
             }
             let accepted = rows.map((t) => ({ id: t.id, issueDate: t.issueDate, state: t.state, customerId: t.customerId }));
@@ -356,4 +356,4 @@ function getAccepted() {
     });
 }
 
-module.exports = {updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted }
+module.exports = {insertIO, updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted }
