@@ -114,6 +114,7 @@ function findIntOrderAccepted() {
     }
 }
 
+/*
 function createIntOrder(issueDate, products, customerId) {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO InternalOrders (date, idCustomer) values (?,?)";
@@ -148,6 +149,60 @@ function createIntOrder(issueDate, products, customerId) {
 
         resolve(true);
     });
+}
+*/
+
+async function createIntOrder(issueDate, products, customerId) {
+    try {
+        let idIntOrder=await insertIO(issueDate, customerId);
+        for (let p in products) {
+            await insertIOS(idIntOrder, p.SKUId, p.qty);
+        }
+        return true;
+    }
+    catch (error){
+        throw error;
+    }
+    
+}
+
+function insertIO(issueDate, customerId) {
+    return new Promise((resolve, reject) => {
+        let sql = "INSERT INTO InternalOrders (date, idCustomer) values (?,?)";
+        let lastID = "SELECT last_insert_rowid() as lastId";
+        db.all(sql, [issueDate, customerId], (err, rows) => {
+            if (err) {
+                reject({ error: "no insert" });
+                return;
+            } else {
+                db.all(lastID, [], (err, rows) => {
+                    if (err) {
+                        reject({ error: "no insert" });
+                        return;
+                    }
+                    else {
+                        resolve(rows[0].lastId);
+                    }
+                });
+            }
+        });
+    })
+}
+
+function insertIOS(id, SKUId, qty){
+    return new Promise((resolve, reject) => {
+        sql = "INSERT INTO InternalOrdersSKUs (idInternalOrder, idSKU, quantity) values (?,?,?)";
+        
+            db.all(sql, [id, SKUId, qty], (err, rows) => {
+                if (err) {
+                    reject({ error: "no insert" });
+                    return;
+                }
+                else {
+                    resolve(true)
+                }
+            })
+    })
 }
 
 function updateIntOrder(id, newState, products) {

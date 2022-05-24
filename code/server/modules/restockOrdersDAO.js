@@ -2,44 +2,45 @@
 const db = require('../db.js');
 
 async function getRestockOrders() {
+    try {
+        let restockList = await getRestockList();
+        let listProducts = await getProducts();
+        let listSkuItems = await getSkuItems();
 
-    let restockList = await getRestockList();
-    let listProducts = await getProducts();
-    let listSkuItems = await getSkuItems();
+        let restockOrders =
+            restockList.map(
+                (ro) => ({
+                    id: ro.id,
+                    issueDate: ro.issueDate,
+                    state: ro.state,
+                    products:
+                        listProducts
+                            .filter((p) => p.id == ro.id)
+                            .map(element => ({
+                                SKUId: element.SKUId,
+                                description: element.description,
+                                price: element.price,
+                                qty: element.qty
+                            })),
+                    supplierId: ro.supplierId,
+                    transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
+                    skuItems: ((ro.state == 'ISSUED') ? {} :
+                        listSkuItems
+                            .filter((si) => si.id == ro.id)
+                            .map(element => ({
+                                SKUId: element.SKUId,
+                                rfid: element.rfid
+                            }))
+                    )
+                })
+            )
 
-    let restockOrders =
-        restockList.map(
-            (ro) => ({
-                id: ro.id,
-                issueDate: ro.issueDate,
-                state: ro.state,
-                products:
-                    listProducts
-                        .filter((p) => p.id == ro.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            description: element.description,
-                            price: element.price,
-                            qty: element.qty
-                        })),
-                supplierId: ro.supplierId,
-                transportNote: (ro.state == 'ISSUED' ? {} : {deliveryDate: ro.transportNote} ),
-                skuItems: ((ro.state == 'ISSUED') ? {} :
-                    listSkuItems
-                        .filter((si) => si.id == ro.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            rfid: element.rfid
-                        }))
-                )
-            })
-        )
+        return restockOrders;
 
-    return restockOrders;
-
-    /* }
+     }
      catch (error) {
-         throw error;*/
+         throw error; 
+        }
 }
 
 
@@ -73,13 +74,19 @@ function getToBeReturnRestockOrders(id) {
     });
 }
 async function createRestockOrder(issueDate, products, supplierId) {
-    let idRestockOrder=await insertRO(issueDate, supplierId);
+    
+    try {
+        let idRestockOrder=await insertRO(issueDate, supplierId);
 
-    for (let p of products) {
-        let idItem = await insertI(p.SKUId, p.description, p.price, supplierId);
-        await insertROI(idRestockOrder, idItem, p.qty);
+        for (let p of products) {
+            let idItem = await insertI(p.SKUId, p.description, p.price, supplierId);
+            await insertROI(idRestockOrder, idItem, p.qty);
+        }
+        return true;
     }
-    return;
+    catch (error) {
+        throw error;
+    }
 }
 
 function insertRO(issueDate, supplierId) {

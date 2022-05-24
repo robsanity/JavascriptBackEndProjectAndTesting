@@ -1293,7 +1293,7 @@ router.get('/api/skus', async (req, res) => {
     }
   
     try {
-      await internalOrdersDAO.createIntOrder(issueDate, products, customerId);
+      internalOrdersDAO.createIntOrder(issueDate, products, customerId);
       res.status(201).end();
     }
     catch (error) {
