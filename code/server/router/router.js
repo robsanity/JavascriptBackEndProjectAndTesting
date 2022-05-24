@@ -5,6 +5,7 @@ const usersDAO = require('../modules/usersDAO');
 const restockOrdersDAO = require('../modules/restockOrdersDAO');
 const SKUsDAO = require('../modules/SKUsDAO');
 const SKUItemsDAO = require('../modules/SKUItemsDAO');
+const itemsDAO = require('../modules/itemsDAO');
 const positionsDAO = require('../modules/positionsDAO');
 const returnOrdersDAO = require('../modules/returnOrdersDAO');
 const internalOrdersDAO = require('../modules/internalOrdersDAO');
@@ -1681,6 +1682,7 @@ router.get('/api/items/:id', async (req, res) => {
     return res.status(200).json(item);
   }
   catch (error) {
+    console.log(error);
     return res.status(500).json(error);
   }
 });
