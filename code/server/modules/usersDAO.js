@@ -71,7 +71,7 @@ function insertUser(username, name, surname, type) {
 }
 
 function login(username, password, type){
-    const sql = "SELECT * FROM user WHERE type=? AND email=? AND password=?";
+    const sql = "SELECT * FROM Users WHERE type=? AND email=? AND password=?";
     return new Promise((resolve, reject) => {
         db.all(sql, [type, username, password], (err, rows) => {
             if (err) {
