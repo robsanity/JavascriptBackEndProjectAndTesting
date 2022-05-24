@@ -45,13 +45,13 @@ function getItem(expectedHTTPStatus, description, id, SKUId, supplierId, price) 
             .send(k)
             .then(function (r) {
                 r.should.have.status(expectedHTTPStatus);
-                done();
+                
             })
         agent.get('/api/items/'+ id)
             .then(function (res) {
                 res.should.have.status(200);
-                done();
-            })
+            
+            }).catch(done);
 
     });
 }
