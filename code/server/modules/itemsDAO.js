@@ -68,7 +68,6 @@ function deleteItem(id) {
     });
 }
 
-
 function deleteALLItems() {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM Items";
