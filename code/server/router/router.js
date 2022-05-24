@@ -1270,6 +1270,9 @@ router.get('/api/skus', async (req, res) => {
       }
       )))
 /*
+
+CONTROLLO FUNZIONAMENTO CON CONCAT
+
         let listCompleted = completed.map((nt) => ({
             id: nt.id,
             issueDate: nt.issueDate,
