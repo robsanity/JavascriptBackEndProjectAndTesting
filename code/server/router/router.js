@@ -1033,8 +1033,7 @@ router.get('/api/skus', async (req, res) => {
         return res.status(422).end();
       }
   
-  /*
-      //------------ NON SO SE SIANO NECESSARI
+
       let checkSKUs;
       let checkSKUItems;
       //controlli per crezione / inseirmento skus e skuitems
@@ -1052,9 +1051,7 @@ router.get('/api/skus', async (req, res) => {
         }
       }
       )
-  */
-      //-----------------
-  
+
       await restockOrdersDAO.putSkuItemsOfRestockOrder(id, skuItems);
   
       return res.status(200).end();

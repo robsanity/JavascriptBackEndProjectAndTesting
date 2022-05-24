@@ -2,7 +2,7 @@
 const db = require('../db.js');
 
 async function getRestockOrders() {
-    try {
+ 
         let restockList = await getRestockList();
         let listProducts = await getProducts();
         let listSkuItems = await getSkuItems();
@@ -37,10 +37,6 @@ async function getRestockOrders() {
 
         return restockOrders;
 
-     }
-     catch (error) {
-         throw error; 
-        }
 }
 
 
@@ -59,7 +55,7 @@ function getByIdRestockOrders(id) {
             resolve(restockOrdersById);
         });
     });
-}
+} 
 
 function getToBeReturnRestockOrders(id) {
     return new Promise((resolve, reject) => {
@@ -74,19 +70,14 @@ function getToBeReturnRestockOrders(id) {
     });
 }
 async function createRestockOrder(issueDate, products, supplierId) {
-    
-    try {
-        let idRestockOrder=await insertRO(issueDate, supplierId);
+
+            let idRestockOrder=await insertRO(issueDate, supplierId);
 
         for (let p of products) {
             let idItem = await insertI(p.SKUId, p.description, p.price, supplierId);
             await insertROI(idRestockOrder, idItem, p.qty);
-        }
-        return true;
-    }
-    catch (error) {
-        throw error;
-    }
+        } 
+         return;
 }
 
 function insertRO(issueDate, supplierId) {
@@ -112,17 +103,18 @@ function insertRO(issueDate, supplierId) {
         })
     });
 }
-
+ 
 function insertI(SKUId, description, price, supplierId) {
     return new Promise((resolve, reject) => {
         let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)";
         let idItemSQL = "SELECT last_insert_rowid() as lastId";
+        
         db.all(sqlI, [SKUId, description, price, supplierId], (err, rows) => {
             if (err) {
                 reject({ error: "no insert" });
                 return;
             }
-            else {
+            else {  
                 db.all(idItemSQL, [], (err, rows) => {
                     if (err) {
                         reject({ error: "no last id" });

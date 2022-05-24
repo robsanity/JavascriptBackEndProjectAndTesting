@@ -1,6 +1,10 @@
 
-PUT  http://localhost:3001/api/sku/697/position
+POST  http://localhost:3001/api/restockOrder
 Content-Type: application/json
-
-{"position" : 800211}
         
+        {
+            "issueDate":"2021/11/29 09:33",
+            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+                        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],
+            "supplierId" : 1
+        }
