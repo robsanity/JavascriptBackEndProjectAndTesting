@@ -57,10 +57,10 @@ function findUser(id) {
     });
 }
 
-function insertUser(username, name, surname, type) {
+function insertUser(username, name, surname, type, pass) {
     return new Promise((resolve, reject) => {
-        const sql = "INSERT INTO Users (name, surname, email, type) values (?,?,?,?)";
-        db.all(sql, [name, surname, username, type], (err, rows) => {
+        const sql = "INSERT INTO Users (name, surname, email, type, password) values (?,?,?,?,?)";
+        db.all(sql, [name, surname, username, type, pass], (err, rows) => {
             if (err) {
                 reject({ error: "no insert" });
 
@@ -124,4 +124,4 @@ function deleteALLUser() {
     });
 }
 
-module.exports = { getSuppliers, getUsers, checkUser, findUser, insertUser, updateUser, deleteUser, deleteALLUser };
+module.exports = { login, getSuppliers, getUsers, checkUser, findUser, insertUser, updateUser, deleteUser, deleteALLUser };
