@@ -16,7 +16,7 @@ describe('test', () => {
 
     newItem(201, 'new item', 12, 1, 2, 10.99);
     getItem(201, 'new item', 12, 1, 2, 10.99);
-    updateItem(200, 'new description', 88, 77, 66, 0.99);
+    updateItem(200, 'new description', 0.99);
     deleteItem('new item', 12, 1, 2, 10.99);
 
 });
@@ -55,20 +55,18 @@ function getItem(expectedHTTPStatus, description, id, SKUId, supplierId, price) 
 }
 
 
-function updateItem(expectedHTTPStatus, description, id, SKUId, supplierId, price) {
+function updateItem(expectedHTTPStatus, newdescription, newprice) {
     it('update item', async function () {
         let k = await itemsDAO.createItem("description", 3, 4, 5, 99);
         const body = {
-            description: description,
-            id: id,
-            SKUId: SKUId,
-            supplierId: supplierId,
-            price: price
+            newDescription: newdescription,
+            newPrice: newprice
         };
         agent.put('/api/item/' + 3)
             .send(body)
             .then(function (r) {
                 r.should.have.status(expectedHTTPStatus);
+                
                 done();
             })
 
