@@ -1,3 +1,0 @@
-
-GET  http://localhost:3001/api/skus
-Content-Type: application/json

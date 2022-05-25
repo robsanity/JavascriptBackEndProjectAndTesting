@@ -1,4 +1,4 @@
-const RestockOrdersDAO = require('../modules/RestockOrdersDAO');
+/* const RestockOrdersDAO = require('../modules/RestockOrdersDAO');
 
 describe("Test RestockOrder", () => {
     beforeAll(() => {
@@ -30,4 +30,4 @@ function testgetRestockOrder(){
         console.log(res.length);
         expect(res.length).toStrictEqual(0);
     });
-}
+} */
