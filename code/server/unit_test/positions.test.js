@@ -35,7 +35,6 @@ function testGetPositions() {
             100,
             100
         )
-        console.log(newPosition)
         expect(newPosition).toStrictEqual(1);
 
         res = await positionsDAO.listPositions();

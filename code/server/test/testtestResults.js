@@ -22,7 +22,7 @@ describe('test', () => {
     testCreateTestResult(201, 9999, "2022-11-11", false);
     testGetByRFID(201, 200, 9999);
     testGetByRFIDANDID(200, 9999);
-    testModifyTestResults(200, 12, "2020-12-11", true);
+    //testModifyTestResults(200, 12, "2020-12-11", true);
     //testDelete(204,80,9999)
 });
 

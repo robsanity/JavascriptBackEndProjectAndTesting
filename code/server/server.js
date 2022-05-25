@@ -15,6 +15,7 @@ app.use('/', router);
 const db = new sqlite.Database('database.db', (err) => {
   if (err) throw err;
 });
+
 handleDB();
 
 // activate the server
@@ -22,15 +23,13 @@ app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-
-
-async function createTable() {
+function createTable() {
   return new Promise((resolve, reject) => {
     let sql = 'CREATE TABLE IF NOT EXISTS "Users" ("idUser"	INTEGER NOT NULL UNIQUE, "name"	TEXT NOT NULL, "surname"	TEXT NOT NULL, "email"	TEXT NOT NULL, "type"	TEXT NOT NULL, "password"	TEXT, PRIMARY KEY("idUser" AUTOINCREMENT) );'
 
     db.run(sql, [], function (err) {
       if (err) {
-        reject({ error: "no create db" });
+        reject({  error: "no create db" });
       }
     });
 
@@ -134,47 +133,47 @@ async function createTable() {
   });
 }
 
-async function prepareDatabase() {
+function prepareDatabase() {
   return new Promise((resolve, reject) => {
     let sql = 'INSERT INTO "Users" ("idUser", "name", "surname", "email", "type", "password") VALUES (1, "Test", "surname", "user1@ezwh.com", "customer", "testpassword");';
-    db.run(sql, (error) => {
-      if (error) {
-        reject(error);
+    db.run( sql, [], function ( err) {
+      if ( err) {
+        reject( err);
       }
     });
 
     sql = 'INSERT INTO "Users" ("idUser", "name", "surname", "email", "type", "password") VALUES (2, "Test", "surname", "qualityEmployee1@ezwh.com", "quality employee", "testpassword");';
-    db.run(sql, (error) => {
-      if (error) {
-        reject(error);
+    db.run( sql, [], function ( err) {
+      if ( err) {
+        reject( err);
       }
     });
 
     sql = 'INSERT INTO "Users" ("idUser", "name", "surname", "email", "type", "password") VALUES (3, "Test", "surname", "clerk1@ezwh.com", "clerk", "testpassword");';
-    db.run(sql, (error) => {
-      if (error) {
-        reject(error);
+    db.run( sql, [], function ( err) {
+      if ( err) {
+        reject( err);
       }
     });
 
     sql = 'INSERT INTO "Users" ("idUser", "name", "surname", "email", "type", "password") VALUES (4, "Test", "surname", "deliveryEmployee1@ezwh.com", "delivery employee", "testpassword");';
-    db.run(sql, (error) => {
-      if (error) {
-        reject(error);
+    db.run( sql, [], function ( err) {
+      if ( err) {
+        reject( err);
       }
     });
 
     sql = 'INSERT INTO "Users" ("idUser", "name", "surname", "email", "type", "password") VALUES (5, "Test", "surname", "supplier1@ezwh.com", "supplier", "testpassword");';
-    db.run(sql, (error) => {
-      if (error) {
-        reject(error);
+    db.run( sql, [], function ( err) {
+      if ( err) {
+        reject( err);
       }
     });
 
     sql = 'INSERT INTO "Users" ("idUser", "name", "surname", "email", "type", "password") VALUES (6, "Test", "surname", "manager1@ezwh.com", "manager", "testpassword");';
-    db.run(sql, (error) => {
-      if (error) {
-        reject(error);
+    db.run( sql, [], function ( err) {
+      if ( err) {
+        reject( err);
       }
     });
     console.log("Users created")
