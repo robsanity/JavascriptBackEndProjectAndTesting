@@ -160,5 +160,35 @@ function deleteDatas(){
     })
 }
 
+function addProducts(idSKU,description,price,RFID,idReturnOrder){
+    return new Promise((resolve,reject)=>{
+        const sql = "INSERT INTO Products (idSKU,description,price,RFID,idReturnOrder) VALUES (?,?,?,?,?)";
+        db.run(sql,[idSKU,description,price,RFID,idReturnOrder],function(err){
+            if(err){
+                reject(err);
+            }
+            else {
+                resolve(this.lastID);
+            }
+        })
+    })
+}
 
-module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder, deleteDatas }
+
+function deleteProducts(){
+    return new Promise((resolve,reject)=>{
+        const sql = "DELETE FROM Products";
+        db.run(sql,[], function(err){
+            if(err){
+                reject(err);
+            }
+            else {
+                resolve(this.lastID);
+            }
+        })
+    })
+}
+
+
+
+module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder, deleteDatas, deleteProducts,addProducts }

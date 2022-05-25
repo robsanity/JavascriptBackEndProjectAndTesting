@@ -311,7 +311,7 @@ router.get('/api/positions', async (req, res) => {
 
   try {
     const listPositions = await positionsDAO.listPositions();
-    return res.status(201).json(listPositions);
+    return res.status(200).json(listPositions);
   } catch (error) {
     return res.status(500).json(error);
   }

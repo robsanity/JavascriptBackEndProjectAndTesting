@@ -11,13 +11,12 @@ describe('test', () => {
     beforeEach(async () => {
         await positionsDAO.deleteALLPosition()
     })
-
     testcreate(201,1,1,8,7,55,80);
-    testlistPosition(201,1,1,8,7,55,80);
+    testlistPosition(201,200,1,1,8,7,55,80);
     testupdatePosition(200,1,7,7,70,70,70,70);
     testmodifypositionID(200,3);
     testdeletePosition(204);
-    testcreate(201,1,1,8,7,55,80);
+    //testcreate(201,1,1,8,7,55,80);
 });
 
 
@@ -27,28 +26,30 @@ function testcreate(expectedHTTPStatus,positionID, aisleID, row, col, maxWeight,
         agent.post('/api/position')
         .send(pos)
         .then(function(res){
-            done();
             res.should.have.status(expectedHTTPStatus);
+            done();
         }).catch(done);
     })
 }
 
-function testlistPosition(expectedHTTPStatus,positionID, aisleID, row, col, maxWeight, maxVolume){
+function testlistPosition(expectedHTTPStatus1,expectedHTTPStatus2,positionID, aisleID, row, col, maxWeight, maxVolume){
     it('list positions',function(done){
         let pos = {positionID:positionID, aisleID:aisleID,row:row,col:col,maxWeight:maxWeight,maxVolume:maxVolume};
         agent.post('/api/position')
         .send(pos)
         .then(function(res){
-            done();
-            res.should.have.status(expectedHTTPStatus);
-        }).catch(done);
-        agent.get('/api/positions')
-        .then(function(res){
             
-                res.should.have.status(expectedHTTPStatus);
-                
+            res.should.have.status(expectedHTTPStatus1);
+            
+        //}).catch(done)
+        agent.get('/api/positions')
+        .then(function(r){
+            
+                r.should.have.status(expectedHTTPStatus2);
+                done();
             }).catch(done);
         });
+    });
 }
 
 function testupdatePosition(expectedHTTPStatus,aisleID,row,col,maxWeight,maxVolume,occupiedWeight,occupiedVolume){
@@ -97,8 +98,10 @@ function testmodifypositionID(expectedHTTPStatus,newPositionID){
  
         })
     }
-    
-    
+   
+
+
+
     function testdeletePosition(expectedHTTPStatus){
         it('delete position ',function(done){
             let po = {positionID:2, aisleID:5,row:5,col:5,maxWeight:100,maxVolume:100};
