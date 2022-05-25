@@ -52,7 +52,7 @@ function createSKUItem(rfid, SKUId, date) {
             }
             else
             {
-            resolve(this.lastID);
+            resolve(rfid);
             }
         });
     });

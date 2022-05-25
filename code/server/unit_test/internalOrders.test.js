@@ -4,7 +4,7 @@ const internalOrdersDAO = require('../modules/internalOrdersDAO');
 const SKUItemsDAO = require('../modules/SKUItemsDAO');
 const SKUsDAO = require('../modules/SKUsDAO');
 
-describe("Test RestockOrder", () => {
+describe("Test InternalOrder", () => {
     beforeAll(async () => {
         await internalOrdersDAO.deleteDatas();
         await SKUItemsDAO.deleteALLSKUItems();
