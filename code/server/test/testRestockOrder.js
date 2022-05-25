@@ -10,7 +10,7 @@ chai.should();
 const app = require('../server');
 var agent = chai.request.agent(app);
 
-describe('test get restock order', () => {
+describe('test restock order', () => {
     beforeEach(async () => {
         await restockOrdersDAO.deleteDatas();
         await itemsDAO.deleteALLItems();
