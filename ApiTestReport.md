@@ -64,7 +64,11 @@ Version: 1.0
 | 2-3         | FR 3.1.1                        |testupdatePosition    (testPosition.js)     | 
 | 2-5         | FR 3.1.2                        |testdeletePosition    (testPosition.js)     | 
 | 6-1         | FR 5.9                          |newRet     (testReturnOrder.js)               |
-
+| 9-1         | FR 6.1                          |testCreateIO/testModifyIOC (testInternalOrder.js) |  
+| 10-1        | FR 6.8                          |testModifyIOC    (testInternalOrder.js) |
+| 11-1        | FR 7                            |newItem    (testItemRouter.js) |   
+| 11-2        | FR 7                            |updateItem    (testItemRouter.js) |   
+| 5-1-1       | FR 5.1                          |postRestockOrder    (testRestockOrder.js) |   
 
 # Coverage of Non Functional Requirements
 

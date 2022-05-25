@@ -7,7 +7,7 @@ chai.should();
 const app = require('../server');
 var agent = chai.request.agent(app);
 
-describe('testInternalOrd', () => {
+describe('testInternalOrder', () => {
     beforeEach(async () => {
         await internalOrdersDAO.deleteDatas();
     })
