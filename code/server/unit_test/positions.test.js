@@ -36,7 +36,7 @@ function testGetPositions() {
             100
         )
         console.log(newPosition)
-        expect(newPosition).toStrictEqual(true);
+        expect(newPosition).toStrictEqual(1);
 
         res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(1);
@@ -56,7 +56,7 @@ function testCheckPositions(id) {
             100,
             100
         )
-        expect(newPosition).toStrictEqual(true);
+        expect(newPosition).toStrictEqual(id);
 
         res = await positionsDAO.checkPosition(id);
         expect(res.length).toStrictEqual(1);
@@ -79,7 +79,7 @@ function testCreatePositions(positionID, aisleID, row, col, maxWeight, maxVolume
             maxWeight,
             maxVolume
         )
-        expect(newPosition).toStrictEqual(true);
+        expect(newPosition).toStrictEqual(positionID);
 
         res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(1);
@@ -109,7 +109,7 @@ function testUpdatePositions(positionID, newAisleID, newRow, newCol, newMaxWeigh
             100,
             100
         )
-        expect(newPosition).toStrictEqual(true);
+        expect(newPosition).toStrictEqual(positionID);
 
         res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(1);
@@ -153,7 +153,7 @@ function testUpdatePositionsId(positionID, newPositionID) {
             100,
             100
         )
-        expect(newPosition).toStrictEqual(true);
+        expect(newPosition).toStrictEqual(positionID);
 
         res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(1);
@@ -197,7 +197,7 @@ function testDeletePositions(id) {
             100,
             100
         )
-        expect(newPosition).toStrictEqual(true);
+        expect(newPosition).toStrictEqual(id);
 
         res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(1);

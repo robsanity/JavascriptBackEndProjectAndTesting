@@ -16,7 +16,8 @@ describe('test', () => {
     testlistPosition(201,1,1,8,7,55,80);
     testupdatePosition(200,1,7,7,70,70,70,70);
     testmodifypositionID(200,3);
-    testdeletePosition(204)
+    testdeletePosition(204);
+    testcreate(201,1,1,8,7,55,80);
 });
 
 
