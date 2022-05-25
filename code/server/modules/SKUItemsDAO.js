@@ -57,6 +57,19 @@ function createSKUItem(rfid, SKUId, date) {
         });
     });
 };
+function addRetOrdtoSKUITEM(returnOrderid){
+    return new Promise((resolve,reject )=>{
+        const sql = "UPDATE SKUItems SET returnOrderId = ?"
+        db.run(sql,[returnOrderid],function(err){
+            if (err) {
+                reject({ error: "no update" });
+
+            }
+            resolve(true);
+        })
+    })
+}
+
 
 
 function modifySKUItem(newrfid, newavailable, newdate,rfid) {
@@ -114,4 +127,4 @@ function deleteALLSKUItems() {
     });
 }
 
-module.exports = { listSKUItems, findSKUItems, findSKUItem, createSKUItem, deleteALLSKUItems, modifySKUItem, deleteSKUItem, createSKUItemNoDate }
+module.exports = { listSKUItems, findSKUItems, findSKUItem, createSKUItem, deleteALLSKUItems, modifySKUItem, deleteSKUItem, createSKUItemNoDate, addRetOrdtoSKUITEM }

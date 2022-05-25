@@ -1,12 +1,21 @@
 
 const returnOrderDAO = require('../modules/returnOrdersDAO');
+const SKU = require('../modules/SKUsDAO');
+const SKUItems = require('../modules/SKUItemsDAO');
 
 describe("Test ReturnOrder", () => {
     beforeAll(async() => {
         await returnOrderDAO.deleteDatas();
+        await returnOrderDAO.deleteProducts();
+        await SKU.deleteDatas();
+        await SKUItems.deleteALLSKUItems();
     })
 
-    beforeEach(async() => await returnOrderDAO.deleteDatas())
+    beforeEach(async() => await returnOrderDAO.deleteDatas());
+    beforeEach(async() => await returnOrderDAO.deleteProducts());
+    beforeEach(async() => await SKU.deleteDatas());
+    beforeEach(async() => await SKUItems.deleteALLSKUItems());
+
 
     test("Database start", async () => {
         let res = await returnOrderDAO.listReturnOrders();
@@ -14,7 +23,7 @@ describe("Test ReturnOrder", () => {
     })
     testlistReturnOrder();
     testFindRetOrder(2);
-    testcreateRetOrder(3,'2022-12-12',1,9999);
+    testcreateRetOrder(3,'2022-12-12',1,"9999");
     testDeleteOrder();
 });
 
@@ -22,40 +31,26 @@ function testlistReturnOrder (){
     test ('Get all ReturnOrder', async()=>{
         let res = await returnOrderDAO.listReturnOrders();
         expect(res.length).toStrictEqual(0);
-    
-        let neworder = await returnOrderDAO.createRetOrder(
-          2,
-          '2022-12-12',
-          1,
-          9999    
-        );
-    
+        let idsku = await SKU.createSKU("product",10,10,"1",20,10);
+        await SKUItems.createSKUItem("9999",idsku,"2020-12-10");
+        await returnOrderDAO.addProducts(idsku,"a product",10.99,"9999",3);
+        await SKUItems.addRetOrdtoSKUITEM(3);
+        await returnOrderDAO.createRetOrder(3, '2022-12-12',1, "9999");
         res = await returnOrderDAO.listReturnOrders();
         expect(res.length).toStrictEqual(1);
     
-        neworder = await returnOrderDAO.createRetOrder(
-          3,
-          '2022-10-10',
-          3,
-          80012345
-        );
-    
-        res = await returnOrderDAO.listReturnOrders();
-        expect(res.length).toStrictEqual(2);
       });
 }
 
-function testFindRetOrder(z){
+function testFindRetOrder(){
         test('find ret ord', async()=>{
           let res = await returnOrderDAO.listReturnOrders();
         expect(res.length).toStrictEqual(0);
-        
-            let neworder = await returnOrderDAO.createRetOrder(
-                2,
-                '2022-12-12',
-                1,
-                80012345      
-            );
+        let idsku = await SKU.createSKU("product",10,10,"1",20,10);
+        await SKUItems.createSKUItem("9999",idsku,"2020-12-10");
+        await returnOrderDAO.addProducts(idsku,"a product",10.99,"9999",3);
+        await SKUItems.addRetOrdtoSKUITEM(3);
+        await returnOrderDAO.createRetOrder(3, '2022-12-12',1, "9999");
         
             res = await returnOrderDAO.listReturnOrders();
             expect(res.length).toStrictEqual(1);
@@ -65,27 +60,22 @@ function testFindRetOrder(z){
         })
     }
 
-function testcreateRetOrder(idReturnOrder, returnDate, idRestockOrder, idSKUItem){
+function testcreateRetOrder(idReturnOrder, returnDate, idRestockOrder,RFID){
     test('create ret ord',async()=>{
         let res = await returnOrderDAO.listReturnOrders();
         expect(res.length).toStrictEqual(0);
-        let neworder = await returnOrderDAO.createRetOrder(idReturnOrder, returnDate, idRestockOrder, idSKUItem);
-        
-    
+        let idsku = await SKU.createSKU("product",10,10,"1",20,10);
+        await SKUItems.createSKUItem("9999",idsku,"2020-12-10");
+        await returnOrderDAO.addProducts(idsku,"a product",10.99,"9999",3);
+        await SKUItems.addRetOrdtoSKUITEM(idReturnOrder);
+        await returnOrderDAO.createRetOrder(idReturnOrder, returnDate, idRestockOrder, RFID);
         res = await returnOrderDAO.listReturnOrders();
-        console.log(res[0]);
         let z = 0;
-        
         expect(res.length).toStrictEqual(1);
         expect(res[0].idReturnOrder).toStrictEqual(idReturnOrder);
         expect(res[0].returnDate).toStrictEqual(returnDate);
         expect(res[0].idRestockOrder).toStrictEqual(idRestockOrder);
-        for (k = 0; k < res[0].products.length;k++){
-        if (res[0].products[k].RFID === idSKUItem){
-            z =  z + 1;
-        }
-    }
-        expect(z).toStrictEqual(1);
+        
     })
 }
 
@@ -93,13 +83,11 @@ function testDeleteOrder(){
     test('delete order',async() =>{
         let res = await returnOrderDAO.listReturnOrders();
         expect(res.length).toStrictEqual(0);
-        
-            let neworder = await returnOrderDAO.createRetOrder(
-                2,
-                '2022-12-12',
-                1,
-                80012345      
-            );
+        let idsku = await SKU.createSKU("product",10,10,"1",20,10);
+        await SKUItems.createSKUItem("9999",idsku,"2020-12-10");
+        await returnOrderDAO.addProducts(idsku,"a product",10.99,"9999",3);
+        await SKUItems.addRetOrdtoSKUITEM(3);
+        let neworder = await returnOrderDAO.createRetOrder(3, '2022-12-12',1, "9999");
         
             res = await returnOrderDAO.listReturnOrders();
             expect(res.length).toStrictEqual(1);
