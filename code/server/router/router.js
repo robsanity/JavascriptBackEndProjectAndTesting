@@ -934,7 +934,6 @@ router.put('/api/users/:username', async (req, res) => {
 
     let username = req.params.username;
     if (username === undefined || username === '') {
-      console.log("Qui");
       return res.status(422).end();
     }
 
@@ -943,7 +942,6 @@ router.put('/api/users/:username', async (req, res) => {
 
     if (!(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier") ||
       !(newType === "customer" || newType === "qualityEmployee" || newType === "clerk" || newType === "deliveryEmployee" || newType === "supplier")) {
-        console.log("O qui");
         return res.status(422).end();
     }
 
