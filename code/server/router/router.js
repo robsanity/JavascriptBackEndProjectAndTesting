@@ -1297,7 +1297,7 @@ router.put('/api/restockOrder/:id/transportNote', async (req, res) => {
     }
 
     //check deliverydate after issuedate
-
+    
     await restockOrdersDAO.putTNRestockOrder(id, transportNote);
     return res.status(200).end();
   }
