@@ -783,6 +783,7 @@ router.get('/api/users', async (req, res) => {
     const users = await usersDAO.getUsers();
     return res.status(200).json(users)
   } catch (error) {
+    console.log(error)
     return res.status(500).json();
   }
 });

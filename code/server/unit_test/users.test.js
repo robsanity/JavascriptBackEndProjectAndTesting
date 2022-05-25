@@ -1,5 +1,4 @@
 const usersDAO = require('../modules/usersDAO');
-const db = require ('../db.js');
 
 
 describe("Test user", () => {

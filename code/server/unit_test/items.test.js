@@ -1,6 +1,5 @@
 'use strict';
 const itemsDAO = require('../modules/itemsDAO');
-const db = require ('../db.js');
 
 describe("Test item", () => {
     beforeAll( async () => {

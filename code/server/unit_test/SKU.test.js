@@ -1,5 +1,4 @@
 const SKUsDAO = require('../modules/SKUsDAO');
-const db = require ('../db.js');
 const positionsDAO = require('../modules/positionsDAO');
 
 
