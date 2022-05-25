@@ -15,10 +15,10 @@ describe('test', () => {
 
 
     newSKU(201, 'ciao', 12, 12, 'we', 12, 12);
-    getSKU(201, 'iao', 12, 12, 'we', 12, 12);
+    getSKU(200, 'iao', 12, 12, 'we', 12, 12);
     update(200, 'bella', 10, 10, 'campione', 8, 30);
     updateSkuPosition(200, 800211);
-    deletesku();
+    deletesku(204);
 
 });
 
@@ -30,8 +30,8 @@ function newSKU(expectedHTTPStatus, description, weight, volume, notes, availabl
             .then(function (res) {
                 done();
                 res.should.have.status(expectedHTTPStatus);
-                res.body.should.equal(k);
-            })
+                
+            }).catch(done);
 
 
     });
@@ -50,17 +50,19 @@ function getSKU(expectedHTTPStatus, description, weight, volume, notes, availabl
             })
         agent.get('/api/skus')
             .then(function (res) {
-                res.should.have.status(201);
                 done();
-            })
+                res.should.have.status(expectedHTTPStatus);
+                
+            }).catch(done);
 
-    });
+    })
 }
 
 
 function update(expectedHTTPStatus, description, weight, volume, notes, price, availableQuantity) {
-    it('update SKU', async function () {
-        let k = await SKUsDAO.createSKU('allora', 10, 10, 'hola', 44, 43);
+    it('update SKU', function (done) {
+        SKUsDAO.createSKU('allora', 10, 10, 'hola', 44, 43)
+        .then((res)=>{
         const body = {
             description: description,
             weight: weight,
@@ -69,40 +71,44 @@ function update(expectedHTTPStatus, description, weight, volume, notes, price, a
             price: price,
             availableQuantity: availableQuantity,
         };
-        agent.put('/api/sku/' + k)
+        agent.put('/api/sku/' + res)
             .send(body)
             .then(function (r) {
                 r.should.have.status(expectedHTTPStatus);
                 done();
             })
-
+        }).catch(done);
     })
 }
 
 function updateSkuPosition(expectedHTTPStatus, position) {
-    it("Update an sku position", async function () {
-        let id = await SKUsDAO.createSKU("a", 10, 5, "f", 10.99, 50);
-        let z = { position: position };
+    it("Update an sku position", function (done) {
+        SKUsDAO.createSKU("a", 10, 5, "f", 10.99, 50)
+        .then((res)=>{
+        let body = { position: position };
         agent
-            .put("/api/sku/" + id + "/position")
-            .send(z)
+            .put("/api/sku/" + res + "/position")
+            .send(body)
             .then(function (res) {
                 res.should.have.status(expectedHTTPStatus);
                 done();
             });
+        }).catch(done);
     });
 }
 
-function deletesku() {
-    it("delete sku", async function () {
-        let id = await SKUsDAO.createSKU("a", 10, 5, "f", 10.99, 50);
-        agent
-            .delete("/api/skus/" + id)
-            .send(id)
+function deletesku(expectedHTTPStatus) {
+    it("delete sku", function (done) {
+        SKUsDAO.createSKU("a", 10, 5, "f", 10.99, 50)
+        .then((res)=>{
+            agent
+            .delete("/api/skus/" + res)
             .then(function (res) {
                 res.should.have.status(expectedHTTPStatus);
                 done();
             });
+        }).catch(done);
+        
     });
 }
 

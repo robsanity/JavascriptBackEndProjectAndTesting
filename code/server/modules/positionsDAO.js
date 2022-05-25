@@ -37,7 +37,7 @@ function createPositions(positionID, aisleID, row, col, maxWeight, maxVolume) {
                 reject({ error: "no insert" });
 
             }
-            resolve(true);
+            resolve(this.lastID);
         });
     });
 };

@@ -18,12 +18,38 @@ describe("Test user", () => {
         expect(res.length).toStrictEqual(0);
     })
 
+    testLogin("a.b@gmail.com", "A", "B", "clerk", "password")
     testGetUsers();
-    testCheckUser("name.surname@ezwh.com", "name", "surname", "clerk");
-    testInsertUsers("a.b@gmail.com", "A", "B", "clerk");
-    testUpdateUser("name.surname@ezwh.com", "name", "surname", "clerk", "supplier")
+    testCheckUser("name.surname@ezwh.com", "name", "surname", "clerk", "password");
+    testInsertUsers("a.b@gmail.com", "A", "B", "clerk", "password");
+    testUpdateUser("name.surname@ezwh.com", "name", "surname", "clerk", "supplier", "password")
     testDeleteUser("name.surname@ezwh.com", "supplier");
 })
+
+function testLogin(username, name, surname, type, pass){
+    test("login", async () => {
+        let res = await usersDAO.getUsers();
+        expect(res.length).toStrictEqual(0);
+
+        let newUser = await usersDAO.insertUser(
+            username, 
+            name, 
+            surname, 
+            type,
+            pass
+        );
+        expect(newUser).toStrictEqual(true);
+        res = await usersDAO.getUsers();
+        expect(res.length).toStrictEqual(1);
+
+        res = await usersDAO.login(username, pass, type);
+        expect(res.length).toStrictEqual(1);
+
+        expect(res[0].username).toStrictEqual(username);
+        expect(res[0].name).toStrictEqual(name);
+
+    })
+}
 
 function testGetUsers() {
     test("getUsers and getSuppliers", async () => {
@@ -34,7 +60,8 @@ function testGetUsers() {
             "a.b@gmail.com",
             "A",
             "B",
-            "clerk"
+            "clerk",
+            "password"
         );
         expect(newUser).toStrictEqual(true);
         res = await usersDAO.getUsers();
@@ -46,7 +73,8 @@ function testGetUsers() {
             "c.d@gmail.com",
             "C",
             "D",
-            "supplier"
+            "supplier",
+            "password"
         );
         expect(newUser).toStrictEqual(true);
         res = await usersDAO.getUsers();
@@ -56,7 +84,7 @@ function testGetUsers() {
     })
 }
 
-function testCheckUser(username, name, surname, type) {
+function testCheckUser(username, name, surname, type, pass) {
     test("findUser and checkUser", async () => {
         let res = await usersDAO.getUsers();
         expect(res.length).toStrictEqual(0);
@@ -65,7 +93,8 @@ function testCheckUser(username, name, surname, type) {
             username,
             name,
             surname,
-            type
+            type,
+            pass
         );
         expect(newUser).toStrictEqual(true);
         res = await usersDAO.getUsers();
@@ -83,7 +112,7 @@ function testCheckUser(username, name, surname, type) {
     })
 }
 
-function testInsertUsers(username, name, surname, type) {
+function testInsertUsers(username, name, surname, type, pass) {
     test("insertUser", async () => {
         let res = await usersDAO.getUsers();
         expect(res.length).toStrictEqual(0);
@@ -92,7 +121,8 @@ function testInsertUsers(username, name, surname, type) {
             username, 
             name, 
             surname, 
-            type
+            type,
+            pass
         );
         expect(newUser).toStrictEqual(true);
         res = await usersDAO.getUsers();
@@ -105,7 +135,7 @@ function testInsertUsers(username, name, surname, type) {
     })
 }
 
-function testUpdateUser(username, name, surname, oldType, newType) {
+function testUpdateUser(username, name, surname, oldType, newType, pass) {
     test("updateUser", async () => {
         let res = await usersDAO.getUsers();
         expect(res.length).toStrictEqual(0);
@@ -114,7 +144,8 @@ function testUpdateUser(username, name, surname, oldType, newType) {
             username,
             name,
             surname,
-            oldType
+            oldType,
+            pass
         );
         expect(newUser).toStrictEqual(true);
         res = await usersDAO.getUsers();

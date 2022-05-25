@@ -1,8 +1,9 @@
 
-PUT  http://localhost:3001/api/users/user1@ezwh.com
+POST  http://localhost:3001/api/customerSessions
 Content-Type: application/json
 
-    {
-        "oldType" : "supplier",
-        "newType" : "clerk"
+ {
+        "username":"user1@ezwh.com",
+        "password" : "testpassword"
+
     }

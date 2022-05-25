@@ -293,4 +293,4 @@ function initialize() {
 
 
 
-module.exports = { getByIdRestockOrders, getToBeReturnRestockOrders, insertRO, insertI, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, initialize, getRestockList, getProducts, getSkuItems };
+module.exports = { getByIdRestockOrders, getToBeReturnRestockOrders, insertROI, insertRO, insertI, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, initialize, getRestockList, getProducts, getSkuItems };

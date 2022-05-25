@@ -311,7 +311,7 @@ router.get('/api/positions', async (req, res) => {
 
   try {
     const listPositions = await positionsDAO.listPositions();
-    return res.status(200).json(listPositions);
+    return res.status(201).json(listPositions);
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -799,11 +799,13 @@ router.post('/api/newUser', async (req, res) => {
     let name = req.body.name;
     let surname = req.body.surname;
     let type = req.body.type;
+    let pass = req.body.password;
 
     if (username === undefined || username == '' ||
       name === undefined || name == '' ||
       surname === undefined || surname == '' ||
-      type === undefined || type == '' || !(type === "customer" || type === "qualityEmployee" || type === "clerk" || type === "deliveryEmployee" || type === "supplier")) {
+      type === undefined || type == '' || !(type === "customer" || type === "qualityEmployee" || type === "clerk" || type === "deliveryEmployee" || type === "supplier") ||
+      pass === undefined || pass == '' || pass.length < 8) {
       return res.status(422).end();
     }
 
@@ -812,7 +814,7 @@ router.post('/api/newUser', async (req, res) => {
       return res.status(409).end();
     }
 
-    await usersDAO.insertUser(username, name, surname, type);
+    await usersDAO.insertUser(username, name, surname, type, pass);
     return res.status(201).end();
 
   }
@@ -1177,13 +1179,13 @@ router.post('/api/restockOrder', async (req, res) => {
     let idItem = 0;
     for (let p of products) {
       idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, supplierId);
-      await insertROI(idRestockOrder, idItem, p.qty);
+      await restockOrdersDAO.insertROI(idRestockOrder, idItem, p.qty);
     }
     return res.status(201).end();
 
   }
   catch (error) {
-
+console.log(error)
     return res.status(500).end();
   }
 })
