@@ -57,11 +57,11 @@ function checkRfid(rfid) {
     });
 }
 
-function insertTestResult(rfid, idTestDescriptor, date, result) {
+function insertTestResult(rfid, idTestDescriptor, Date, Result) {
 
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO TestResults (idTestDescriptor, date, result, idSKUItem) values (?,?,?,?)";
-        db.all(sql, [idTestDescriptor, date, result, rfid], (err, rows) => {
+        db.all(sql, [rfid, Date, Result, idTestDescriptor], (err, rows) => {
             if (err) {
                 reject({ error: "no insert" });
 

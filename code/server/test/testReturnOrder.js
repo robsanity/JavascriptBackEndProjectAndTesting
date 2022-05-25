@@ -15,6 +15,7 @@ describe('testreturn', () => {
     testlistReturnOrders(200);
     testfindRetOrder(200,3);
     testDeleteRetOrd(204);
+    newRet(201,"2021-02-02",5);
 });
 
 function newRet(expectedHTTPStatus,returnDate,restockOrderId){

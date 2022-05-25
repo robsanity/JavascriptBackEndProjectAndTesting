@@ -19,6 +19,7 @@ describe('test', () => {
     update(200, 'bella', 10, 10, 'campione', 8, 30);
     updateSkuPosition(200, 800211);
     deletesku(204);
+    newSKU(201, 'ciao', 12, 12, 'we', 12, 12);
 
 });
 
