@@ -356,4 +356,63 @@ function getAccepted() {
     });
 }
 
-module.exports = {insertIO, insertIOS, updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted }
+function deleteDatas() {
+    return new Promise((resolve, reject) => {
+        let sql = "DELETE FROM InternalOrdersSKUs";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                sql = "DELETE FROM InternalOrders";
+                db.all(sql, [], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    else {
+                        resolve(true);
+                    }
+                });
+        
+                
+            }
+        });
+
+        
+    });
+}
+
+function getSKUsIO() {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM InternalOrdersSKUs";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+function getIO() {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM InternalOrders";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+
+module.exports = {getSKUsIO, getIO, insertIO, insertIOS, updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted, deleteDatas }
