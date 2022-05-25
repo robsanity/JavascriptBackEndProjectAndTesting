@@ -5,20 +5,21 @@ describe("Test testResults", () => {
         await testResultsDAO.deleteALLTestResult();
     })
 
-    beforeEach(async () => await testResultsDAO.deleteALLTestResult())
+    beforeEach(async () => 
+    await testResultsDAO.deleteALLTestResult())
 
     test("Database start", async () => {
         let res = await testResultsDAO.getALLTestResults();
         expect(res.length).toStrictEqual(0);
     })
 
-    testGetTestResults(1234, 1, '2022/02/24', true);
-    testGetByIdTestResults(1234, 1, '2022/02/24', true);
+    testGetTestResults("1234", 1, '2022/02/24', true);
+    testGetByIdTestResults("1234", 1, '2022/02/24', true);
     testCheckId();
     testCheckRFID();
-    testInsertTestResult(1234, 1, '2022/02/24', true);
-    testUpdateTestResult(1234, 1, '2022/02/24', true, 2, '2010/10/28', false);
-    testDeleteTestResult(1234);
+    testInsertTestResult("1234", 1, '2022/02/24', true);
+    testUpdateTestResult("1234", 1, '2022/02/24', true, 2, '2010/10/28', false);
+    testDeleteTestResult("1234");
 
 
 })
@@ -74,14 +75,14 @@ function testCheckId() {
         expect(res.length).toStrictEqual(0);
 
         let newTR = await testResultsDAO.insertTestResult(
-            1234,
+            "1234",
             1,
             '2022/02/24',
             true
         )
         expect(newTR).toStrictEqual(true);
 
-        res = await testResultsDAO.getTestResults(1234);
+        res = await testResultsDAO.getTestResults("1234");
         expect(res.length).toStrictEqual(1);
         let idTR = res[0].id;
 
@@ -97,14 +98,14 @@ function testCheckRFID() {
         expect(res.length).toStrictEqual(0);
 
         let newTR = await testResultsDAO.insertTestResult(
-            1234,
+            "1234",
             1,
             '2022/02/24',
             true
         )
         expect(newTR).toStrictEqual(true);
 
-        res = await testResultsDAO.checkRfid(1234);
+        res = await testResultsDAO.checkRfid("1234");
         expect(res.length).toStrictEqual(1);
     })
 }
