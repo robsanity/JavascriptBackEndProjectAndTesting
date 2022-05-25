@@ -596,6 +596,7 @@ router.get('/api/skuitems/:rfid/testResults', async (req, res) => {
   try {
     let rfid = req.params.rfid;
     if (rfid === undefined || rfid === '' || isNaN(rfid)) {
+
       return res.status(422).end();
     }
 
@@ -610,6 +611,7 @@ router.get('/api/skuitems/:rfid/testResults', async (req, res) => {
   }
   catch (error) {
     return res.status(500).json({ error: error }).end();
+
   }
 })
 //FUNZIONANTE
@@ -618,7 +620,7 @@ router.get('/api/skuitems/:rfid/testResults', async (req, res) => {
 
 router.get('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
   try {
-
+ 
     let rfid = req.params.rfid;
     let id = req.params.id;
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
@@ -700,6 +702,7 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
 
     let rfid = req.params.rfid;
     let id = req.params.id;
+    console.log(id);
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
       id === undefined || id === '' || isNaN(id)) {
       return res.status(422).end();
@@ -715,14 +718,14 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
       return res.status(422).end();
     }
 
-    let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
+    let td = await testResultsDAO.getByIdTestResults(id,rfid);
     let ntd = await testDescriptorsDAO.getByIdTestDescriptors(newIdTestDescriptor);
     //per inserire un test result devo avere in possesso sku item
     let sku = await SKUItemsDAO.findSKUItem(rfid);
-    if (td.length === 0 || sku.length === 0 || ntd.length === 0) {
+    if (td.length == 0 || sku.length === 0 || ntd.length === 0) {
       return res.status(404).end();
     }
-
+  
     await testResultsDAO.updateTestResults(id, rfid, newIdTestDescriptor, newDate, newResult);
     return res.status(200).end();
   }
@@ -731,7 +734,7 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
   }
 });
 
-//NON FUNZIONANTE, RITORNA 503
+
 
 
 

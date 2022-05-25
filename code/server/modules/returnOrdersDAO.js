@@ -14,7 +14,7 @@ function listReturnOrders() {
                 return;
             }
             
-            const lello = rows.map((t) => ({ idReturnOrder: t.idReturnOrder, idSKU: t.idSKU, description: t.description, price: t.price, RFID: t.RFID }));
+            const array = rows.map((t) => ({ idReturnOrder: t.idReturnOrder, idSKU: t.idSKU, description: t.description, price: t.price, RFID: t.RFID }));
 
             db.all(sql, [], (err, rows) => {
                 if (err) {
@@ -24,9 +24,9 @@ function listReturnOrders() {
                 
                 const we = rows.map((k) => ({ idReturnOrder: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder, products: [] }));
                 for (let i = 0; i < we.length; i++) {
-                    for (let k = 0; k < lello.length; k++) {
-                        if (we[i].idReturnOrder == lello[k].idReturnOrder) {
-                            we[i].products.push(lello.reduce((x => x = lello[k])));
+                    for (let k = 0; k < array.length; k++) {
+                        if (we[i].idReturnOrder == array[k].idReturnOrder) {
+                            we[i].products.push(array.reduce((x => x = array[k])));
 
                         }
                     }
@@ -50,7 +50,7 @@ function findRetOrder(idReturnOrder) {
                 reject({ error: `Database error` });
                 return;
             }
-            const lello = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, price: t.price, RFID: t.RFID }));
+            const array = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, price: t.price, RFID: t.RFID }));
             db.all(sql, [idReturnOrder], (err, rows) => {
                 if (err) {
                     reject({ error: `Database error` });
@@ -58,7 +58,7 @@ function findRetOrder(idReturnOrder) {
                 }
                 const products = rows.map((k) => ({ idReturnOrder: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder }));
                 products.map((elem) => {
-                    elem.products = [lello];
+                    elem.products = [array];
                     resolve(products);
                 });
 
@@ -76,11 +76,11 @@ function getRetID() {
                 reject({ error: `Database error` });
                 return;
             }
-            var franco = rows.map((j) => ({ idReturnOrder: j.idReturnOrder }));
+            var riga = rows.map((j) => ({ idReturnOrder: j.idReturnOrder }));
 
 
 
-            resolve(franco);
+            resolve(riga);
         });
     });
 };
@@ -123,11 +123,11 @@ function getIDMax() {
                 reject({ error: `Database error` });
                 return;
             }
-            var franco = rows.map((j) => ({ idReturnOrder: j.idReturnOrder }));
+            var riga = rows.map((j) => ({ idReturnOrder: j.idReturnOrder }));
 
 
 
-            resolve(franco);
+            resolve(riga);
         });
     });
 };
