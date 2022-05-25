@@ -14,17 +14,18 @@ describe('test', () => {
     })
 
 
-    newItem(201, '12345678901234567890123456789015', 1, '2021/11/29 12:30');
-    getItem(201, '12345678901234567890123456789015', 1, '2021/11/29 12:30');
-    updateItem(200, '22345678901234567890123456789015', 5, '2021/11/29 15:30');
-    deleteItem('12345678901234567890123456789015', 1, '2021/11/29 12:30');
+    newUser(201, 'user1@ezwh.com', 'John', 'Smith', 'testpassword', 'customer');
+    getUser(200, 'user1@ezwh.com', 'John', 'Smith', 'testpassword', 'customer');
+    getCustomerSession(200, 'user2@ezwh.com', 'John', 'Smith', 'testpassword', 'customer');
+    updateUser(200, 'user2@ezwh.com', 'John', 'Smith', 'testpassword', 'clerk', 'supplier');
+    deleteUser('user1@ezwh.com', 'John', 'Smith', 'testpassword', 'customer');
 
 });
 
-function newItem(expectedHTTPStatus, rfid, SKUId, date) {
-    it('add SKUItem', function (done) {
-        let k = { RFID: rfid, SKUId: SKUId, date: date };
-        agent.post('/api/skuitem')
+function newUser(expectedHTTPStatus, username, name, surname, password, type) {
+    it('add User', function (done) {
+        let k = { username: username, name: name, surname: surname, password: password, type: type };
+        agent.post('/api/newUser')
             .send(k)
             .then(function (res) {
                 done();
@@ -37,17 +38,17 @@ function newItem(expectedHTTPStatus, rfid, SKUId, date) {
 
 }
 
-function getItem(expectedHTTPStatus, rfid, SKUId, date) {
+function getUser(expectedHTTPStatus, username, name, surname, password, type) {
 
-    it('get SKUitem', function (done) {
-        let k = { RFID: rfid, SKUId: SKUId, date: date };
-        agent.post('/api/skuitem')
+    it('get Users(except managers)', function (done) {
+        let k = { username: username, name: name, surname: surname, password: password, type: type };
+        agent.post('/api/newUser')
             .send(k)
             .then(function (r) {
-                r.should.have.status(expectedHTTPStatus);
-                agent.get('/api/skuitems/' + rfid)
+                r.should.have.status(201);
+                agent.get('/api/users')
                     .then(function (res) {
-                        res.should.have.status(200);
+                        res.should.have.status(expectedHTTPStatus);
                         done();
                     }).catch(done);
 
@@ -55,20 +56,41 @@ function getItem(expectedHTTPStatus, rfid, SKUId, date) {
     });
 }
 
+function getCustomerSession(expectedHTTPStatus, username, name, surname, password, type) {
 
-function updateItem(expectedHTTPStatus, newrfid, newava, newdate) {
-    it('update SKUItem', function (done) {
-        let k = { RFID: '12345678901234567890123456789015', SKUId: 1, date: '2021/11/29 12:30' };
-        agent.post('/api/skuitem')
+    it('get Customers session', function (done) {
+        let k = { username: username, name: name, surname: surname, password: password, type: type };
+        agent.post('/api/newUser')
             .send(k)
             .then(function (r) {
                 r.should.have.status(201);
                 const body = {
-                    newRFID: newrfid,
-                    newAvailable: newava,
-                    newDateOfStock: newdate
+                    username: username,
+                    password: password
                 };
-                agent.put('/api/skuitems/' + '12345678901234567890123456789015')
+                agent.post('/api/customerSessions')
+                     .send(body)
+                     .then(function (res) {
+                        res.should.have.status(expectedHTTPStatus);
+                        done();
+                    }).catch(done);
+
+            }).catch(done);
+    });
+}
+
+function updateUser(expectedHTTPStatus, username, name, surname, password, type, newType) {
+    it('update User rights', function (done) {
+        let k = { username: username, name: name, surname: surname, password: password, type: type };
+        agent.post('/api/newUser')
+            .send(k)
+            .then(function (r) {
+                r.should.have.status(201);
+                const body = {
+                    oldType: type,
+                    newType: newType,
+                };
+                agent.put('/api/users/'+username)
                     .send(body)
                     .then(function (r) {
                         r.should.have.status(expectedHTTPStatus);
@@ -76,18 +98,17 @@ function updateItem(expectedHTTPStatus, newrfid, newava, newdate) {
                     }).catch(done);
 
             }).catch(done);
-});
+    });
 }
 
-function deleteItem(rfid, SKUId, date) {
-    it("delete SKUItem", function (done) {
-        let k = { RFID: rfid, SKUId: SKUId, date: date };
-        agent.post('/api/skuitem')
+function deleteUser(username, name, surname, password, type) {
+    it("delete User", function (done) {
+        let k = { username: username, name: name, surname: surname, password: password, type: type };
+        agent.post('/api/newUser')
             .send(k)
             .then(function (r) {
                 r.should.have.status(201);
-                agent.delete("/api/skuitems/" + rfid)
-                    .send(rfid)
+                agent.delete("/api/users/" + username + "/" + type)
                     .then(function (res) {
                         res.should.have.status(204);
                         done();
