@@ -14,7 +14,7 @@ describe("Test ReturnOrder", () => {
     })
     testlistReturnOrder();
     testFindRetOrder(2);
-    testcreateRetOrder(2,'2022-12-12',1,80012345);
+    testcreateRetOrder(3,'2022-12-12',1,9999);
     testDeleteOrder();
 });
 
