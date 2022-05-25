@@ -540,7 +540,7 @@ router.put('/api/testDescriptor/:id', async (req, res) => {
     let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
     let sku = await SKUsDAO.findSKU(newIdSKU)
 
-    if (td.length === 0 || sku.length === 0) {
+    if (td.length == 0 || sku.length == 0) {
       return res.status(404).end();
     }
 
