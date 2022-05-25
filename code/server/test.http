@@ -1,9 +1,0 @@
-
-POST  http://localhost:3001/api/customerSessions
-Content-Type: application/json
-
- {
-        "username":"user1@ezwh.com",
-        "password" : "testpassword"
-
-    }

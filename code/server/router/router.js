@@ -331,7 +331,7 @@ router.post('/api/position', async (req, res) => {
     return res.status(422).end();
 
   try {
-    await positionsDAO.createPositions(req.body.positionID, req.body.aisleID, req.body.row, req.body.col, req.body.maxWeight, req.body.maxVolume);
+    let z = await positionsDAO.createPositions(req.body.positionID, req.body.aisleID, req.body.row, req.body.col, req.body.maxWeight, req.body.maxVolume);
     return res.status(201).end();
   }
   catch (error) {
