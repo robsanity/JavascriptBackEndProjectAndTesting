@@ -20,6 +20,9 @@ describe('test get restock order', () => {
 
     getRestock();
     getRestockIssued();
+    postRestockOrder();
+    putRestockOrder();
+    deleteRestockOrder();
 
 
 })
@@ -34,16 +37,16 @@ function getRestock() {
                         let body = {
                             "issueDate": "2021/11/29 09:33",
                             "products": [
-                                { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 3 },
-                                { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 3 }
+                                { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 30 },
+                                { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 20 }
                             ],
-                            "customerId": idSupplier
+                            "supplierId": idSupplier
                         }
-                        agent.post('/api/internalOrders')
+                        agent.post('/api/restockOrder')
                             .send(body)
                             .then(function (res) {
                                 res.should.have.status(201);
-                                agent.get('/api/internalOrders')
+                                agent.get('/api/restockOrders')
                                     .then(function (res) {
                                         res.should.have.status(200);
                                         done();
@@ -65,16 +68,16 @@ function getRestockIssued() {
                         let body = {
                             "issueDate": "2021/11/29 09:33",
                             "products": [
-                                { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 3 },
-                                { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 3 }
+                                { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 30 },
+                                { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 20 }
                             ],
-                            "customerId": idSupplier
+                            "supplierId": idSupplier
                         }
-                        agent.post('/api/internalOrders')
+                        agent.post('/api/restockOrder')
                             .send(body)
                             .then(function (res) {
                                 res.should.have.status(201);
-                                agent.get('/api/internalOrdersIssued')
+                                agent.get('/api/restockOrdersIssued')
                                     .then(function (res) {
                                         res.should.have.status(200);
                                         done();
@@ -86,3 +89,105 @@ function getRestockIssued() {
     })
 }
 
+function postRestockOrder() {
+    it('post restock order ', function (done) {
+        usersDAO.insertUser("username", "name", "surname", "supplier", "testpassword")
+            .then(function (res) {
+                usersDAO.getUsers()
+                    .then(function (res) {
+                        let idSupplier = res[0].id;
+                        let body = {
+                            "issueDate": "2021/11/29 09:33",
+                            "products": [
+                                { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 30 },
+                                { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 20 }
+                            ],
+                            "supplierId": idSupplier
+                        }
+                        agent.post('/api/restockOrder')
+                            .send(body)
+                            .then(function (res) {
+                                res.should.have.status(201);
+                                done();
+                            }).catch(done)
+                    }).catch(done)
+            }).catch(done)
+    })
+}
+
+function putRestockOrder() {
+    it('put restock order ', function (done) {
+        usersDAO.insertUser("username", "name", "surname", "supplier", "testpassword")
+            .then(function (res) {
+                usersDAO.getUsers()
+                    .then(function (res) {
+                        let idSupplier = res[0].id;
+                        let body = {
+                            "issueDate": "2021/11/29 09:33",
+                            "products": [
+                                { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 30 },
+                                { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 20 }
+                            ],
+                            "supplierId": idSupplier
+                        }
+                        agent.post('/api/restockOrder')
+                            .send(body)
+                            .then(function (res) {
+                                res.should.have.status(201);
+                                agent.get('/api/restockOrders')
+                                    .then(function (res) {
+                                        res.should.have.status(200);
+                                        let idRO = res.body[0].id;
+                                        let body = {
+                                            "newState": "DELIVERED"
+                                        }
+                                        agent.put('/api/restockOrder/' + idRO)
+                                            .send(body)
+                                            .then(function (res) {
+                                                res.should.have.status(200)
+                                                done();
+                                            }).catch(done)
+                                    }).catch(done)
+                            }).catch(done)
+                    }).catch(done)
+            }).catch(done)
+    })
+}
+
+function deleteRestockOrder() {
+    it('delete restock order ', function (done) {
+        usersDAO.insertUser("username", "name", "surname", "supplier", "testpassword")
+            .then(function (res) {
+                usersDAO.getUsers()
+                    .then(function (res) {
+                        let idSupplier = res[0].id;
+                        let body = {
+                            "issueDate": "2021/11/29 09:33",
+                            "products": [
+                                { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 30 },
+                                { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 20 }
+                            ],
+                            "supplierId": idSupplier
+                        }
+                        agent.post('/api/restockOrder')
+                            .send(body)
+                            .then(function (res) {
+                                res.should.have.status(201);
+                                agent.get('/api/restockOrders')
+                                    .then(function (res) {
+                                        res.should.have.status(200);
+                                        let idRO = res.body[0].id;
+                                        let body = {
+                                            "newState": "DELIVERED"
+                                        }
+                                        agent.delete('/api/restockOrder/' + idRO)
+                                            .then(function (res) {
+                                                res.should.have.status(204)
+                                                done();
+                                            }).catch(done)
+                                    }).catch(done)
+                            }).catch(done)
+                    }).catch(done)
+            }).catch(done)
+    })
+}

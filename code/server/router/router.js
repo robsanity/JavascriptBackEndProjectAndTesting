@@ -1163,8 +1163,9 @@ router.post('/api/restockOrder', async (req, res) => {
   try {
     if (req.body.issueDate === undefined
       || req.body.products === undefined
-      || req.body.supplierId === undefined)
+      || req.body.supplierId === undefined){
       return res.status(422).end();
+    }
 
     let issueDate = req.body.issueDate;
     let products = req.body.products;
@@ -1728,7 +1729,7 @@ router.put('/api/internalOrders/:id', async (req, res) => {
       .concat(notCompleted.map(e => ({
         id: e.id
       })))
-      .filter(e => e.id = req.params.id);
+      .filter(e => e.id == req.params.id);
 
     if (found.length === 0) {
       res.status(404).end();
