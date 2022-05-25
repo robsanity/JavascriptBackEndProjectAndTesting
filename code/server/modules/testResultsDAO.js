@@ -61,7 +61,7 @@ function insertTestResult(rfid, idTestDescriptor, Date, Result) {
 
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO TestResults (idTestDescriptor, date, result, idSKUItem) values (?,?,?,?)";
-        db.all(sql, [rfid, Date, Result, idTestDescriptor], (err, rows) => {
+        db.all(sql, [idTestDescriptor, Date, Result, rfid], (err, rows) => {
             if (err) {
                 reject({ error: "no insert" });
 
