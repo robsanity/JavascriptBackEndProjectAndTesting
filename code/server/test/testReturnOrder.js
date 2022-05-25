@@ -24,7 +24,6 @@ function newRet(expectedHTTPStatus,returnDate,restockOrderId){
         let products = [{"SKUId":12,"description":"a product","price":10.99,"RFID":"9999"},
         {"SKUId":180,"description":"another product","price":11.99,"RFID":"99999"}];
         let ret = {returnDate:returnDate,products:products,restockOrderId:restockOrderId};
-        console.log(ret);
         agent.post('/api/returnOrder')
         .send(ret)
         .then(function (res) {

@@ -29,7 +29,6 @@ function newItem(expectedHTTPStatus, rfid, SKUId, date) {
             .then(function (res) {
                 done();
                 res.should.have.status(expectedHTTPStatus);
-                res.body.should.equal(k);
             })
 
 
