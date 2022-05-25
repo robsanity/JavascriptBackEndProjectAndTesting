@@ -2,11 +2,11 @@
 const returnOrderDAO = require('../modules/returnOrdersDAO');
 
 describe("Test ReturnOrder", () => {
-    beforeAll(() => {
-        returnOrderDAO.deleteDatas();
+    beforeAll(async() => {
+        await returnOrderDAO.deleteDatas();
     })
 
-    beforeEach(() => returnOrderDAO.deleteDatas())
+    beforeEach(async() => await returnOrderDAO.deleteDatas())
 
     test("Database start", async () => {
         let res = await returnOrderDAO.listReturnOrders();
@@ -14,7 +14,7 @@ describe("Test ReturnOrder", () => {
     })
     testlistReturnOrder();
     testFindRetOrder(2);
-    testcreateRetOrder(2,'2022-12-12',1,80012345);
+    testcreateRetOrder(3,'2022-12-12',1,9999);
     testDeleteOrder();
 });
 

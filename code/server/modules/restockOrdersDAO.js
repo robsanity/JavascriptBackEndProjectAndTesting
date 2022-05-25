@@ -51,7 +51,7 @@ function getByIdRestockOrders(id) {
                 return;
             }
             const restockOrdersById = rows.map((t) => ({
-                id: t.id, issueDate: t.issueDate, state: t.state,
+                id: t.idRestockOrder, issueDate: t.issueDate, state: t.state,
                 supplierId: t.supplierId, transportNote: t.transportNote
             }));
             resolve(restockOrdersById);
@@ -265,20 +265,29 @@ function getSkuItems() {
 
 function deleteDatas() {
     return new Promise((resolve, reject) => {
-        const sql = "DELETE FROM RestockOrders";
+        let sql = "DELETE FROM RestockOrders";
         db.run(sql, [], function (err) {
             if (err) {
                 reject(err);
             }
             else {
-                resolve(this.lastID);
+                sql = "DELETE FROM RestockOrderItems"
+                db.run(sql, [], function (err) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve(this.lastID);
+                    }
+                })
+                
             }
         })
     })
 }
 function initialize() {
     return new Promise((resolve, reject) => {
-        const sql = "INSERT INTO Users (idUser,name,surname,email,type) VALUES (1,'Giuseppe','Regina','gr@a.it','clerk'); INSERT INTO SKUs (idSKU,description,weight,volume,notes,availableQuantity,price) values (1,'ciao',12,13,'ciaao',10,12); INSERT INTO Items (idItems,idSKU,description,price,idSupplier) VALUES (1,1,'CIAO',77,1); INSERT INTO RestockOrders(idRestockOrder,issueDate,state,idSupplier,transportNote) VALUES (1,'2022-10-10','DELIVERED',1,'ciao'); INSERT INTO RestockOrderItems (idRestockOrder,idItem,quantity) VALUES (1,1,10);"
+        const sql = "INSERT INTO Users (idUser,name,surname,email,type) VALUES (1,'Giuseppe','Regina','gr@a.it','suppliers'); INSERT INTO SKUs (idSKU,description,weight,volume,notes,availableQuantity,price) values (1,'ciao',12,13,'ciaao',10,12); INSERT INTO Items (idItems,idSKU,description,price,idSupplier) VALUES (1,1,'CIAO',77,1); INSERT INTO RestockOrders(idRestockOrder,issueDate,state,idSupplier,transportNote) VALUES (1,'2022-10-10','DELIVERED',1,'ciao'); INSERT INTO RestockOrderItems (idRestockOrder,idItem,quantity) VALUES (1,1,10);"
         db.run(sql, [], function (err) {
             if (err) {
                 reject(err);

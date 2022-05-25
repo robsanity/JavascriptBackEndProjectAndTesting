@@ -9,11 +9,11 @@ const positionsDAO = require('../modules/positionsDAO');
 
 
 describe("Test SKUs", () => {
-    beforeAll(() => {
-        SKUsDAO.deleteDatas();
+    beforeAll(async() => {
+        await SKUsDAO.deleteDatas();
     })
 
-    beforeEach(() => SKUsDAO.deleteDatas())
+    beforeEach(async() => await SKUsDAO.deleteDatas())
 
     test("Database start", async () => {
         let res = await SKUsDAO.listSKUs();

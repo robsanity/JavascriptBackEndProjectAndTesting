@@ -176,19 +176,19 @@ function insertIO(issueDate, customerId) {
     })
 }
 
-function insertIOS(id, SKUId, qty){
+function insertIOS(id, SKUId, qty) {
     return new Promise((resolve, reject) => {
         let sql = "INSERT INTO InternalOrdersSKUs (idInternalOrder, idSKU, quantity) values (?,?,?)";
-        
-            db.all(sql, [id, SKUId, qty], (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                else {
-                    resolve(true)
-                }
-            })
+
+        db.all(sql, [id, SKUId, qty], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(true)
+            }
+        })
     })
 }
 
@@ -218,35 +218,36 @@ function updateIntOrder(id, newState, products) {
                     reject(err);
                     return;
                 }
+                else {
+                    //per ogni rfid SET available=0 e collego l'item all'internal order;
+
+                    let sql1 = "UPDATE SKUItems SET available=0, internalOrderId=? WHERE rfid=?"
+                    let sql2 = "DELETE FROM InternalOrdersSKUs WHERE idSKU=? AND idInternalOrder=?"
+
+                    for (let p of products) {
+                        db.all(sql1, [id, p.RFID], (err, rows) => {
+                            if (err) {
+                                reject(err);
+                                return;
+                            }
+                            else {
+                                //elimino da internalorderskus
+                                db.all(sql2, [p.SkuID, id], (err, rows) => {
+                                    if (err) {
+                                        reject(err);
+                                        return;
+                                    }
+                                })
+
+                            }
+                        })
+
+                    }
+                    resolve(true);
+
+                }
             });
 
-            //per ogni rfid SET available=0 e collego l'item all'internal order;
-
-            sql = "UPDATE SKUItems SET available=0, internalOrderId=? WHERE rfid=?"
-            products.forEach((p) => {
-                db.all(sql, [id, p.rfid], (err, rows) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-                })
-            })
-
-
-            //elimino da internalorderskus
-
-            sql = "DELETE FROM InternalOrdersSKUs WHERE idSKU=? AND idInternalOrder=?"
-            products.forEach((p) => {
-                db.all(sql, [p.SkuID, id], (err, rows) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-                })
-            })
-
-
-            resolve(true);
         });
     }
 }
@@ -259,17 +260,22 @@ function deleteIntOrder(id) {
                 reject(err);
                 return;
             }
-        });
+            else {
+                sql = "DELETE FROM InternalOrders WHERE idInternalOrder=?";
+                db.all(sql, [id], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    else {
+                        resolve(true);
+                    }
+                });
 
-        sql = "DELETE FROM InternalOrders WHERE idInternalOrder=?";
-        db.all(sql, [id], (err, rows) => {
-            if (err) {
-                reject(err);
-                return;
             }
         });
 
-        resolve(true);
+
     });
 }
 
@@ -356,4 +362,63 @@ function getAccepted() {
     });
 }
 
-module.exports = {insertIO, insertIOS, updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted }
+function deleteDatas() {
+    return new Promise((resolve, reject) => {
+        let sql = "DELETE FROM InternalOrdersSKUs";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                sql = "DELETE FROM InternalOrders";
+                db.all(sql, [], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    else {
+                        resolve(true);
+                    }
+                });
+
+
+            }
+        });
+
+
+    });
+}
+
+function getSKUsIO() {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM InternalOrdersSKUs";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+function getIO() {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM InternalOrders";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+
+module.exports = { getSKUsIO, getIO, insertIO, insertIOS, updateIntOrder, deleteIntOrder, getCompleted, getNotCompleted, getProductsCompleted, getProductsNotCompleted, getIssued, getAccepted, deleteDatas }
