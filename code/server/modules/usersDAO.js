@@ -111,7 +111,7 @@ function deleteUser(username, type) {
     });
 }
 
-function deleteALLUser() {
+function deleteALLUsers() {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM Users";
         db.all(sql, [], (err, rows) => {
@@ -124,4 +124,4 @@ function deleteALLUser() {
     });
 }
 
-module.exports = { login, getSuppliers, getUsers, checkUser, findUser, insertUser, updateUser, deleteUser, deleteALLUser };
+module.exports = { login, getSuppliers, getUsers, checkUser, findUser, insertUser, updateUser, deleteUser, deleteALLUsers };
