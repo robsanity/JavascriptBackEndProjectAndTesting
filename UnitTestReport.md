@@ -1,8 +1,8 @@
 # Unit Testing Report
 
-Date:
+Date: 25/05/2022
 
-Version:
+Version: 5.0
 
 # Contents
 
@@ -1174,7 +1174,7 @@ Version:
 |--------------|---------------|------------|---------------------|
   | allowed       | T          | up                  | v                | T1( clerk)  |   
   | allowed       | T          | -                  | I            | T2( clerk)  |  
-    |not allowed      | -          | -                  | I            | T3( clerk)  |  
+  |not allowed      | -          | -                  | I            | T3( clerk)  |  
 
 
 
@@ -1234,7 +1234,7 @@ Version:
 |--------------|---------------|------------|---------------------|
   | allowed       | T          | up                  | v                | T1( clerk)  |   
   | allowed       | T          | -                  | I            | T2( clerk)  |  
-    |not allowed      | -          | -                  | I            | T3( clerk)  |  
+  |not allowed      | -          | -                  | I            | T3( clerk)  |  
 
 
 
@@ -1347,7 +1347,7 @@ Version:
 |--------------|---------------|------------|---------------------|
   | allowed       | T          | up                  | v                | T1( clerk)  |   
   | allowed       | T          | -                  | I            | T2( clerk)  |  
-    |not allowed      | -          | -                  | I            | T3( clerk)  | 
+  |not allowed      | -          | -                  | I            | T3( clerk)  | 
 
 
 
@@ -1366,21 +1366,23 @@ Version:
 
 ### Test cases definition
     
-    
-    <Report here all the created Jest test cases, and the units/classes under test >
-    <For traceability write the class and method name that contains the test case>
 
 
 | Unit name | Jest test case |
 |--|--|
-|||
-|||
-||||
-
+|itemsDAO|In items.test.js: testGetItems/testFindItem/testUpdateItem/testDeleteItem|
+|internalOrdersDAO|In internalOrders.test.js: testGetInternalOrder/testPostInternalOrder/testPutAcceptedInternalOrder/testDeleteInternalOrder|
+|positionsDAO|in positions.test.js: testGetPositions/testCheckPositions/testCreatePositions/testUpdatePositions/testUpdatePositionsId/testDeletePositions|
+|restockOrdersDAO|In restockOrders.test.js:     testGetRestockOrder/testPostRestockOrder/testPutRestockOrder/testDeleteRestockOrder|
+|returnOrdersDAO|In returnOrders.test.js:     testlistReturnOrder/testFindRetOrder/testcreateRetOrder/testDeleteOrder|
+|SKUsDAO|In SKU.test.js:     testlistSKUs/testcreatesku/testFindSKU/testUpdateSKU/testupdatePosition/testdelete|
+|SKUItemsDAO|In SKUItems.test.js:     testGetSKUItems/testPutAndFindSKUItems/testPostSKUItems/testDeleteSKUItems|
+|testDescriptorsDAO|In testDescriptors.test.js:     testGetTestDescriptors/testGetTestDescriptorsyId/testInsertTestDescriptors/testUpdateTestDescriptor/newProcedureDescription/testDeleteTestDescriptor();|
+|testResultsDAO|In testResults.test.js:     testGetTestResults/testGetByIdTestResults/testCheckId/testCheckRFID/testInsertTestResult/testUpdateTestResult/testDeleteTestResult|
+|usersDAO|In users.test.js:     testLogin/testGetUsers/testCheckUser/testInsertUsers/testUpdateUser/testDeleteUser|
 ### Code coverage report
 
-    <Add here the screenshot report of the statement and branch coverage obtained using
-    the coverage tool. >
+![Coverage report](docs/Coverage.PNG)
 
 
 ### Loop coverage analysis
