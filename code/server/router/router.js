@@ -540,7 +540,7 @@ router.put('/api/testDescriptor/:id', async (req, res) => {
     let td = await testDescriptorsDAO.getByIdTestDescriptors(id);
     let sku = await SKUsDAO.findSKU(newIdSKU)
 
-    if (td.length === 0 || sku.length === 0) {
+    if (td.length == 0 || sku.length == 0) {
       return res.status(404).end();
     }
 
@@ -1166,8 +1166,9 @@ router.post('/api/restockOrder', async (req, res) => {
   try {
     if (req.body.issueDate === undefined
       || req.body.products === undefined
-      || req.body.supplierId === undefined)
+      || req.body.supplierId === undefined){
       return res.status(422).end();
+    }
 
     let issueDate = req.body.issueDate;
     let products = req.body.products;
@@ -1499,32 +1500,7 @@ router.get('/api/internalOrders', async (req, res) => {
         customerId: nt.customerId
       }
       )))
-    /*
-    
-    CONTROLLO FUNZIONAMENTO CON CONCAT
-    
-            let listCompleted = completed.map((nt) => ({
-                id: nt.id,
-                issueDate: nt.issueDate,
-                state: nt.state,
-                products:
-                    listProductsCompleted
-                        .filter((p) => p.id = nt.id)
-                        .map(element => ({
-                            SKUId: element.SKUId,
-                            description: element.description,
-                            price: element.price,
-                            rfid: element.rfid
-                        })),
-                customerId: nt.customerId
-            }
-            ));
-    
-            let internalOrder = []
-            internalOrder.push(listCompleted);
-            internalOrder.push(listNotCompleted);
-            internalOrder.sort((a, b) => a.id - b.id);
-    */
+
     res.status(200).json(listNotCompleted);
   }
   catch (error) {
@@ -1680,8 +1656,11 @@ router.get('/api/internalOrders/:id', async (req, res) => {
 router.post('/api/internalOrders', async (req, res) => {
   if (req.body.issueDate === undefined
     || req.body.products === undefined
-    || req.body.customerId === undefined)
+    || req.body.customerId === undefined){
+            console.log("Qui1");
     return res.status(422).end();
+
+    }
 
   let issueDate = req.body.issueDate;
   let products = req.body.products;
@@ -1731,7 +1710,7 @@ router.put('/api/internalOrders/:id', async (req, res) => {
       .concat(notCompleted.map(e => ({
         id: e.id
       })))
-      .filter(e => e.id = req.params.id);
+      .filter(e => e.id == req.params.id);
 
     if (found.length === 0) {
       res.status(404).end();

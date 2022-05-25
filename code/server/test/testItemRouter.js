@@ -75,7 +75,7 @@ function updateItem(expectedHTTPStatus, newdescription, newprice) {
 
 function deleteItem(description, id, SKUId, supplierId, price) {
     it("delete item", async function () {
-        await itemsDAO.createItem(description, id, SKUId, supplierId, price); //???
+        await itemsDAO.createItem(description, id, SKUId, supplierId, price);
         agent
             .delete("/api/items/" + id)
             .send(id)
