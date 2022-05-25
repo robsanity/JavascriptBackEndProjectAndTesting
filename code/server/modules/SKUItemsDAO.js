@@ -75,7 +75,7 @@ function addRetOrdtoSKUITEM(returnOrderid){
 function modifySKUItem(newrfid, newavailable, newdate,rfid) {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE SKUItems SET RFID=?, available=?, dateOfStock=? WHERE RFID=?";
-        db.all(sql, [ newrfid, newavailable, newdate,rfid], (err, rows) => {
+        db.run(sql, [ newrfid, newavailable, newdate,rfid],function (err) {
             if (err) {
                 reject({ error: "no update" });
 
@@ -117,7 +117,7 @@ function createSKUItemNoDate(rfid, SKUId) {
 function deleteALLSKUItems() {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM SKUItems";
-        db.all(sql, [], (err, rows) => {
+        db.run(sql, [],function (err) {
             if (err) {
                 reject({ error: "no delete" });
 
