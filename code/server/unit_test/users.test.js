@@ -4,11 +4,11 @@ const db = require ('../db.js');
 
 describe("Test user", () => {
     beforeAll( async () => {
-        await usersDAO.deleteALLUser();
+        await usersDAO.deleteALLUsers();
     })
 
     beforeEach(async () => {
-        await usersDAO.deleteALLUser();
+        await usersDAO.deleteALLUsers();
     })
 
     test("Database start", async () => {

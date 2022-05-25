@@ -5,24 +5,28 @@ const itemsDAO = require('../modules/itemsDAO');
 const SKUItemsDAO = require('../modules/SKUItemsDAO');
 
 describe("Test RestockOrder", () => {
-    beforeAll(() => {
-        restockOrdersDAO.deleteDatas();
-        itemsDAO.deleteALLItems();
-        SKUItemsDAO.deleteALLSKUItems();
+    beforeAll(async() => {
+        await restockOrdersDAO.deleteDatas();
+        await itemsDAO.deleteALLItems();
+        await SKUItemsDAO.deleteALLSKUItems();
     })
 
-    beforeEach(() => {
-        restockOrdersDAO.deleteDatas();
-        itemsDAO.deleteALLItems();
-        SKUItemsDAO.deleteALLSKUItems();
+    beforeEach(async() => {
+        await restockOrdersDAO.deleteDatas();
+        await itemsDAO.deleteALLItems();
+        await SKUItemsDAO.deleteALLSKUItems();
     })
 
     test("Database start", async () => {
         let res = await restockOrdersDAO.getRestockList();
         expect(res.length).toStrictEqual(0);
+        res = await restockOrdersDAO.getProducts();
+        expect(res.length).toStrictEqual(0);
+        res = await SKUItemsDAO.listSKUItems();
+        expect(res.length).toStrictEqual(0);
     })
 
-    testgetRestockOrder();
+    testGetRestockOrder();
     testPostRestockOrder();
     testPutRestockOrder();
     testDeleteRestockOrder();
@@ -31,7 +35,7 @@ describe("Test RestockOrder", () => {
 });
 
 
-function testgetRestockOrder() {
+function testGetRestockOrder() {
     test("Test Get Orders", async () => {
         let res = await restockOrdersDAO.getRestockList();
         expect(res.length).toStrictEqual(0);
@@ -124,7 +128,6 @@ function testPutRestockOrder() {
             await restockOrdersDAO.putSkuItemsOfRestockOrder(id, si.rfid, si.SKUId);
         }
         res = await restockOrdersDAO.getSkuItems();
-        console.log(res)
         res = res.filter(si => si.id == id);
         expect(res.length).toStrictEqual(2)
 

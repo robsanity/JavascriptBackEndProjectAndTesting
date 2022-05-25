@@ -2,11 +2,11 @@
 const returnOrderDAO = require('../modules/returnOrdersDAO');
 
 describe("Test ReturnOrder", () => {
-    beforeAll(() => {
-        returnOrderDAO.deleteDatas();
+    beforeAll(async() => {
+        await returnOrderDAO.deleteDatas();
     })
 
-    beforeEach(() => returnOrderDAO.deleteDatas())
+    beforeEach(async() => await returnOrderDAO.deleteDatas())
 
     test("Database start", async () => {
         let res = await returnOrderDAO.listReturnOrders();
