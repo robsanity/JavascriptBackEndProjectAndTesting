@@ -1,8 +1,3 @@
 
-PUT  http://localhost:3001/api/users/user1@ezwh.com
+GET  http://localhost:3001/api/skus
 Content-Type: application/json
-
-    {
-        "oldType" : "supplier",
-        "newType" : "clerk"
-    }
