@@ -1,12 +1,12 @@
 # Integration and API Test Report
 
-Date:
+Date: 25/05/2022
 
-Version:
+Version: 1.0
 
 # Contents
 
-- [Dependency graph](#dependency graph)
+- [Dependency graph](#dependency_graph)
 
 - [Integration approach](#integration)
 
@@ -21,86 +21,56 @@ Version:
 
 # Dependency graph 
 
-     <report the here the dependency graph of the classes in EzWH, using plantuml or other tool>
+![Dependency_Graph](docs/DependencyGraph.PNG)
      
 # Integration approach
-
-    <Write here the integration sequence you adopted, in general terms (top down, bottom up, mixed) and as sequence
-    (ex: step1: class A, step 2: class A+B, step 3: class A+B+C, etc)> 
-    <Some steps may  correspond to unit testing (ex step1 in ex above), presented in other document UnitTestReport.md>
-    <One step will  correspond to API testing>
     
+    We adopted a Bottom-Up integration sequence approach following the next steps:
+
+     Step 1: Test functions in all DAO.js files in "modules" folder
+     Step 2: Test APIs in router.js in "router" folder
 
 
 #  Integration Tests
 
-   <define below a table for each integration step. For each integration step report the group of classes under test, and the names of
-     Jest test cases applied to them, and the mock ups used, if any> Jest test cases should be here code/server/unit_test
 
 ## Step 1
 | Classes  | mock up used |Jest test cases |
 |--|--|--|
-||||
-
-
-## Step 2
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
-
-
-## Step n 
-
-   
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
-
-
-
-
-# API testing - Scenarios
-
-
-<If needed, define here additional scenarios for the application. Scenarios should be named
- referring the UC in the OfficialRequirements that they detail>
-
-## Scenario UCx.y
-
-| Scenario |  name |
-| ------------- |:-------------:| 
-|  Precondition     |  |
-|  Post condition     |   |
-| Step#        | Description  |
-|  1     |  ... |  
-|  2     |  ... |
-
+|itemsDAO.js|/|items.test.js|
+|usersDAO.js|/|users.test.js|
+|internalOrdersDAO.js|/|internalOrders.test.js|
+|positionsDAO.js|/|positions.test.js|
+|restockOrdersDAO.js|/|restockOrders.test.js|
+|returnOrdersDAO.js|/|returnOrders.test.js|
+|SKUsDAO.js|/|SKU.test.js|
+|testDescriptorsDAO.js|/|testDescriptors.test.js|
+|testResultsDAO.js|/|testResults.test.js|
+|SKUItemsDAO.js|/|SKUItems.test.js|
 
 
 # Coverage of Scenarios and FR
 
-
-<Report in the following table the coverage of  scenarios (from official requirements and from above) vs FR. 
-Report also for each of the scenarios the (one or more) API Mocha tests that cover it. >  Mocha test cases should be here code/server/test
-
-
-
-
 | Scenario ID | Functional Requirements covered | Mocha  Test(s) | 
-| ----------- | ------------------------------- | ----------- | 
-|  ..         | FRx                             |             |             
-|  ..         | FRy                             |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-
-
+| ----------- | ------------------------------- | -------------------------| 
+| 4-1         | FR 1.1                          |newUser    (testUsers.js) |             
+| 4-2         | FR 1.1                          |updateUser (testUsers.js) |             
+| 4-3         | FR 1.3                          |deleteUser (testUsers.js) |           
+| 1-1         | FR 2.1                          |newSKU     (testSKURouter.js)              |
+| 1-2         | FR 2.1                          |updateSkuPosition    (testSKURouter.js)     |
+| 1-3         | FR 2.1                          |update    (testSKURouter.js)     |             
+| 2-1         | FR 3.1.1                        |testcreate   (testPosition.js)             | 
+| 2-2         | FR 3.1.1                        |testmodifypositionID   (testPosition.js)    |
+| 2-3         | FR 3.1.1                        |testupdatePosition    (testPosition.js)     | 
+| 2-5         | FR 3.1.2                        |testdeletePosition    (testPosition.js)     | 
+| 6-1         | FR 5.9                          |newRet     (testReturnOrder.js)               |
+| 9-1         | FR 6.1                          |testCreateIO/testModifyIOC (testInternalOrder.js) |  
+| 10-1        | FR 6.8                          |testModifyIOC    (testInternalOrder.js) |
+| 11-1        | FR 7                            |newItem    (testItemRouter.js) |   
+| 11-2        | FR 7                            |updateItem    (testItemRouter.js) |   
+| 5-1-1       | FR 5.1                          |postRestockOrder    (testRestockOrder.js) |   
 
 # Coverage of Non Functional Requirements
-
-
-<Report in the following table the coverage of the Non Functional Requirements of the application - only those that can be tested with automated testing frameworks.>
 
 
 ### 
