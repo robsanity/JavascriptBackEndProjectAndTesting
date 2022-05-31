@@ -1009,15 +1009,19 @@ router.put('/api/users/:username', async (req, res) => {
 //FUNZIONANTE
 
 //--------------------------------------|   DELETE   |----------------------------------------------
-router.delete('/api/users/:username/:type', async (req, res) => {
+router.delete('/api/users/:username/:type',
+  param('username').isEmail(),
+  param('type').isString().notEmpty(),
+  async (req, res) => {
   try {
     let username = req.params.username;
     let oldType = req.params.type;
-    if (username === undefined || username === '' ||
-      oldType === undefined || oldType == '' || !(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier")) {
+    if (!(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier")) {
         return res.status(422).end();
     }
-
+      if (!validationResult(req).isEmpty()) {
+        return res.status(422).end();
+      }
 
     await usersDAO.deleteUser(username, oldType);
     return res.status(204).end();
