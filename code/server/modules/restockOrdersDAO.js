@@ -231,7 +231,7 @@ function getRestockList() {
             }
             const restockOrders = rows.map((t) => ({
                 id: t.idRestockOrder, issueDate: t.issueDate, state: t.state, transportNote: t.transportNote,
-                supplierId: t.supplierId
+                supplierId: t.idSupplier
             }));
 
             resolve(restockOrders);

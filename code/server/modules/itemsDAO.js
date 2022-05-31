@@ -26,7 +26,7 @@ function findItem(id) {
                 reject({ error: "no item in database" });
                 return;
             }
-            const item = rows.map((t) => ({ id: t.idItems, description: t.description, price: t.price, SKUId: t.idSKU, suppliersId: t.idSupplier }));
+            const item = rows.map((t) => ({ id: t.idItems, description: t.description, price: t.price, SKUId: t.idSKU, supplierId: t.idSupplier }));
             resolve(item);
         });
     });
@@ -37,7 +37,7 @@ function createItem(description, id, SKUId, supplierId, price) {
         const sql = "INSERT INTO Items (idItems, idSKU, description, price, idSupplier) values (?,?,?,?,?)";
         db.all(sql, [id, SKUId, description, price, supplierId], (err, rows) => {
             if (err) {
-                reject({ error: "no insert" });
+                reject(err);
 
             }
             resolve(true);
