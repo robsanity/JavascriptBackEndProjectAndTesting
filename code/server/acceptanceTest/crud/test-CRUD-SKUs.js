@@ -19,7 +19,7 @@ function testSkuCRUD() {
     mysku[0] = skus.newSku('a','b',20,30,40,30);
     myeditedsku[0] = skus.newSku('sku', 'note', 50, 50, 50, 50);
     
-    describe('Test sku CRUD features', () => {
+    describe.only('Test sku CRUD features', () => {
         skus.deleteAllSkus(agent);
         skus.testPostNewSku(agent, mysku[0],201);
         skus.testGetAllSkus(agent, mysku, 1, 200);
