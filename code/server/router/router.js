@@ -158,9 +158,16 @@ router.put('/api/sku/:id',
 
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
 //are modified according to the available quantity.
-router.put('/api/sku/:id/position', async (req, res) => {
-  if (req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
-    return res.status(422).end();
+router.put('/api/sku/:id/position',
+param('id').isInt({ min: 0 }).notEmpty(),
+body('position').isNumeric().notEmpty().isLength({ min: 12, max: 12 }).isInt({ min : 0 }),
+ async (req, res) => {
+  /* if (req.body.position === undefined || req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+    return res.status(422).end(); */
+
+    if (!validationResult(req).isEmpty()) {
+      return res.status(422).end();
+    }
 
   //Come implementare:   422 Unprocessable Entity (position isn't capable to satisfy volume and weight constraints for available quantity of sku or position is already assigned to a sku)
   try {
@@ -736,7 +743,7 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
 
     let rfid = req.params.rfid;
     let id = req.params.id;
-    console.log(id);
+    
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
       id === undefined || id === '' || isNaN(id)) {
       return res.status(422).end();
@@ -1265,7 +1272,7 @@ router.put('/api/restockOrder/:id/skuItems', async (req, res) => {
     }
 
     let skuItems = req.body.skuItems;
-    console.log(skuItems);
+    
     if (skuItems === undefined || skuItems === '' || skuItems.length === 0) {
       return res.status(422).end();
     }
@@ -1691,8 +1698,8 @@ router.get('/api/internalOrders/:id', async (req, res) => {
 router.post('/api/internalOrders', async (req, res) => {
   if (req.body.issueDate === undefined
     || req.body.products === undefined
-    || req.body.customerId === undefined) {
-    console.log("Qui1");
+    || req.body.customerId === undefined){
+            
     return res.status(422).end();
 
   }
