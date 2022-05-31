@@ -1,0 +1,828 @@
+{
+  "stats": {
+    "suites": 21,
+    "tests": 18,
+    "passes": 16,
+    "pending": 0,
+    "failures": 2,
+    "start": "2022-05-31T09:46:47.232Z",
+    "end": "2022-05-31T09:46:47.472Z",
+    "duration": 240,
+    "testsRegistered": 18,
+    "passPercent": 88.88888888888889,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b6a7db67-56c6-4e79-b602-7329be03506a",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "d73bcb66-055c-4da9-954a-6c97f77272c0",
+          "title": "Test user CRUD features",
+          "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+          "file": "\\acceptanceTest\\testEzWhAPI.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "567b856b-f5fc-4df8-8e77-310a7c281eb9",
+              "title": " delete /api/users/:username/:type",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.2 -> Delete a user",
+                  "fullTitle": "Test user CRUD features  delete /api/users/:username/:type FR 1.2 -> Delete a user",
+                  "timedOut": false,
+                  "duration": 26,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.delete('/api/users/'+username+'/'+type)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "cfe39c8b-3491-4684-bf86-e3b09dfc8b79",
+                  "parentUUID": "567b856b-f5fc-4df8-8e77-310a7c281eb9",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "cfe39c8b-3491-4684-bf86-e3b09dfc8b79"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 26,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "8f575401-077f-47c1-89d9-690d6fc396bb",
+              "title": " delete /api/users/:username/:type",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.2 -> Delete a user",
+                  "fullTitle": "Test user CRUD features  delete /api/users/:username/:type FR 1.2 -> Delete a user",
+                  "timedOut": false,
+                  "duration": 9,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.delete('/api/users/'+username+'/'+type)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {
+                    "message": "AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 204",
+                    "estack": "AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 204\n    at C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\utils-users.js:94:33\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+                    "diff": "- 204\n+ 422\n"
+                  },
+                  "uuid": "af0bffdd-79d8-40dd-b168-cc479bb21c3f",
+                  "parentUUID": "8f575401-077f-47c1-89d9-690d6fc396bb",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "af0bffdd-79d8-40dd-b168-cc479bb21c3f"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 9,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "b4f15b65-d303-43c5-8e6f-866425e38c7d",
+              "title": " delete /api/users/:username/:type",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.2 -> Delete a user",
+                  "fullTitle": "Test user CRUD features  delete /api/users/:username/:type FR 1.2 -> Delete a user",
+                  "timedOut": false,
+                  "duration": 7,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.delete('/api/users/'+username+'/'+type)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "3471bd28-6d73-4392-a3b6-87b46a2ef432",
+                  "parentUUID": "b4f15b65-d303-43c5-8e6f-866425e38c7d",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "3471bd28-6d73-4392-a3b6-87b46a2ef432"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 7,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "4233cd46-a1c3-4769-b30c-e92c779a91e9",
+              "title": " delete /api/users/:username/:type",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.2 -> Delete a user",
+                  "fullTitle": "Test user CRUD features  delete /api/users/:username/:type FR 1.2 -> Delete a user",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.delete('/api/users/'+username+'/'+type)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "024d2d11-a49c-466e-a5f5-2329689c3b5b",
+                  "parentUUID": "4233cd46-a1c3-4769-b30c-e92c779a91e9",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "024d2d11-a49c-466e-a5f5-2329689c3b5b"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "3802648a-6002-41f9-a43f-6a4cb91993ef",
+              "title": " post /api/newUser",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.1 a -> Define a new user",
+                  "fullTitle": "Test user CRUD features  post /api/newUser FR 1.1 a -> Define a new user",
+                  "timedOut": false,
+                  "duration": 40,
+                  "state": "passed",
+                  "speed": "medium",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/newUser')\n.send(myuser)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "0b00d4e4-0aa5-4025-af7d-4337f6bb4e97",
+                  "parentUUID": "3802648a-6002-41f9-a43f-6a4cb91993ef",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "0b00d4e4-0aa5-4025-af7d-4337f6bb4e97"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 40,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "86f81b3c-af15-4df0-94ea-ec898d1d447c",
+              "title": " put /api/users/:username",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.1 b -> Modify an existing user",
+                  "fullTitle": "Test user CRUD features  put /api/users/:username FR 1.1 b -> Modify an existing user",
+                  "timedOut": false,
+                  "duration": 16,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.put('/api/users/'+username)\n.send(changetype)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "929c56c5-ac6b-4dd7-95cd-7926dcba2d87",
+                  "parentUUID": "86f81b3c-af15-4df0-94ea-ec898d1d447c",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "929c56c5-ac6b-4dd7-95cd-7926dcba2d87"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 16,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "d83575da-6b90-474d-8554-52d0fe6dc1fe",
+              "title": " put /api/users/:username",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.1 b -> Modify an existing user",
+                  "fullTitle": "Test user CRUD features  put /api/users/:username FR 1.1 b -> Modify an existing user",
+                  "timedOut": false,
+                  "duration": 4,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.put('/api/users/'+username)\n.send(changetype)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "96ded7c4-9864-43ce-8aab-da5bb7b75c87",
+                  "parentUUID": "d83575da-6b90-474d-8554-52d0fe6dc1fe",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "96ded7c4-9864-43ce-8aab-da5bb7b75c87"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 4,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "400fabf3-6633-4e12-983c-effd8183b253",
+              "title": " put /api/users/:username",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.1 b -> Modify an existing user",
+                  "fullTitle": "Test user CRUD features  put /api/users/:username FR 1.1 b -> Modify an existing user",
+                  "timedOut": false,
+                  "duration": 6,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.put('/api/users/'+username)\n.send(changetype)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "912353d4-e3ed-4fd1-ab71-bee3ad7da7be",
+                  "parentUUID": "400fabf3-6633-4e12-983c-effd8183b253",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "912353d4-e3ed-4fd1-ab71-bee3ad7da7be"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 6,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "aa57822a-ab47-468f-8857-162019cef72c",
+              "title": " put /api/users/:username",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 1.1 b -> Modify an existing user",
+                  "fullTitle": "Test user CRUD features  put /api/users/:username FR 1.1 b -> Modify an existing user",
+                  "timedOut": false,
+                  "duration": 6,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.put('/api/users/'+username)\n.send(changetype)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "add2a9bf-fd9c-4d74-93fd-74cb30d7fc98",
+                  "parentUUID": "aa57822a-ab47-468f-8857-162019cef72c",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "add2a9bf-fd9c-4d74-93fd-74cb30d7fc98"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 6,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 10000
+        },
+        {
+          "uuid": "5ed3ce84-eb86-4613-a99a-9e9d96425ecf",
+          "title": "Testing Functional requirements pt2",
+          "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+          "file": "\\acceptanceTest\\testEzWhAPI.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "3aeca5ea-8ab3-4650-bb8f-2a5a8be0aba2",
+              "title": "Test user CRUD features",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [],
+              "suites": [
+                {
+                  "uuid": "072198f6-3b9f-4de2-954c-b430337c9d9b",
+                  "title": " delete /api/users/:username/:type",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.2 -> Delete a user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  delete /api/users/:username/:type FR 1.2 -> Delete a user",
+                      "timedOut": false,
+                      "duration": 5,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.delete('/api/users/'+username+'/'+type)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "c64f2547-eadc-4713-944a-44f0920fa6aa",
+                      "parentUUID": "072198f6-3b9f-4de2-954c-b430337c9d9b",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "c64f2547-eadc-4713-944a-44f0920fa6aa"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "354913ae-14b2-4714-b373-344b9a3c81e5",
+                  "title": " delete /api/users/:username/:type",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.2 -> Delete a user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  delete /api/users/:username/:type FR 1.2 -> Delete a user",
+                      "timedOut": false,
+                      "duration": 5,
+                      "state": "failed",
+                      "speed": null,
+                      "pass": false,
+                      "fail": true,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.delete('/api/users/'+username+'/'+type)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {
+                        "message": "AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 204",
+                        "estack": "AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 204\n    at C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\utils-users.js:94:33\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+                        "diff": "- 204\n+ 422\n"
+                      },
+                      "uuid": "1bc09a68-d18e-4b62-b368-a488495be507",
+                      "parentUUID": "354913ae-14b2-4714-b373-344b9a3c81e5",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [],
+                  "failures": [
+                    "1bc09a68-d18e-4b62-b368-a488495be507"
+                  ],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "557ea969-3869-4dd8-abbd-dfd91423cbc6",
+                  "title": " delete /api/users/:username/:type",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.2 -> Delete a user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  delete /api/users/:username/:type FR 1.2 -> Delete a user",
+                      "timedOut": false,
+                      "duration": 5,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.delete('/api/users/'+username+'/'+type)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "88f99c69-c587-44c4-8569-ca67d9f96923",
+                      "parentUUID": "557ea969-3869-4dd8-abbd-dfd91423cbc6",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "88f99c69-c587-44c4-8569-ca67d9f96923"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "1f6576de-4b23-42e2-a14d-c99efccef511",
+                  "title": " delete /api/users/:username/:type",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.2 -> Delete a user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  delete /api/users/:username/:type FR 1.2 -> Delete a user",
+                      "timedOut": false,
+                      "duration": 3,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.delete('/api/users/'+username+'/'+type)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "240fbf19-f1ab-4abf-b9d5-6ec0d23f2e45",
+                      "parentUUID": "1f6576de-4b23-42e2-a14d-c99efccef511",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "240fbf19-f1ab-4abf-b9d5-6ec0d23f2e45"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 3,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "6bb67d42-87bf-4651-898d-cf2d25dd1ac9",
+                  "title": " post /api/newUser",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.1 a -> Define a new user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  post /api/newUser FR 1.1 a -> Define a new user",
+                      "timedOut": false,
+                      "duration": 16,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/newUser')\n.send(myuser)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "7d8a1dcf-59e7-43e5-bfee-3258bd7fe8a0",
+                      "parentUUID": "6bb67d42-87bf-4651-898d-cf2d25dd1ac9",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "7d8a1dcf-59e7-43e5-bfee-3258bd7fe8a0"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 16,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "1c4cb672-0d01-4325-ac21-107eb138a8a1",
+                  "title": " put /api/users/:username",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.1 b -> Modify an existing user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  put /api/users/:username FR 1.1 b -> Modify an existing user",
+                      "timedOut": false,
+                      "duration": 15,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.put('/api/users/'+username)\n.send(changetype)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "3dce9a33-0b8c-4a6d-8c37-0f6e9f0f0a9f",
+                      "parentUUID": "1c4cb672-0d01-4325-ac21-107eb138a8a1",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "3dce9a33-0b8c-4a6d-8c37-0f6e9f0f0a9f"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 15,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "11d0a46d-5ce3-47d6-8de1-163360a616f8",
+                  "title": " put /api/users/:username",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.1 b -> Modify an existing user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  put /api/users/:username FR 1.1 b -> Modify an existing user",
+                      "timedOut": false,
+                      "duration": 5,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.put('/api/users/'+username)\n.send(changetype)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "660ab623-1c68-41f6-b2ca-d2c0a2cc06ce",
+                      "parentUUID": "11d0a46d-5ce3-47d6-8de1-163360a616f8",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "660ab623-1c68-41f6-b2ca-d2c0a2cc06ce"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "2da9bbfe-8563-4db6-8f37-1a522f0e4e66",
+                  "title": " put /api/users/:username",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.1 b -> Modify an existing user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  put /api/users/:username FR 1.1 b -> Modify an existing user",
+                      "timedOut": false,
+                      "duration": 6,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.put('/api/users/'+username)\n.send(changetype)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "f8d0f064-4427-4d96-84a4-06e60ab84793",
+                      "parentUUID": "2da9bbfe-8563-4db6-8f37-1a522f0e4e66",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "f8d0f064-4427-4d96-84a4-06e60ab84793"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 6,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "4935e82a-d2e1-4fee-9894-c44e45df64b9",
+                  "title": " put /api/users/:username",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 1.1 b -> Modify an existing user",
+                      "fullTitle": "Testing Functional requirements pt2 Test user CRUD features  put /api/users/:username FR 1.1 b -> Modify an existing user",
+                      "timedOut": false,
+                      "duration": 5,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.put('/api/users/'+username)\n.send(changetype)\n.then(function(res){\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "9f9ebd7e-209e-4a2a-a3f6-51281f80741d",
+                      "parentUUID": "4935e82a-d2e1-4fee-9894-c44e45df64b9",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "9f9ebd7e-209e-4a2a-a3f6-51281f80741d"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                }
+              ],
+              "passes": [],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 0,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 10000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 10000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "9.2.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}

@@ -950,10 +950,11 @@ router.put('/api/users/:username', async (req, res) => {
     }
 
     let userWithOldType = await usersDAO.checkUser(username, oldType);
-    let userWithNewType = await usersDAO.checkUser(username, newType);
-    if (userWithOldType.length === 0 || userWithNewType.length !== 0) {
-      return res.status(409).end();
+
+    if (userWithOldType.length === 0 ) {
+      return res.status(404).end();
     }
+
 
     await usersDAO.updateUser(username, oldType, newType);
     return res.status(200).end();
@@ -973,21 +974,15 @@ router.delete('/api/users/:username/:type', async (req, res) => {
     let oldType = req.params.type;
     if (username === undefined || username === '' ||
       oldType === undefined || oldType == '' || !(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier")) {
-      return res.status(422).end();
+        return res.status(422).end();
     }
 
-    let user = await usersDAO.checkUser(username, oldType);
-
-    if (user.length === 0) {
-      return res.status(422).end();
-    }
 
     await usersDAO.deleteUser(username, oldType);
     return res.status(204).end();
 
   }
   catch (error) {
-    console.log(error);
     return res.status(503).end();
   }
 

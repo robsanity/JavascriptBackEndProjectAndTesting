@@ -11,7 +11,7 @@ testUserCRUD();
 function testUserCRUD(){
     myuser = users.newCompleteUser('user12@ezwh.com','John', 'Smith', 'testpassword', 'customer');
     
-    describe('Test user CRUD features', ()=>{
+    describe.only('Test user CRUD features', ()=>{
         users.testDeleteUser(agent, myuser.username, myuser.type, 204);
         users.testDeleteUser(agent, 'erruser', myuser.type, 422);
         users.testDeleteUser(agent, myuser.username, 'errtype', 422);
