@@ -1,0 +1,2326 @@
+{
+  "stats": {
+    "suites": 59,
+    "tests": 56,
+    "passes": 50,
+    "pending": 0,
+    "failures": 6,
+    "start": "2022-05-31T09:18:58.158Z",
+    "end": "2022-05-31T09:18:59.058Z",
+    "duration": 900,
+    "testsRegistered": 56,
+    "passPercent": 89.28571428571429,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "383f6c8d-94c8-4447-a886-0c7bb99cc757",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "79c39799-43e5-4961-b2b9-d5a60807e3e4",
+          "title": "Test sku CRUD features",
+          "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+          "file": "\\acceptanceTest\\testEzWhAPI.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "a7a06f8e-b4be-4b1e-878a-1bd220238477",
+              "title": "removing all skus",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Getting SKUs",
+                  "fullTitle": "Test sku CRUD features removing all skus Getting SKUs",
+                  "timedOut": false,
+                  "duration": 42,
+                  "state": "passed",
+                  "speed": "medium",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(200);\n    if (res.body.length !==0) {\n        for (let i = 0; i < res.body.length; i++) {\n            agent.delete('/api/skus/'+res.body[i].id)\n            .then(function (res2) {\n                res2.should.have.status(204);\n            });\n        }\n    } \n    done();\n}).catch(err => done(err));",
+                  "err": {},
+                  "uuid": "947081bf-682e-4708-98f1-e2759a447cd4",
+                  "parentUUID": "a7a06f8e-b4be-4b1e-878a-1bd220238477",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "947081bf-682e-4708-98f1-e2759a447cd4"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 42,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "0cee658f-8c94-45ac-9421-d295f3ff7ffa",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 27,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "2d98505b-4484-4a59-a123-943da673a40a",
+                  "parentUUID": "0cee658f-8c94-45ac-9421-d295f3ff7ffa",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "2d98505b-4484-4a59-a123-943da673a40a"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 27,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "4575f477-57a4-4315-8bbf-87bd36ad88e1",
+              "title": "get /api/skus",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.3 -> List all SKUs",
+                  "fullTitle": "Test sku CRUD features get /api/skus FR 2.3 -> List all SKUs",
+                  "timedOut": false,
+                  "duration": 4,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.eql(size);\n    let id = [];\n    if (size > 0) {\n        for (let i = 0; i < size; i++) {\n            id[i] = res.body[i].id;\n            res.body[i].description.should.equal(sku[i].description);\n            res.body[i].weight.should.equal(sku[i].weight);\n            res.body[i].volume.should.equal(sku[i].volume);\n            res.body[i].notes.should.equal(sku[i].notes);\n            res.body[i].availableQuantity.should.equal(sku[i].availableQuantity);\n            res.body[i].price.should.equal(sku[i].price);\n        }\n        ids.setIdSku(id);\n    }             \n    done();\n}).catch(err=>done(err));",
+                  "err": {
+                    "message": "AssertionError: expected 55 to deeply equal 1",
+                    "estack": "AssertionError: expected 55 to deeply equal 1\n    at D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\utils-sku.js:83:43\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+                    "diff": "- 55\n+ 1\n"
+                  },
+                  "uuid": "3d810787-df70-4672-89c5-4e52997bc6a0",
+                  "parentUUID": "4575f477-57a4-4315-8bbf-87bd36ad88e1",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "3d810787-df70-4672-89c5-4e52997bc6a0"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 4,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "8daea0b4-d0d6-4f4b-bbd1-51e1b4b3feea",
+              "title": "get /api/skus/:id",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.4 -> Search a SKU",
+                  "fullTitle": "Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "098a3064-96f4-4f4c-b38e-3a0d5c2d6807",
+                  "parentUUID": "8daea0b4-d0d6-4f4b-bbd1-51e1b4b3feea",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "098a3064-96f4-4f4c-b38e-3a0d5c2d6807"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "821e005a-79b8-4e04-b383-be1316310142",
+              "title": "put /api/sku/:id",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 b -> Modify an existing SKU",
+                  "fullTitle": "Test sku CRUD features put /api/sku/:id FR 2.1 b -> Modify an existing SKU",
+                  "timedOut": false,
+                  "duration": 6,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nvar procID = id[ith];\nif (skuid == null || skuid > id.length) {\n    procID = skuid;\n}\nagent.put('/api/sku/'+procID)\n.send(skuEditedPost)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "f6b183f2-d994-4a4a-b686-0d651564009b",
+                  "parentUUID": "821e005a-79b8-4e04-b383-be1316310142",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "f6b183f2-d994-4a4a-b686-0d651564009b"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 6,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "badbb68e-ede3-49ba-a29f-ffedca331eb2",
+              "title": "get /api/skus/:id",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.4 -> Search a SKU",
+                  "fullTitle": "Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                  "timedOut": false,
+                  "duration": 1,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "62ba3386-dec9-4103-b8c9-ecaf7fb166dc",
+                  "parentUUID": "badbb68e-ede3-49ba-a29f-ffedca331eb2",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "62ba3386-dec9-4103-b8c9-ecaf7fb166dc"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 1,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "6d91929b-e5fc-4128-8d6a-a78999b31dac",
+              "title": "put /api/sku/:id/position",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Changing SKU position passing its id",
+                  "fullTitle": "Test sku CRUD features put /api/sku/:id/position Changing SKU position passing its id",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nvar procID = id[ith];\nif (skuid != null) {\n    procID = skuid;\n}\nagent.put('/api/sku/'+procID+'/position')\n.send(pos)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "4bceb2f5-5ae8-4bc2-823e-236c7997fb02",
+                  "parentUUID": "6d91929b-e5fc-4128-8d6a-a78999b31dac",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "4bceb2f5-5ae8-4bc2-823e-236c7997fb02"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "5402f8a0-4890-457e-a07f-01904974fc35",
+              "title": "delete /api/sku/:id",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.2 -> Delete a SKU",
+                  "fullTitle": "Test sku CRUD features delete /api/sku/:id FR 2.2 -> Delete a SKU",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nvar procID = id[ith];\nif (skuid != null) {\n    procID = skuid;\n}\nagent.delete('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {
+                    "message": "AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422",
+                    "estack": "AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422\n    at D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\utils-sku.js:179:33\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+                    "diff": "- 422\n+ 204\n"
+                  },
+                  "uuid": "22a8b7e9-5594-4892-b1eb-074025c1d8b4",
+                  "parentUUID": "5402f8a0-4890-457e-a07f-01904974fc35",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "22a8b7e9-5594-4892-b1eb-074025c1d8b4"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "569fc6b7-08f1-4c72-98b5-d2087ea56081",
+              "title": "get /api/skus",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.3 -> List all SKUs",
+                  "fullTitle": "Test sku CRUD features get /api/skus FR 2.3 -> List all SKUs",
+                  "timedOut": false,
+                  "duration": 5,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.eql(size);\n    let id = [];\n    if (size > 0) {\n        for (let i = 0; i < size; i++) {\n            id[i] = res.body[i].id;\n            res.body[i].description.should.equal(sku[i].description);\n            res.body[i].weight.should.equal(sku[i].weight);\n            res.body[i].volume.should.equal(sku[i].volume);\n            res.body[i].notes.should.equal(sku[i].notes);\n            res.body[i].availableQuantity.should.equal(sku[i].availableQuantity);\n            res.body[i].price.should.equal(sku[i].price);\n        }\n        ids.setIdSku(id);\n    }             \n    done();\n}).catch(err=>done(err));",
+                  "err": {
+                    "message": "AssertionError: expected 55 to deeply equal +0",
+                    "estack": "AssertionError: expected 55 to deeply equal +0\n    at D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\utils-sku.js:83:43\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+                    "diff": "- 55\n+ 0\n"
+                  },
+                  "uuid": "50e385fe-477f-4237-97d1-b6d4256d2040",
+                  "parentUUID": "569fc6b7-08f1-4c72-98b5-d2087ea56081",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "50e385fe-477f-4237-97d1-b6d4256d2040"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 5,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "49c3663a-70b1-400d-93f5-54411245f909",
+              "title": "get /api/skus/:id",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.4 -> Search a SKU",
+                  "fullTitle": "Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "b3300c2a-44b9-4026-bd91-ac2819f6b355",
+                  "parentUUID": "49c3663a-70b1-400d-93f5-54411245f909",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "b3300c2a-44b9-4026-bd91-ac2819f6b355"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "4d8bed0d-edca-400c-862d-740daa33bc2b",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "218c05e9-e7f3-4c4c-b27f-ab8f7ba5fe41",
+                  "parentUUID": "4d8bed0d-edca-400c-862d-740daa33bc2b",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "218c05e9-e7f3-4c4c-b27f-ab8f7ba5fe41"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "55b47b21-3a07-4675-861c-ee8d662a1c10",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "2ca99358-33fe-42ca-81a2-ed8abd080859",
+                  "parentUUID": "55b47b21-3a07-4675-861c-ee8d662a1c10",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "2ca99358-33fe-42ca-81a2-ed8abd080859"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "7666fec8-4c43-426d-a9e6-5f8f3507a017",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 4,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "1c55d863-2243-4206-abf2-b9242b1a9e9d",
+                  "parentUUID": "7666fec8-4c43-426d-a9e6-5f8f3507a017",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "1c55d863-2243-4206-abf2-b9242b1a9e9d"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 4,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "10fb6632-f3d1-4697-bcbb-ae03fe774beb",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "5c78c644-0fd3-4816-a8b2-ae003a4c9503",
+                  "parentUUID": "10fb6632-f3d1-4697-bcbb-ae03fe774beb",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "5c78c644-0fd3-4816-a8b2-ae003a4c9503"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "06db995c-8a8c-4f90-9557-ff20aa26117e",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "c63a8d29-7fa3-4c48-a1d7-c33bb7fee90f",
+                  "parentUUID": "06db995c-8a8c-4f90-9557-ff20aa26117e",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "c63a8d29-7fa3-4c48-a1d7-c33bb7fee90f"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "e472f5d8-e601-4482-a804-abb0ac26cecd",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 5,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "e0450869-6c5c-41ab-b47f-630337c9f068",
+                  "parentUUID": "e472f5d8-e601-4482-a804-abb0ac26cecd",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "e0450869-6c5c-41ab-b47f-630337c9f068"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 5,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "9a6b87e5-4293-4722-8596-5000d70c11c0",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 7,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "00676872-4aa5-4d85-bb1e-c075b73e0992",
+                  "parentUUID": "9a6b87e5-4293-4722-8596-5000d70c11c0",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "00676872-4aa5-4d85-bb1e-c075b73e0992"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 7,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "fd2ee143-9406-4ead-b588-ff26f9df7403",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "d5905c1e-4a66-4108-b6ec-5dc190193de1",
+                  "parentUUID": "fd2ee143-9406-4ead-b588-ff26f9df7403",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "d5905c1e-4a66-4108-b6ec-5dc190193de1"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "dc24e9de-2e87-4a86-9f56-4c4fa6260958",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "e08b12ba-57ec-4f68-84a4-e5ea80ec31ce",
+                  "parentUUID": "dc24e9de-2e87-4a86-9f56-4c4fa6260958",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "e08b12ba-57ec-4f68-84a4-e5ea80ec31ce"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "432ff477-bb0b-4b79-9612-ac5c61481637",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "e6569891-1ea0-4cce-bfc7-33e32e72c706",
+                  "parentUUID": "432ff477-bb0b-4b79-9612-ac5c61481637",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "e6569891-1ea0-4cce-bfc7-33e32e72c706"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "9091a905-89c4-442c-bf5b-e619f0c52cfe",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "4909ff96-63f6-403e-983b-c084d0e464f5",
+                  "parentUUID": "9091a905-89c4-442c-bf5b-e619f0c52cfe",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "4909ff96-63f6-403e-983b-c084d0e464f5"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "5c3419b9-4dcd-4b9e-88de-0c8df21a37a6",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "2d8dbc4e-795d-40bc-8d47-553c85d62269",
+                  "parentUUID": "5c3419b9-4dcd-4b9e-88de-0c8df21a37a6",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "2d8dbc4e-795d-40bc-8d47-553c85d62269"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "890000c7-9274-4865-83af-6bfd57981c20",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "3e9020c7-c0f8-48da-8345-2c5d856b2394",
+                  "parentUUID": "890000c7-9274-4865-83af-6bfd57981c20",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "3e9020c7-c0f8-48da-8345-2c5d856b2394"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "452a84c2-9103-4adb-8b14-93e4ad3f67f1",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "8b426ae5-b87e-4dfa-9597-c30495d95d91",
+                  "parentUUID": "452a84c2-9103-4adb-8b14-93e4ad3f67f1",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "8b426ae5-b87e-4dfa-9597-c30495d95d91"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "7aa0427d-4e16-4011-ac7f-e35a49b9862e",
+              "title": "post /api/sku/",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                  "timedOut": false,
+                  "duration": 2,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "e7e04e4e-178b-45fb-9e63-f578f9b63c66",
+                  "parentUUID": "7aa0427d-4e16-4011-ac7f-e35a49b9862e",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "e7e04e4e-178b-45fb-9e63-f578f9b63c66"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "68fcd954-479d-44cf-92ce-57cc8b3b3b6c",
+              "title": "get /api/skus/:id",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.4 -> Search a SKU",
+                  "fullTitle": "Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                  "timedOut": false,
+                  "duration": 1,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "881a8bc5-24ec-4652-ab12-468f72a65ef0",
+                  "parentUUID": "68fcd954-479d-44cf-92ce-57cc8b3b3b6c",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "881a8bc5-24ec-4652-ab12-468f72a65ef0"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 1,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "58283c12-8f53-4885-a89c-91261a1e01bc",
+              "title": "get /api/skus/:id",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "FR 2.4 -> Search a SKU",
+                  "fullTitle": "Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                  "timedOut": false,
+                  "duration": 3,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "a069326e-8bf7-4a69-99b6-4387af4e0346",
+                  "parentUUID": "58283c12-8f53-4885-a89c-91261a1e01bc",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "a069326e-8bf7-4a69-99b6-4387af4e0346"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "8b124cc5-8f67-4f2a-a7ad-b82226404e79",
+              "title": "removing all skus",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Getting SKUs",
+                  "fullTitle": "Test sku CRUD features removing all skus Getting SKUs",
+                  "timedOut": false,
+                  "duration": 16,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(200);\n    if (res.body.length !==0) {\n        for (let i = 0; i < res.body.length; i++) {\n            agent.delete('/api/skus/'+res.body[i].id)\n            .then(function (res2) {\n                res2.should.have.status(204);\n            });\n        }\n    } \n    done();\n}).catch(err => done(err));",
+                  "err": {},
+                  "uuid": "c729e337-00dd-4b79-b229-2f7c8515c4e4",
+                  "parentUUID": "8b124cc5-8f67-4f2a-a7ad-b82226404e79",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "c729e337-00dd-4b79-b229-2f7c8515c4e4"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 16,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 10000
+        },
+        {
+          "uuid": "aed301b0-1e9b-4a0c-a7e7-65bc66983250",
+          "title": "Testing Functional requirements pt2",
+          "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+          "file": "\\acceptanceTest\\testEzWhAPI.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "b0f5f808-fa5d-4037-b707-6e35f22f1c74",
+              "title": "Test sku CRUD features",
+              "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [],
+              "suites": [
+                {
+                  "uuid": "513cebd4-c21a-4347-b8c7-76fae6982c03",
+                  "title": "removing all skus",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Getting SKUs",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features removing all skus Getting SKUs",
+                      "timedOut": false,
+                      "duration": 12,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(200);\n    if (res.body.length !==0) {\n        for (let i = 0; i < res.body.length; i++) {\n            agent.delete('/api/skus/'+res.body[i].id)\n            .then(function (res2) {\n                res2.should.have.status(204);\n            });\n        }\n    } \n    done();\n}).catch(err => done(err));",
+                      "err": {},
+                      "uuid": "d573ab56-bc66-42a2-9061-54adc11474ce",
+                      "parentUUID": "513cebd4-c21a-4347-b8c7-76fae6982c03",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "d573ab56-bc66-42a2-9061-54adc11474ce"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 12,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "4f66d416-e275-4c86-ad27-615c34906acd",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 15,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "adb6cdd6-7fca-4609-8901-1e643016dc40",
+                      "parentUUID": "4f66d416-e275-4c86-ad27-615c34906acd",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "adb6cdd6-7fca-4609-8901-1e643016dc40"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 15,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "c06a00da-29de-43ed-ac06-3b1e3f8fcbe7",
+                  "title": "get /api/skus",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.3 -> List all SKUs",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features get /api/skus FR 2.3 -> List all SKUs",
+                      "timedOut": false,
+                      "duration": 6,
+                      "state": "failed",
+                      "speed": null,
+                      "pass": false,
+                      "fail": true,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.eql(size);\n    let id = [];\n    if (size > 0) {\n        for (let i = 0; i < size; i++) {\n            id[i] = res.body[i].id;\n            res.body[i].description.should.equal(sku[i].description);\n            res.body[i].weight.should.equal(sku[i].weight);\n            res.body[i].volume.should.equal(sku[i].volume);\n            res.body[i].notes.should.equal(sku[i].notes);\n            res.body[i].availableQuantity.should.equal(sku[i].availableQuantity);\n            res.body[i].price.should.equal(sku[i].price);\n        }\n        ids.setIdSku(id);\n    }             \n    done();\n}).catch(err=>done(err));",
+                      "err": {
+                        "message": "AssertionError: expected 56 to deeply equal 1",
+                        "estack": "AssertionError: expected 56 to deeply equal 1\n    at D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\utils-sku.js:83:43\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+                        "diff": "- 56\n+ 1\n"
+                      },
+                      "uuid": "f1556876-98de-49e1-8dcc-1d84617365c3",
+                      "parentUUID": "c06a00da-29de-43ed-ac06-3b1e3f8fcbe7",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [],
+                  "failures": [
+                    "f1556876-98de-49e1-8dcc-1d84617365c3"
+                  ],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 6,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "64256391-7349-49b4-b2c9-33b0858d8a40",
+                  "title": "get /api/skus/:id",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.4 -> Search a SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                      "timedOut": false,
+                      "duration": 5,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "21d70ee5-a130-438b-a065-a83b27f898ff",
+                      "parentUUID": "64256391-7349-49b4-b2c9-33b0858d8a40",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "21d70ee5-a130-438b-a065-a83b27f898ff"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "766189a9-fba8-43e7-87d5-d8213df4df67",
+                  "title": "put /api/sku/:id",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 b -> Modify an existing SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features put /api/sku/:id FR 2.1 b -> Modify an existing SKU",
+                      "timedOut": false,
+                      "duration": 3,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let id = ids.getIdSku();\nvar procID = id[ith];\nif (skuid == null || skuid > id.length) {\n    procID = skuid;\n}\nagent.put('/api/sku/'+procID)\n.send(skuEditedPost)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "664f2b0b-006d-462b-94c9-bf0d84d8605b",
+                      "parentUUID": "766189a9-fba8-43e7-87d5-d8213df4df67",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "664f2b0b-006d-462b-94c9-bf0d84d8605b"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 3,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "62ed5e98-7298-4bad-8828-11be49759095",
+                  "title": "get /api/skus/:id",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.4 -> Search a SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "fe1095af-6a72-4780-b1f2-fe2ac61e297d",
+                      "parentUUID": "62ed5e98-7298-4bad-8828-11be49759095",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "fe1095af-6a72-4780-b1f2-fe2ac61e297d"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "c9d1819a-8b8f-4b51-8d50-8e2b6c0e33f9",
+                  "title": "put /api/sku/:id/position",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Changing SKU position passing its id",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features put /api/sku/:id/position Changing SKU position passing its id",
+                      "timedOut": false,
+                      "duration": 4,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let id = ids.getIdSku();\nvar procID = id[ith];\nif (skuid != null) {\n    procID = skuid;\n}\nagent.put('/api/sku/'+procID+'/position')\n.send(pos)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "7f793a29-3cd7-473f-b520-16331dcd3223",
+                      "parentUUID": "c9d1819a-8b8f-4b51-8d50-8e2b6c0e33f9",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "7f793a29-3cd7-473f-b520-16331dcd3223"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 4,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "d24bcde5-148e-4971-a9fd-01004c55e568",
+                  "title": "delete /api/sku/:id",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.2 -> Delete a SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features delete /api/sku/:id FR 2.2 -> Delete a SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "failed",
+                      "speed": null,
+                      "pass": false,
+                      "fail": true,
+                      "pending": false,
+                      "context": null,
+                      "code": "let id = ids.getIdSku();\nvar procID = id[ith];\nif (skuid != null) {\n    procID = skuid;\n}\nagent.delete('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {
+                        "message": "AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422",
+                        "estack": "AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422\n    at D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\utils-sku.js:179:33\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+                        "diff": "- 422\n+ 204\n"
+                      },
+                      "uuid": "116239c4-8a29-49d3-b1dd-e0a4a801922f",
+                      "parentUUID": "d24bcde5-148e-4971-a9fd-01004c55e568",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [],
+                  "failures": [
+                    "116239c4-8a29-49d3-b1dd-e0a4a801922f"
+                  ],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "8a41b80b-e2bb-446c-b570-a442a5356170",
+                  "title": "get /api/skus",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.3 -> List all SKUs",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features get /api/skus FR 2.3 -> List all SKUs",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "failed",
+                      "speed": null,
+                      "pass": false,
+                      "fail": true,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.eql(size);\n    let id = [];\n    if (size > 0) {\n        for (let i = 0; i < size; i++) {\n            id[i] = res.body[i].id;\n            res.body[i].description.should.equal(sku[i].description);\n            res.body[i].weight.should.equal(sku[i].weight);\n            res.body[i].volume.should.equal(sku[i].volume);\n            res.body[i].notes.should.equal(sku[i].notes);\n            res.body[i].availableQuantity.should.equal(sku[i].availableQuantity);\n            res.body[i].price.should.equal(sku[i].price);\n        }\n        ids.setIdSku(id);\n    }             \n    done();\n}).catch(err=>done(err));",
+                      "err": {
+                        "message": "AssertionError: expected 56 to deeply equal +0",
+                        "estack": "AssertionError: expected 56 to deeply equal +0\n    at D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\utils-sku.js:83:43\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
+                        "diff": "- 56\n+ 0\n"
+                      },
+                      "uuid": "8d3c21fc-df23-40ad-88a2-b7c820dfa940",
+                      "parentUUID": "8a41b80b-e2bb-446c-b570-a442a5356170",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [],
+                  "failures": [
+                    "8d3c21fc-df23-40ad-88a2-b7c820dfa940"
+                  ],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "736765da-f380-43b4-8d69-cee0ad3175b5",
+                  "title": "get /api/skus/:id",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.4 -> Search a SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "84c31c58-5604-456a-b7c3-cd55d6c9d38c",
+                      "parentUUID": "736765da-f380-43b4-8d69-cee0ad3175b5",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "84c31c58-5604-456a-b7c3-cd55d6c9d38c"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "e6ec61ec-6c22-4da7-93c5-8e37a64d3032",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "b241a772-87e8-4c10-a2a5-65c8abc54459",
+                      "parentUUID": "e6ec61ec-6c22-4da7-93c5-8e37a64d3032",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "b241a772-87e8-4c10-a2a5-65c8abc54459"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "8832a3f0-4e2a-4039-8e1c-30bfc0016b2f",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "27848b76-1ebb-44f2-934e-ba88cfba9753",
+                      "parentUUID": "8832a3f0-4e2a-4039-8e1c-30bfc0016b2f",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "27848b76-1ebb-44f2-934e-ba88cfba9753"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "5e42da95-700c-45ba-ad8b-abe16501f1d3",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "23052214-a201-4010-afd5-360cfc8d21b5",
+                      "parentUUID": "5e42da95-700c-45ba-ad8b-abe16501f1d3",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "23052214-a201-4010-afd5-360cfc8d21b5"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "c249cafa-3ce0-40e3-9e14-99fc0ef09ff6",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "291a8178-f262-45cf-8252-c13d4fa32fd8",
+                      "parentUUID": "c249cafa-3ce0-40e3-9e14-99fc0ef09ff6",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "291a8178-f262-45cf-8252-c13d4fa32fd8"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "d08f9063-d427-45f2-95d2-ef5889ecf5d7",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 3,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "2713ffa3-a950-4489-897c-c5288ab4084f",
+                      "parentUUID": "d08f9063-d427-45f2-95d2-ef5889ecf5d7",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "2713ffa3-a950-4489-897c-c5288ab4084f"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 3,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "d3a99319-2fdd-41bc-90fa-ac479c5ef7c2",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 4,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "19042530-e888-4064-96e8-1272320027e3",
+                      "parentUUID": "d3a99319-2fdd-41bc-90fa-ac479c5ef7c2",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "19042530-e888-4064-96e8-1272320027e3"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 4,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "3e4fed87-027d-42bc-bf4d-4b5ff8a0a7b6",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "daf5eb40-a3d3-4160-97bf-7fa6375a4edc",
+                      "parentUUID": "3e4fed87-027d-42bc-bf4d-4b5ff8a0a7b6",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "daf5eb40-a3d3-4160-97bf-7fa6375a4edc"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "4af71b1c-d759-4495-aab3-3bdd21bf4966",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 4,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "16f893e3-cdec-4a5c-906f-c62903581eac",
+                      "parentUUID": "4af71b1c-d759-4495-aab3-3bdd21bf4966",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "16f893e3-cdec-4a5c-906f-c62903581eac"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 4,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "ef701c30-f2c7-44fa-9581-95d945de10c7",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 7,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "e63719d4-54cc-4899-a1a6-1bd608a0c7ed",
+                      "parentUUID": "ef701c30-f2c7-44fa-9581-95d945de10c7",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "e63719d4-54cc-4899-a1a6-1bd608a0c7ed"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 7,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "8334bcb6-7ee0-4864-8218-0bf1fa8f5be7",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "1e0ba218-1193-4659-a780-66ed70bbf434",
+                      "parentUUID": "8334bcb6-7ee0-4864-8218-0bf1fa8f5be7",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "1e0ba218-1193-4659-a780-66ed70bbf434"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "44599264-e74f-4398-a2be-2f1811a4e66d",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 3,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "4a98e6da-53dd-478a-93af-347448ba31f2",
+                      "parentUUID": "44599264-e74f-4398-a2be-2f1811a4e66d",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "4a98e6da-53dd-478a-93af-347448ba31f2"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 3,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "6a83bf95-9567-4a41-a8b4-3f52ae84dbce",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 6,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "35030550-ac99-48a5-9920-bf86af8f195e",
+                      "parentUUID": "6a83bf95-9567-4a41-a8b4-3f52ae84dbce",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "35030550-ac99-48a5-9920-bf86af8f195e"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 6,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "98b07819-cc7e-4f11-8095-3223caf8055c",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "002d91cb-873a-4d66-a4ea-6fcb40e40273",
+                      "parentUUID": "98b07819-cc7e-4f11-8095-3223caf8055c",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "002d91cb-873a-4d66-a4ea-6fcb40e40273"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "6306a90d-3de9-4e48-a833-d562cef85237",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "e4bd6679-dc52-4db2-b3b1-efde6d7edb29",
+                      "parentUUID": "6306a90d-3de9-4e48-a833-d562cef85237",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "e4bd6679-dc52-4db2-b3b1-efde6d7edb29"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "d18ccfbb-44d5-41e5-86fb-8c852675866a",
+                  "title": "post /api/sku/",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.1 a -> Define a new SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
+                      "timedOut": false,
+                      "duration": 3,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "24f80d11-0b8a-4c9f-82b6-e07c0eeead54",
+                      "parentUUID": "d18ccfbb-44d5-41e5-86fb-8c852675866a",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "24f80d11-0b8a-4c9f-82b6-e07c0eeead54"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 3,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "0057edfd-0ad2-4ba9-9eec-3ebcb6ae4ebd",
+                  "title": "get /api/skus/:id",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.4 -> Search a SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "2ca2754d-b92c-49ba-bf1b-685da2976e29",
+                      "parentUUID": "0057edfd-0ad2-4ba9-9eec-3ebcb6ae4ebd",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "2ca2754d-b92c-49ba-bf1b-685da2976e29"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "149c12f9-1e31-41f7-8a2e-f2bb45eb47be",
+                  "title": "get /api/skus/:id",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.4 -> Search a SKU",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features get /api/skus/:id FR 2.4 -> Search a SKU",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let id = ids.getIdSku();\nlet procID;\nif (skuid == null || skuid>id.length) {\n    procID = skuid;\n}\nelse{\n    procID = id[ith]\n}\nagent.get('/api/skus/'+procID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if (res.status > 200 && res.status < 299) {\n        res.body.should.be.a('object');\n        res.body.description.should.equal(sku[ith].description);\n        res.body.weight.should.equal(sku[ith].weight);\n        res.body.volume.should.equal(sku[ith].volume);\n        res.body.notes.should.equal(sku[ith].notes);\n        res.body.availableQuantity.should.equal(sku[ith].availableQuantity);\n        res.body.price.should.equal(sku[ith].price);\n    }\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "9a22c7f1-d4cc-4bcd-a80d-9fd4ce6025e9",
+                      "parentUUID": "149c12f9-1e31-41f7-8a2e-f2bb45eb47be",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "9a22c7f1-d4cc-4bcd-a80d-9fd4ce6025e9"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "d45b4489-6a94-4cf5-af44-ade745d589dc",
+                  "title": "removing all skus",
+                  "fullFile": "D:\\University\\GitHub repository\\software engineering\\SW_group\\TestingPart\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Getting SKUs",
+                      "fullTitle": "Testing Functional requirements pt2 Test sku CRUD features removing all skus Getting SKUs",
+                      "timedOut": false,
+                      "duration": 10,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(200);\n    if (res.body.length !==0) {\n        for (let i = 0; i < res.body.length; i++) {\n            agent.delete('/api/skus/'+res.body[i].id)\n            .then(function (res2) {\n                res2.should.have.status(204);\n            });\n        }\n    } \n    done();\n}).catch(err => done(err));",
+                      "err": {},
+                      "uuid": "9126a6e1-279f-4ffe-8ae0-434adfdb7025",
+                      "parentUUID": "d45b4489-6a94-4cf5-af44-ade745d589dc",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "9126a6e1-279f-4ffe-8ae0-434adfdb7025"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 10,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                }
+              ],
+              "passes": [],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 0,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 10000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 10000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "9.2.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}

@@ -10,6 +10,7 @@ const positionsDAO = require('../modules/positionsDAO');
 const returnOrdersDAO = require('../modules/returnOrdersDAO');
 const internalOrdersDAO = require('../modules/internalOrdersDAO');
 const dayjs = require('dayjs');
+const { param, body, validationResult } = require('express-validator');
 var express = require('express');
 var router = express.Router();
 
@@ -37,27 +38,31 @@ router.get('/api/skus', async (req, res) => {
 
 
 //Return a SKU, given its id.
-router.get('/api/skus/:id', async (req, res) => {
+router.get('/api/skus/:id',
+  param('id').isInt({ min: 0 }).notEmpty(),
+  async (req, res) => {
 
-  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
-    return res.status(422).end();
+    /* if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+      return res.status(422).end();
+ */
 
+    try {
+      if (!validationResult(req).isEmpty()) {
+        return res.status(422).end();
+      }
+      const SKU = await SKUsDAO.findSKU(req.params.id)
 
-  try {
-    const SKU = await SKUsDAO.findSKU(req.params.id)
+      if (SKU.length === 0) {
+        return res.status(404).end();
+      }
 
+      return res.status(200).json(SKU);
 
-    if (SKU.length === 0) {
-      return res.status(404).end();
     }
-
-    return res.status(200).json(SKU);
-
-  }
-  catch (error) {
-    res.status(500).json(error);
-  }
-});
+    catch (error) {
+      res.status(500).json(error);
+    }
+  });
 
 //Se id è vuoto/non un numero torna 422
 //Se SKU === null torna 404 ma bisogna implementare il "return null;" in SKUsDAO
@@ -69,28 +74,40 @@ router.get('/api/skus/:id', async (req, res) => {
 
 
 //Creates a new SKU with an empty array of testDescriptors.
-router.post('/api/sku', async (req, res) => {
-  if (req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined)
-    return res.status(422).end();
+router.post('/api/sku',
+
+  body('description').isString().notEmpty(),
+  body('weight').isInt({ min: 0 }).notEmpty(),
+  body('volume').isInt({ min: 0 }).notEmpty(),
+  body('notes').isString().notEmpty(),
+  body('price').isInt({ min: 0 }).notEmpty(),
+  body('availableQuantity').isInt({ min: 0 }).notEmpty(),
+
+  async (req, res) => {
+    /* if (req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined)
+      return res.status(422).end(); */
 
 
-  //Ricavo gli attributi necessari a creare una nuova SKU e li passo a createSKU
-  let description = req.body.description;
-  let weight = req.body.weight;
-  let volume = req.body.volume;
-  let notes = req.body.notes;
-  let price = req.body.price;
-  let availableQuantity = req.body.availableQuantity;
+    //Ricavo gli attributi necessari a creare una nuova SKU e li passo a createSKU
+    let description = req.body.description;
+    let weight = req.body.weight;
+    let volume = req.body.volume;
+    let notes = req.body.notes;
+    let price = req.body.price;
+    let availableQuantity = req.body.availableQuantity;
 
-  try {
-    await SKUsDAO.createSKU(description, weight, volume, notes, availableQuantity, price);
-    return res.status(201).end();
-  }
-  catch (error) {
-    return res.status(503).json(error);
-  }
+    try {
+      if (!validationResult(req).isEmpty()) {
+        return res.status(422).end();
+      }
+      await SKUsDAO.createSKU(description, weight, volume, notes, availableQuantity, price);
+      return res.status(201).end();
+    }
+    catch (error) {
+      return res.status(503).json(error);
+    }
 
-});
+  });
 
 //Funzionante, ritorna 201 se oggetto creato
 //In mancanza dei uno dei campi richiesti torna 422
@@ -100,32 +117,43 @@ router.post('/api/sku', async (req, res) => {
 
 //Modify an existing SKU. When a newAvailableQuantity is sent, occupiedWeight and occupiedVolume fields of the position 
 //(if the SKU is associated to a position) are modified according to the new available quantity.
-router.put('/api/sku/:id', async (req, res) => {
-  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
-    return res.status(422).end();
-  }
-  //Come implementare:
-  //if with newAvailableQuantity position is not capable enough in weight or in volume --> Error 422
-  let description = req.body.description;
-  let weight = req.body.weight;
-  let volume = req.body.volume;
-  let notes = req.body.notes;
-  let price = req.body.price;
-  let availableQuantity = req.body.availableQuantity;
+router.put('/api/sku/:id',
+  param('id').isInt({ min: 0 }).notEmpty(),
+  body('newDescription').isString().notEmpty(),
+  body('newWeight').isInt({ min: 0 }).notEmpty(),
+  body('newVolume').isInt({ min: 0 }).notEmpty(),
+  body('newNotes').isString().notEmpty(),
+  body('newPrice').isInt({ min: 0 }).notEmpty(),
+  body('newAvailableQuantity').isInt({ min: 0 }).notEmpty(),
+  async (req, res) => {
+    /* if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id) || req.body.description === undefined || req.body.weight === undefined || req.body.volume === undefined || req.body.notes === undefined || req.body.price === undefined || req.body.availableQuantity === undefined) {
+      return res.status(422).end();
+    } */
+    //Come implementare:
+    //if with newAvailableQuantity position is not capable enough in weight or in volume --> Error 422
+    let description = req.body.description;
+    let weight = req.body.weight;
+    let volume = req.body.volume;
+    let notes = req.body.notes;
+    let price = req.body.price;
+    let availableQuantity = req.body.availableQuantity;
 
-  try {
-    let found = await SKUsDAO.updateSKU(description, weight, volume, notes, price, availableQuantity, req.params.id/*, req.params.id, req.params.id, req.params.id*/);
-    if (found.length === 0) {
-      return res.status(404).end();
+    try {
+      if (!validationResult(req).isEmpty()) {
+        return res.status(422).end();
+      }
+      let found = await SKUsDAO.updateSKU(description, weight, volume, notes, price, availableQuantity, req.params.id/*, req.params.id, req.params.id, req.params.id*/);
+      if (found.length === 0) {
+        return res.status(404).end();
+      }
+
+      return res.status(200).end();
+
     }
-
-    return res.status(200).end();
-
-  }
-  catch (error) {
-    return res.status(503).json(error);
-  }
-});
+    catch (error) {
+      return res.status(503).json(error);
+    }
+  });
 
 
 //Add or modify position of a SKU. When a SKU is associated to a position, occupiedWeight and occupiedVolume fields of the position
@@ -145,19 +173,25 @@ router.put('/api/sku/:id/position', async (req, res) => {
 });
 
 //Delete a SKU receiving its id.
-router.delete('/api/skus/:id', async (req, res) => {
+router.delete('/api/skus/:id',
+  param('id').isInt({ min: 0 }).notEmpty(),
+  async (req, res) => {
 
-  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
-    return res.status(422).end();
+    /* if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id))
+      return res.status(422).end(); */
 
-  try {
-    await SKUsDAO.deleteSKU(req.params.id);
-    return res.status(204).end();
-  }
-  catch (error) {
-    return res.status(503).json(error);
-  }
-});
+    try {
+      if (!validationResult(req).isEmpty()) {
+        console.log(req.params.id)
+        return res.status(422).end();
+      }
+      await SKUsDAO.deleteSKU(req.params.id);
+      return res.status(204).end();
+    }
+    catch (error) {
+      return res.status(503).json(error);
+    }
+  });
 
 
 //Funzionante, ritorna 204 se SKU è stato eliminato
@@ -620,7 +654,7 @@ router.get('/api/skuitems/:rfid/testResults', async (req, res) => {
 
 router.get('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
   try {
- 
+
     let rfid = req.params.rfid;
     let id = req.params.id;
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
@@ -718,14 +752,14 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
       return res.status(422).end();
     }
 
-    let td = await testResultsDAO.getByIdTestResults(id,rfid);
+    let td = await testResultsDAO.getByIdTestResults(id, rfid);
     let ntd = await testDescriptorsDAO.getByIdTestDescriptors(newIdTestDescriptor);
     //per inserire un test result devo avere in possesso sku item
     let sku = await SKUItemsDAO.findSKUItem(rfid);
     if (td.length == 0 || sku.length === 0 || ntd.length === 0) {
       return res.status(404).end();
     }
-  
+
     await testResultsDAO.updateTestResults(id, rfid, newIdTestDescriptor, newDate, newResult);
     return res.status(200).end();
   }
@@ -946,7 +980,7 @@ router.put('/api/users/:username', async (req, res) => {
 
     if (!(oldType === "customer" || oldType === "qualityEmployee" || oldType === "clerk" || oldType === "deliveryEmployee" || oldType === "supplier") ||
       !(newType === "customer" || newType === "qualityEmployee" || newType === "clerk" || newType === "deliveryEmployee" || newType === "supplier")) {
-        return res.status(422).end();
+      return res.status(422).end();
     }
 
     let userWithOldType = await usersDAO.checkUser(username, oldType);
@@ -1167,7 +1201,7 @@ router.post('/api/restockOrder', async (req, res) => {
   try {
     if (req.body.issueDate === undefined
       || req.body.products === undefined
-      || req.body.supplierId === undefined){
+      || req.body.supplierId === undefined) {
       return res.status(422).end();
     }
 
@@ -1190,7 +1224,7 @@ router.post('/api/restockOrder', async (req, res) => {
 
   }
   catch (error) {
-console.log(error)
+    console.log(error)
     return res.status(500).end();
   }
 })
@@ -1300,7 +1334,7 @@ router.put('/api/restockOrder/:id/transportNote', async (req, res) => {
     }
 
     //check deliverydate after issuedate
-    
+
     await restockOrdersDAO.putTNRestockOrder(id, transportNote);
     return res.status(200).end();
   }
@@ -1657,11 +1691,11 @@ router.get('/api/internalOrders/:id', async (req, res) => {
 router.post('/api/internalOrders', async (req, res) => {
   if (req.body.issueDate === undefined
     || req.body.products === undefined
-    || req.body.customerId === undefined){
-            console.log("Qui1");
+    || req.body.customerId === undefined) {
+    console.log("Qui1");
     return res.status(422).end();
 
-    }
+  }
 
   let issueDate = req.body.issueDate;
   let products = req.body.products;
