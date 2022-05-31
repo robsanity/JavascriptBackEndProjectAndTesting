@@ -58,10 +58,10 @@ function modifyPosition(positionID, newAisleID, newRow, newCol, newMaxWeight, ne
     });
 };
 
-function modifyPositionID(positionID,newPositionID ) {
+function modifyPositionID(newPositionID,positionID,) {
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE Positions SET idPosition=? WHERE idPosition=?";
-        db.all(sql, [newPositionID, positionID], (err, rows) => {
+        const sql = "UPDATE Positions SET idPosition = ? WHERE idPosition = ?";
+        db.run(sql, [newPositionID, positionID], function(err){
             if (err) {
                 reject({ error: "no update" });
 

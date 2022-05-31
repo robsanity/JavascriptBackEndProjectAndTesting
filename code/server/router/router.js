@@ -348,9 +348,10 @@ router.delete('/api/skuitems/:rfid', async (req, res) => {
 
 
 //Return an array containing all positions.
-router.get('/api/positions', async (req, res) => {
-
+router.get('/api/positions', 
+async (req, res) => {  
   try {
+    
     const listPositions = await positionsDAO.listPositions();
     return res.status(200).json(listPositions);
   } catch (error) {
@@ -366,12 +367,19 @@ router.get('/api/positions', async (req, res) => {
 
 
 //Creates a new Position.
-router.post('/api/position', async (req, res) => {
-
-  if (req.body.positionID === null || req.body.aisleID === null || req.body.row === null || req.body.col === null || req.body.maxWeight === null || req.body.maxVolume === null)
-    return res.status(422).end();
+router.post('/api/position',
+  body('positionID').isString().notEmpty(),
+  body('aisleID').isString().notEmpty(),
+  body('row').isString().notEmpty(),
+  body('col').isString().notEmpty(),
+  body('maxWeight').isInt({ min: 0 }).notEmpty(),
+  body('maxVolume').isInt({ min: 0 }).notEmpty(),
+async (req, res) => {
 
   try {
+    if (!validationResult(req).isEmpty()) {
+      return res.status(422).end();
+    }
     let z = await positionsDAO.createPositions(req.body.positionID, req.body.aisleID, req.body.row, req.body.col, req.body.maxWeight, req.body.maxVolume);
     return res.status(201).end();
   }
@@ -388,15 +396,16 @@ router.post('/api/position', async (req, res) => {
 
 
 //Modify a position identified by positionID.
-router.put('/api/position/:positionID', async (req, res) => {
+router.put('/api/position/:positionID',param('positionID').isString().notEmpty(),
+  body('newAisleID').isString().notEmpty(),
+  body('newRow').isString().notEmpty(),
+  body('newCol').isString().notEmpty(),
+  body('newMaxWeight').isInt({ min: 0 }).notEmpty(),
+  body('newMaxVolume').isInt({ min: 0 }).notEmpty(),
+  body('newOccupiedWeight').isInt({ min: 0 }).notEmpty(),
+  body('newOccupiedVolume').isInt({ min: 0 }).notEmpty(),
 
-  if (req.body.newAisleID === null
-    || req.body.newRow === null || req.body.newCol === null
-    || req.body.newMaxWeight === null || req.body.newMaxVolume === null
-    || req.body.newOccupiedWeight === null || req.body.newOccupiedVolume === null
-    || req.params.positionID === undefined || req.params.positionID == ''
-    || isNaN(req.params.positionID))
-    return res.status(422).end();
+async (req, res) => {
 
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
   if (checkPosition.length === 0) {
@@ -404,6 +413,9 @@ router.put('/api/position/:positionID', async (req, res) => {
     return;
   }
   try {
+    if (!validationResult(req).isEmpty()) {
+      return res.status(422).end();
+    }
     await positionsDAO.modifyPosition(req.params.positionID, req.body.newAisleID, req.body.newRow, req.body.newCol, req.body.newMaxWeight, req.body.newMaxVolume, req.body.newOccupiedWeight, req.body.newOccupiedVolume);
     return res.status(200).end();
   }
@@ -418,28 +430,33 @@ router.put('/api/position/:positionID', async (req, res) => {
 
 
 //Modify the positionID of a position, given its old positionID.
-router.put('/api/position/:positionID/changeID', async (req, res) => {
+router.put('/api/position/:positionID/changeID',param('positionID').isString().notEmpty(),
+body('newPositionID').notEmpty(),
 
-  if (req.body.newPositionID === null
-    || req.params.positionID === undefined || req.params.positionID == ''
-    || isNaN(req.params.positionID))
-    return res.status(422).end();
+async (req, res) => {
+
+ 
 
   let checkOldPosition = await positionsDAO.checkPosition(req.params.positionID);
   if (checkOldPosition.length === 0) {
     return res.status(404).end();
   }
 
-  let checkNewPosition = await positionsDAO.checkPosition(req.body.newPositionID);
+  /* let checkNewPosition = await positionsDAO.checkPosition(req.body.newPositionID);
   if (checkNewPosition.length !== 0) {
     return res.status(422).end();
-  }
+  } */
 
   try {
+    if (!validationResult(req).isEmpty()) {
+      return res.status(422).end();
+    }
+
     await positionsDAO.modifyPositionID(req.params.positionID, req.body.newPositionID);
     return res.status(200).end();
   }
   catch (error) {
+    console.log(error);
     return res.status(503).json(error);
   }
 });
@@ -449,11 +466,12 @@ router.put('/api/position/:positionID/changeID', async (req, res) => {
 
 
 //Delete a SKU item receiving his positionID.
-router.delete('/api/position/:positionID', async (req, res) => {
+router.delete('/api/position/:positionID',param('positionID').notEmpty(),
+ async (req, res) => {
 
-  if (req.params.positionID === undefined || req.params.positionID == '' || isNaN(req.params.positionID))
+  /* if (req.params.positionID === undefined || req.params.positionID == '' || isNaN(req.params.positionID))
     return res.status(422).end();
-
+ */
   let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
 
   if (checkPosition.length === 0) {
@@ -461,6 +479,9 @@ router.delete('/api/position/:positionID', async (req, res) => {
   }
   else {
     try {
+      if (!validationResult(req).isEmpty()) {
+        return res.status(422).end();
+      }
       await positionsDAO.deletePosition(req.params.positionID);
       return res.status(204).end();
     }
