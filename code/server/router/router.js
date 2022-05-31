@@ -702,7 +702,7 @@ router.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
 
     let rfid = req.params.rfid;
     let id = req.params.id;
-    console.log(id);
+    
     if (rfid === undefined || rfid === '' || isNaN(rfid) ||
       id === undefined || id === '' || isNaN(id)) {
       return res.status(422).end();
@@ -1231,7 +1231,7 @@ router.put('/api/restockOrder/:id/skuItems', async (req, res) => {
     }
 
     let skuItems = req.body.skuItems;
-    console.log(skuItems);
+    
     if (skuItems === undefined || skuItems === '' || skuItems.length === 0) {
       return res.status(422).end();
     }
@@ -1658,7 +1658,7 @@ router.post('/api/internalOrders', async (req, res) => {
   if (req.body.issueDate === undefined
     || req.body.products === undefined
     || req.body.customerId === undefined){
-            console.log("Qui1");
+            
     return res.status(422).end();
 
     }
