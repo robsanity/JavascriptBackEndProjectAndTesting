@@ -61,6 +61,7 @@ function deleteAllSkus(agent) {
                 res.should.have.status(200);
                 if (res.body.length !==0) {
                     for (let i = 0; i < res.body.length; i++) {
+                        
                         agent.delete('/api/skus/'+res.body[i].id)
                         .then(function (res2) {
                             res2.should.have.status(204);
