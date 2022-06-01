@@ -288,17 +288,18 @@ router.post('/api/skuitem', async (req, res) => {
     return res.status(201).end();
   }
   catch (error) {
-    return res.status(500).json(error);
+    return res.status(404).json(error);
   }
 });
 
-//Ora Funzionante, ricordarsi che in input della richiesta la data bisogna scriverla "YYYY-DD-MM"
+//Ricordarsi che in input della richiesta la data bisogna scriverla "YYYY-DD-MM"
+//Da rivedere i return status
 
 
 
 //Modify RFID, available and date of stock fields of an existing SKU Item.
 router.put('/api/skuitems/:rfid', async (req, res) => {
-  if (req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid))
+  if (req.params.rfid === undefined || req.params.rfid == '' || isNaN(req.params.rfid) || req.body.newAvailable === null)
     return res.status(422).end();
 
   let checkSKUItems = await SKUItemsDAO.findSKUItem(req.params.rfid);
