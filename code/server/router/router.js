@@ -1489,13 +1489,13 @@ router.get('/api/returnOrders/:id',
 param('id').isInt({min:0}).notEmpty(),
 
  async (req, res) => {
-  console.log(req.params.id);
+  /* console.log(req.params.id);
   if (!validationResult(req).isEmpty()){
     
     return res.status(422).end();
   }
   const id = await returnOrdersDAO.getRetID();
-   let k = 0
+  let k = 0
   let s = 0
   while (k < id.length) {
     if (req.params.id == id[k].idReturnOrder) {
@@ -1506,16 +1506,27 @@ param('id').isInt({min:0}).notEmpty(),
   if (s === 0) {
     res.status(404).end();
   }
-  else {
+  else { */
     try {
+      if (!validationResult(req).isEmpty()){
+    
+        return res.status(422).end();
+      }
+
+      let listREturnId = await returnOrdersDAO.getRetID();
+      listREturnId = listREturnId.filter((e)=>e.id==req.params.id);
+      if (listREturnId.length == 0) 
+      return res.status(404).end()
+
+
       const returnOrders = await returnOrdersDAO.findRetOrder(req.params.id);
-      res.status(200).json(returnOrders);
+      res.status(200).json(returnOrders[0]);
     }
     catch (error) {
       res.status(500).json(error);
     }
   }
- }
+ /* } */
 );
 
 //Creates a new return order.

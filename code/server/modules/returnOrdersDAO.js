@@ -22,7 +22,7 @@ function listReturnOrders() {
                     return;
                 }
                 
-                const we = rows.map((k) => ({ id: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder, products: [] }));
+                const we = rows.map((k) => ({ id: k.idReturnOrder, returnDate: k.returnDate, restockOrderId: k.idRestockOrder, products: [] }));
                 for (let i = 0; i < we.length; i++) {
                     for (let k = 0; k < array.length; k++) {
                         if (we[i].idReturnOrder == array[k].idReturnOrder) {
