@@ -412,16 +412,19 @@ router.put('/api/position/:positionID',param('positionID').isString().notEmpty()
 
 async (req, res) => {
 
-  let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
-  if (checkPosition.length === 0) {
-    res.status(404).end();
-    return;
-  }
+  
   try {
     if (!validationResult(req).isEmpty()) {
       return res.status(422).end();
     }
-    await positionsDAO.modifyPosition(req.params.positionID, req.body.newAisleID, req.body.newRow, req.body.newCol, req.body.newMaxWeight, req.body.newMaxVolume, req.body.newOccupiedWeight, req.body.newOccupiedVolume);
+    let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
+  if (checkPosition.length === 0) {
+    res.status(404).end();
+    return;
+  }
+    let newpositionid = (req.body.newAisleID+req.body.newRow+req.body.newCol);
+    console.log(newpositionid)
+    await positionsDAO.modifyPosition(req.params.positionID, newpositionid, req.body.newAisleID, req.body.newRow, req.body.newCol, req.body.newMaxWeight, req.body.newMaxVolume, req.body.newOccupiedWeight, req.body.newOccupiedVolume);
     return res.status(200).end();
   }
   catch (error) {
@@ -442,10 +445,7 @@ async (req, res) => {
 
  
 
-  let checkOldPosition = await positionsDAO.checkPosition(req.params.positionID);
-  if (checkOldPosition.length === 0) {
-    return res.status(404).end();
-  }
+  
 
   /* let checkNewPosition = await positionsDAO.checkPosition(req.body.newPositionID);
   if (checkNewPosition.length !== 0) {
@@ -457,7 +457,19 @@ async (req, res) => {
       return res.status(422).end();
     }
 
-    await positionsDAO.modifyPositionID(req.params.positionID, req.body.newPositionID);
+    let checkOldPosition = await positionsDAO.checkPosition(req.params.positionID);
+  if (checkOldPosition.length === 0) {
+    return res.status(404).end();
+  }
+
+    //DIVIDERE AISLEID ROW COL DA POSITION
+
+    let split = (req.body.newPositionID).match(/.{1,4}/g);
+    let newAisleID=split[0];
+    let newRow=split[1];
+    let newCol=split[2];
+
+    await positionsDAO.modifyPositionID(req.body.newPositionID, req.params.positionID, newAisleID, newRow, newCol);
     return res.status(200).end();
   }
   catch (error) {
@@ -471,18 +483,14 @@ async (req, res) => {
 
 
 //Delete a SKU item receiving his positionID.
-router.delete('/api/position/:positionID',param('positionID').notEmpty(),
+router.delete('/api/position/:positionID',
+param('positionID').notEmpty().isNumeric(),
  async (req, res) => {
 
   /* if (req.params.positionID === undefined || req.params.positionID == '' || isNaN(req.params.positionID))
     return res.status(422).end();
  */
-  let checkPosition = await positionsDAO.checkPosition(req.params.positionID);
-
-  if (checkPosition.length === 0) {
-    return res.status(422).end();
-  }
-  else {
+  
     try {
       if (!validationResult(req).isEmpty()) {
         return res.status(422).end();
@@ -493,7 +501,7 @@ router.delete('/api/position/:positionID',param('positionID').notEmpty(),
     catch (error) {
       return res.status(503).json(error);
     }
-  }
+  
 
 });
 //FUNZIONANTE

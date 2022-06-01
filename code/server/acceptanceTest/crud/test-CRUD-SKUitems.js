@@ -35,7 +35,7 @@ function testSkuItemsCRUD() {
     expskuit[0] = myskuitems[0];
     let notaddedskuitems = skuitems.newSkuItem('12345678901234567890123456789000', 0, '2021/11/29 21:45');
 
-    describe.only('Test skuitem CRUD features', () => {
+    describe('Test skuitem CRUD features', () => {
         //db cleaning
         skuitems.deleteAllSkuItems(agent);      
         skus.deleteAllSkus(agent);
