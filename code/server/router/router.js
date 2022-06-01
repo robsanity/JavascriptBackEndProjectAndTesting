@@ -690,23 +690,24 @@ router.delete('/api/testDescriptor/:id',
 //------------------------------------------------------------------------------------------------
 
 //--------------------------------------|   GET   |-----------------------------------------------
-router.get('/api/skuitems/:rfid/testResults', async (req, res) => {
+router.get('/api/skuitems/:rfid/testResults',
+param('rfid').isString().isLength({min:32,max:32}).notEmpty(),
+ async (req, res) => {
 
   try {
-    let rfid = req.params.rfid;
-    if (rfid === undefined || rfid === '' || isNaN(rfid)) {
-
-      return res.status(422).end();
+    if(!validationResult(req).isEmpty()){
+      return res.status(422).end()
     }
-
-    let checkRfid = await testResultsDAO.checkRfid(rfid);
+    let rfid = req.params.rfid;
+    
+    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
     if (checkRfid.length === 0) {
+      console.log(rfid);
       return res.status(404).end()
     }
-    else {
+    
       const listTestResults = await testResultsDAO.getTestResults(rfid);
       return res.status(200).json(listTestResults).end();
-    }
   }
   catch (error) {
     return res.status(500).json({ error: error }).end();
@@ -717,7 +718,10 @@ router.get('/api/skuitems/:rfid/testResults', async (req, res) => {
 
 
 
-router.get('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
+router.get('/api/skuitems/:rfid/testResults/:id',
+param('rfid').isString().isLength({min:32,max:32}).notEmpty(),
+param('id').isInt().notEmpty(),
+async (req, res) => {
   try {
 
     let rfid = req.params.rfid;
@@ -750,35 +754,46 @@ router.get('/api/skuitems/:rfid/testResults/:id', async (req, res) => {
 
 
 //--------------------------------------|   POST   |------------------------------------------------
-router.post('/api/skuitems/testResult', async (req, res) => {
+router.post('/api/skuitems/testResult',
+body('rfid').isString().isLength({min:32,max:32}).notEmpty(),
+body('idTestDescriptor').isInt().notEmpty(),
+body('Date').isDate().notEmpty(),
+body('Result').notEmpty(),
+async (req, res) => {
   try {
-
+    if(!validationResult(req).isEmpty()){
+      
+      return res.status(422).end();
+    }
     let rfid = req.body.rfid;
     let idTestDescriptor = req.body.idTestDescriptor;
     let date = req.body.Date;
     let result = req.body.Result;
-
-    if (rfid === undefined || rfid == '' ||
+   
+    /* if (rfid === undefined || rfid == '' ||
       idTestDescriptor === undefined || idTestDescriptor == '' || isNaN(idTestDescriptor) ||
       date === undefined || date == '' ||
       !(result == true || result == false)) {
 
       return res.status(422).end();
-    }
+    } */
 
     //controllo in skuitems perchè inserisco un sku item che dovrebbe essere già in mio possesso
     let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
     if (checkRfid.length === 0) {
+      console.log(rfid);
       return res.status(404).end()
     }
 
     let checkTD = await testDescriptorsDAO.getByIdTestDescriptors(idTestDescriptor);
     if (checkTD.length === 0) {
+      console.log(req.body);
       return res.status(404).end()
     }
 
     let checkTR = await testResultsDAO.getByIdTestResults(rfid, idTestDescriptor);
     if (checkTR.length !== 0) {
+      console.log(req.body);
       return res.status(422).end()
     }
 
@@ -796,35 +811,30 @@ router.post('/api/skuitems/testResult', async (req, res) => {
 
 
 //--------------------------------------|   PUT   |------------------------------------------------
-router.put('/api/skuitems/:rfid/testResult/:id', async (req, res) => {
+router.put('/api/skuitems/:rfid/testResult/:id', 
+param('rfid').isString().isLength({min:32,max:32}).notEmpty(),
+param('id').isInt().notEmpty(),
+async (req, res) => {
+  if(!validationResult(req).isEmpty()){
+    return res.status(422).end();
+  }
   try {
 
     let rfid = req.params.rfid;
     let id = req.params.id;
 
-    if (rfid === undefined || rfid === '' || isNaN(rfid) ||
-      id === undefined || id === '' || isNaN(id)) {
-      return res.status(422).end();
-    }
-
+    
     let newIdTestDescriptor = req.body.newIdTestDescriptor;
     let newDate = req.body.newDate;
     let newResult = req.body.newResult;
 
-    if (newIdTestDescriptor === undefined || newIdTestDescriptor === '' || isNaN(newIdTestDescriptor) ||
-      newDate === undefined || newDate === '' ||
-      !(newResult == true || newResult == false)) {
-      return res.status(422).end();
-    }
-
-    let td = await testResultsDAO.getByIdTestResults(id, rfid);
-    let ntd = await testDescriptorsDAO.getByIdTestDescriptors(newIdTestDescriptor);
-    //per inserire un test result devo avere in possesso sku item
-    let sku = await SKUItemsDAO.findSKUItem(rfid);
-    if (td.length == 0 || sku.length === 0 || ntd.length === 0) {
+    //let td = await testResultsDAO.getByIdTestResults(id, rfid);
+    //let ntd = await testDescriptorsDAO.getByIdTestDescriptors(newIdTestDescriptor);
+    let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
+    if (checkRfid.length === 0 ) {
       return res.status(404).end();
     }
-
+  
     await testResultsDAO.updateTestResults(id, rfid, newIdTestDescriptor, newDate, newResult);
     return res.status(200).end();
   }
