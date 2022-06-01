@@ -35,7 +35,7 @@ function testTestResultCRUD(){
     let mytestresults = [];
     mytestresults[0] = testresults.newTestResult(rfids[0], 0, "2022/05/06", true);
     
-    describe.only('Test TestResult CRUD', () => {
+    describe('Test TestResult CRUD', () => {
         skuitems.deleteAllSkuItems(agent);      
         skus.deleteAllSkus(agent);
         testdescriptors.deleteAllTestDescriptors(agent);        

@@ -22,7 +22,7 @@ function listReturnOrders() {
                     return;
                 }
                 
-                const we = rows.map((k) => ({ idReturnOrder: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder, products: [] }));
+                const we = rows.map((k) => ({ id: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder, products: [] }));
                 for (let i = 0; i < we.length; i++) {
                     for (let k = 0; k < array.length; k++) {
                         if (we[i].idReturnOrder == array[k].idReturnOrder) {
@@ -56,7 +56,7 @@ function findRetOrder(idReturnOrder) {
                     reject({ error: `Database error` });
                     return;
                 }
-                const products = rows.map((k) => ({ idReturnOrder: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder }));
+                const products = rows.map((k) => ({ id: k.idReturnOrder, returnDate: k.returnDate, idRestockOrder: k.idRestockOrder }));
                 products.map((elem) => {
                     elem.products = [array];
                     resolve(products);
@@ -76,7 +76,7 @@ function getRetID() {
                 reject({ error: `Database error` });
                 return;
             }
-            var riga = rows.map((j) => ({ idReturnOrder: j.idReturnOrder }));
+            var riga = rows.map((j) => ({ id: j.idReturnOrder }));
 
 
 

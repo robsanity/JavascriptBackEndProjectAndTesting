@@ -1485,13 +1485,17 @@ router.get('/api/returnOrders', async (req, res) => {
 });
 
 //Return a return order, given its id.
-router.get('/api/returnOrders/:id', async (req, res) => {
+router.get('/api/returnOrders/:id',
+param('id').isInt({min:0}).notEmpty(),
 
-  if (req.params.id === undefined || req.params.id == '' || isNaN(req.params.id)) {
+ async (req, res) => {
+  console.log(req.params.id);
+  if (!validationResult(req).isEmpty()){
+    
     return res.status(422).end();
   }
   const id = await returnOrdersDAO.getRetID();
-  let k = 0
+   let k = 0
   let s = 0
   while (k < id.length) {
     if (req.params.id == id[k].idReturnOrder) {
@@ -1511,21 +1515,25 @@ router.get('/api/returnOrders/:id', async (req, res) => {
       res.status(500).json(error);
     }
   }
-}
+ }
 );
 
 //Creates a new return order.
-router.post('/api/returnOrder', async (req, res) => {
-  if (req.body.returnDate === undefined
-    || req.body.products === undefined
-    || req.body.restockOrderId === undefined)
+router.post('/api/returnOrder', 
+body('products').isArray().notEmpty(),
+body('restockOrderId').isInt().notEmpty(),
+async (req, res) => {
+ if(!validationResult(req).isEmpty()){
+  
     return res.status(422).end();
-
-  //404 Not Found (no restock order associated to restockOrderId) DA IMPLEMENTARE
-
+ }
   let returnDate = req.body.returnDate;
   const products = req.body.products;
   let restockOrderId = req.body.restockOrderId;
+  let restockOrderCheck = await restockOrdersDAO.getByIdRestockOrders(restockOrderId);
+  if (restockOrderCheck.length === 0){
+    return res.status(404).end();
+  }
   let id = await returnOrdersDAO.getIDMax();
 
   var idfinale = id[0].idReturnOrder;
@@ -1533,7 +1541,7 @@ router.post('/api/returnOrder', async (req, res) => {
   idfinale = idfinale + 1;
   let s = 0;
 
-  for (s = 0; s < products.length; s++) {
+  //for (s = 0; s < products.length; s++) {
     var RFID = products[s].RFID
     try {
       await returnOrdersDAO.createRetOrder(idfinale, returnDate, restockOrderId, RFID);
@@ -1543,6 +1551,10 @@ router.post('/api/returnOrder', async (req, res) => {
     catch (error) {
       res.status(503).json(error);
     }
+  
+  
+
+  
   }
   /*try{
   await returnOrdersDAO.updateProducts();
@@ -1552,7 +1564,7 @@ router.post('/api/returnOrder', async (req, res) => {
     res.status(503).json(error);
   }
   */
-});
+);
 
 
 
