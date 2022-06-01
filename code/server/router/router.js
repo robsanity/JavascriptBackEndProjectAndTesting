@@ -261,7 +261,7 @@ router.get('/api/skuitems/:rfid', async (req, res) => {
       return res.status(404).end();
     }
     else {
-      return res.status(200).json(SKUItem)
+      return res.status(200).json(SKUItem[0])
     }
 
   } catch (error) {
@@ -284,11 +284,15 @@ router.post('/api/skuitem', async (req, res) => {
 
 
   try {
+    let SKU = await SKUsDAO.findSKU(req.body.SKUId);
+    if(SKU.length===0)
+    return res.status(404).end();
+
     await SKUItemsDAO.createSKUItem(req.body.RFID, req.body.SKUId, req.body.DateOfStock);
     return res.status(201).end();
   }
   catch (error) {
-    return res.status(404).json(error);
+    return res.status(503).json(error);
   }
 });
 

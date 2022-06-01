@@ -2,14 +2,14 @@
   "stats": {
     "suites": 45,
     "tests": 42,
-    "passes": 40,
+    "passes": 42,
     "pending": 0,
-    "failures": 2,
-    "start": "2022-06-01T07:20:00.812Z",
-    "end": "2022-06-01T07:20:01.645Z",
-    "duration": 833,
+    "failures": 0,
+    "start": "2022-06-01T07:37:36.189Z",
+    "end": "2022-06-01T07:37:36.972Z",
+    "duration": 783,
     "testsRegistered": 42,
-    "passPercent": 95.23809523809523,
+    "passPercent": 100,
     "pendingPercent": 0,
     "other": 0,
     "hasOther": false,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "7372ec48-6b1a-45f3-b567-0ecd304e62fb",
+      "uuid": "b12a7062-6a4c-4ac9-88a7-f2425ffde04c",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "643a3df5-cd18-4cac-ad37-464a8545a297",
+          "uuid": "d5311c22-964e-4360-8243-2208832de9b7",
           "title": "Test skuitem CRUD features",
           "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
           "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -36,7 +36,7 @@
           "tests": [],
           "suites": [
             {
-              "uuid": "a909457c-abcb-4c8e-b34b-8c1b1cfd5bfe",
+              "uuid": "a0cc9088-9365-420e-aced-5646da98e8b6",
               "title": "removing all skuitems",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -47,7 +47,7 @@
                   "title": "Getting SKUitems",
                   "fullTitle": "Test skuitem CRUD features removing all skuitems Getting SKUitems",
                   "timedOut": false,
-                  "duration": 42,
+                  "duration": 50,
                   "state": "passed",
                   "speed": "medium",
                   "pass": true,
@@ -56,26 +56,26 @@
                   "context": null,
                   "code": "agent.get('/api/skuitems')\n.then(function (res) {\n    res.should.have.status(200);\n    if (res.body.length !==0) {\n        for (let i = 0; i < res.body.length; i++) {\n            agent.delete('/api/skuitems/'+res.body[i].RFID)\n            .then(function (res2) {\n                res2.should.have.status(204); \n            });\n        }\n        \n    } \n    done();\n}).catch(err => done(err));",
                   "err": {},
-                  "uuid": "f0c8e19b-39c7-4125-8dc1-c535a74155d4",
-                  "parentUUID": "a909457c-abcb-4c8e-b34b-8c1b1cfd5bfe",
+                  "uuid": "70fa599d-f115-4abc-8d76-056f4887d0d5",
+                  "parentUUID": "a0cc9088-9365-420e-aced-5646da98e8b6",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "f0c8e19b-39c7-4125-8dc1-c535a74155d4"
+                "70fa599d-f115-4abc-8d76-056f4887d0d5"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 42,
+              "duration": 50,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000
             },
             {
-              "uuid": "e7dff53a-b933-4735-9c2c-a52a2f87cf2c",
+              "uuid": "3481046a-9110-455d-9819-7baeb038a21e",
               "title": "removing all skus",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -86,7 +86,7 @@
                   "title": "Getting SKUs",
                   "fullTitle": "Test skuitem CRUD features removing all skus Getting SKUs",
                   "timedOut": false,
-                  "duration": 9,
+                  "duration": 11,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
@@ -95,132 +95,15 @@
                   "context": null,
                   "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(200);\n    if (res.body.length !==0) {\n        for (let i = 0; i < res.body.length; i++) {\n            \n            agent.delete('/api/skus/'+res.body[i].id)\n            .then(function (res2) {\n                res2.should.have.status(204);\n            });\n        }\n    } \n    done();\n}).catch(err => done(err));",
                   "err": {},
-                  "uuid": "145a88a8-131e-4892-b6b9-79f37edb6177",
-                  "parentUUID": "e7dff53a-b933-4735-9c2c-a52a2f87cf2c",
+                  "uuid": "2b0e4552-276c-4d49-830d-120fe3d9a28f",
+                  "parentUUID": "3481046a-9110-455d-9819-7baeb038a21e",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "145a88a8-131e-4892-b6b9-79f37edb6177"
-              ],
-              "failures": [],
-              "pending": [],
-              "skipped": [],
-              "duration": 9,
-              "root": false,
-              "rootEmpty": false,
-              "_timeout": 10000
-            },
-            {
-              "uuid": "590db74a-8c97-4122-a5b1-9886e39002fb",
-              "title": "post /api/sku/",
-              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-              "file": "\\acceptanceTest\\testEzWhAPI.js",
-              "beforeHooks": [],
-              "afterHooks": [],
-              "tests": [
-                {
-                  "title": "FR 2.1 a -> Define a new SKU",
-                  "fullTitle": "Test skuitem CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
-                  "timedOut": false,
-                  "duration": 88,
-                  "state": "passed",
-                  "speed": "slow",
-                  "pass": true,
-                  "fail": false,
-                  "pending": false,
-                  "context": null,
-                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
-                  "err": {},
-                  "uuid": "dc6ffd37-2fa3-4757-b96b-03179d8881ca",
-                  "parentUUID": "590db74a-8c97-4122-a5b1-9886e39002fb",
-                  "isHook": false,
-                  "skipped": false
-                }
-              ],
-              "suites": [],
-              "passes": [
-                "dc6ffd37-2fa3-4757-b96b-03179d8881ca"
-              ],
-              "failures": [],
-              "pending": [],
-              "skipped": [],
-              "duration": 88,
-              "root": false,
-              "rootEmpty": false,
-              "_timeout": 10000
-            },
-            {
-              "uuid": "afae3f2d-3721-4d37-8532-7633177a02b0",
-              "title": "post /api/sku/",
-              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-              "file": "\\acceptanceTest\\testEzWhAPI.js",
-              "beforeHooks": [],
-              "afterHooks": [],
-              "tests": [
-                {
-                  "title": "FR 2.1 a -> Define a new SKU",
-                  "fullTitle": "Test skuitem CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
-                  "timedOut": false,
-                  "duration": 28,
-                  "state": "passed",
-                  "speed": "fast",
-                  "pass": true,
-                  "fail": false,
-                  "pending": false,
-                  "context": null,
-                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
-                  "err": {},
-                  "uuid": "ec6a098e-2fb9-4fcc-a35b-ef1de949f8e7",
-                  "parentUUID": "afae3f2d-3721-4d37-8532-7633177a02b0",
-                  "isHook": false,
-                  "skipped": false
-                }
-              ],
-              "suites": [],
-              "passes": [
-                "ec6a098e-2fb9-4fcc-a35b-ef1de949f8e7"
-              ],
-              "failures": [],
-              "pending": [],
-              "skipped": [],
-              "duration": 28,
-              "root": false,
-              "rootEmpty": false,
-              "_timeout": 10000
-            },
-            {
-              "uuid": "8fc2ea32-23af-45a7-93c4-16a37eff044c",
-              "title": "get /api/skus",
-              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-              "file": "\\acceptanceTest\\testEzWhAPI.js",
-              "beforeHooks": [],
-              "afterHooks": [],
-              "tests": [
-                {
-                  "title": "FR 2.3 -> List all SKUs",
-                  "fullTitle": "Test skuitem CRUD features get /api/skus FR 2.3 -> List all SKUs",
-                  "timedOut": false,
-                  "duration": 11,
-                  "state": "passed",
-                  "speed": "fast",
-                  "pass": true,
-                  "fail": false,
-                  "pending": false,
-                  "context": null,
-                  "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.eql(size);\n    let id = [];\n    if (size > 0) {\n        for (let i = 0; i < size; i++) {\n            id[i] = res.body[i].id;\n            res.body[i].description.should.equal(sku[i].description);\n            res.body[i].weight.should.equal(sku[i].weight);\n            res.body[i].volume.should.equal(sku[i].volume);\n            res.body[i].notes.should.equal(sku[i].notes);\n            res.body[i].availableQuantity.should.equal(sku[i].availableQuantity);\n            res.body[i].price.should.equal(sku[i].price);\n        }\n        ids.setIdSku(id);\n    }             \n    done();\n}).catch(err=>done(err));",
-                  "err": {},
-                  "uuid": "b0e3ea9d-a133-4298-a62a-6b3fec5117af",
-                  "parentUUID": "8fc2ea32-23af-45a7-93c4-16a37eff044c",
-                  "isHook": false,
-                  "skipped": false
-                }
-              ],
-              "suites": [],
-              "passes": [
-                "b0e3ea9d-a133-4298-a62a-6b3fec5117af"
+                "2b0e4552-276c-4d49-830d-120fe3d9a28f"
               ],
               "failures": [],
               "pending": [],
@@ -231,94 +114,94 @@
               "_timeout": 10000
             },
             {
-              "uuid": "c74cb868-82f1-4337-9d65-6f0ccf66f99d",
-              "title": "post /api/skuitem/",
+              "uuid": "e2f9981d-251b-493a-88d6-943b60c596b9",
+              "title": "post /api/sku/",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
               "beforeHooks": [],
               "afterHooks": [],
               "tests": [
                 {
-                  "title": "Adding skuitem details",
-                  "fullTitle": "Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test skuitem CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
                   "timedOut": false,
-                  "duration": 24,
+                  "duration": 59,
                   "state": "passed",
-                  "speed": "fast",
+                  "speed": "medium",
                   "pass": true,
                   "fail": false,
                   "pending": false,
                   "context": null,
-                  "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "9ebba5c8-d7ee-4e97-ae29-dc47251365f2",
-                  "parentUUID": "c74cb868-82f1-4337-9d65-6f0ccf66f99d",
+                  "uuid": "260b4182-7740-45cb-901f-2a8d514741c7",
+                  "parentUUID": "e2f9981d-251b-493a-88d6-943b60c596b9",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "9ebba5c8-d7ee-4e97-ae29-dc47251365f2"
+                "260b4182-7740-45cb-901f-2a8d514741c7"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 24,
+              "duration": 59,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000
             },
             {
-              "uuid": "4ada09b6-4b53-45ab-9b9b-344ec2ec33bf",
-              "title": "post /api/skuitem/",
+              "uuid": "80894838-5a8f-4812-9ea8-95746bd69e38",
+              "title": "post /api/sku/",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
               "beforeHooks": [],
               "afterHooks": [],
               "tests": [
                 {
-                  "title": "Adding skuitem details",
-                  "fullTitle": "Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
+                  "title": "FR 2.1 a -> Define a new SKU",
+                  "fullTitle": "Test skuitem CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
                   "timedOut": false,
-                  "duration": 20,
+                  "duration": 18,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
                   "fail": false,
                   "pending": false,
                   "context": null,
-                  "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "ef1f8ed8-2378-4546-80a8-55f025c622c8",
-                  "parentUUID": "4ada09b6-4b53-45ab-9b9b-344ec2ec33bf",
+                  "uuid": "6154c685-b059-4214-9b39-226fde7fbeef",
+                  "parentUUID": "80894838-5a8f-4812-9ea8-95746bd69e38",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "ef1f8ed8-2378-4546-80a8-55f025c622c8"
+                "6154c685-b059-4214-9b39-226fde7fbeef"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 20,
+              "duration": 18,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000
             },
             {
-              "uuid": "937de7a7-a6b2-4cf3-9364-492ca0f3f111",
-              "title": "post /api/skuitem/",
+              "uuid": "19962c5d-a16d-4115-8c81-cec9753b2c41",
+              "title": "get /api/skus",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
               "beforeHooks": [],
               "afterHooks": [],
               "tests": [
                 {
-                  "title": "Adding skuitem details",
-                  "fullTitle": "Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
+                  "title": "FR 2.3 -> List all SKUs",
+                  "fullTitle": "Test skuitem CRUD features get /api/skus FR 2.3 -> List all SKUs",
                   "timedOut": false,
                   "duration": 9,
                   "state": "passed",
@@ -327,17 +210,17 @@
                   "fail": false,
                   "pending": false,
                   "context": null,
-                  "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.eql(size);\n    let id = [];\n    if (size > 0) {\n        for (let i = 0; i < size; i++) {\n            id[i] = res.body[i].id;\n            res.body[i].description.should.equal(sku[i].description);\n            res.body[i].weight.should.equal(sku[i].weight);\n            res.body[i].volume.should.equal(sku[i].volume);\n            res.body[i].notes.should.equal(sku[i].notes);\n            res.body[i].availableQuantity.should.equal(sku[i].availableQuantity);\n            res.body[i].price.should.equal(sku[i].price);\n        }\n        ids.setIdSku(id);\n    }             \n    done();\n}).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "6045e6a1-29c0-4921-b6cb-fe7c3fd4ea63",
-                  "parentUUID": "937de7a7-a6b2-4cf3-9364-492ca0f3f111",
+                  "uuid": "55d6c043-d7ca-49f0-974b-98d2efa637a6",
+                  "parentUUID": "19962c5d-a16d-4115-8c81-cec9753b2c41",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "6045e6a1-29c0-4921-b6cb-fe7c3fd4ea63"
+                "55d6c043-d7ca-49f0-974b-98d2efa637a6"
               ],
               "failures": [],
               "pending": [],
@@ -348,7 +231,7 @@
               "_timeout": 10000
             },
             {
-              "uuid": "0216f21b-ae53-4e60-824b-6b745af47161",
+              "uuid": "7e129352-093c-459b-979f-db3e37b19c06",
               "title": "post /api/skuitem/",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -359,7 +242,7 @@
                   "title": "Adding skuitem details",
                   "fullTitle": "Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
                   "timedOut": false,
-                  "duration": 8,
+                  "duration": 25,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
@@ -368,74 +251,35 @@
                   "context": null,
                   "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "1f7129ca-c160-4944-b5f9-ccadf60b8360",
-                  "parentUUID": "0216f21b-ae53-4e60-824b-6b745af47161",
+                  "uuid": "c89c65b5-ded3-45c1-a4da-057cc47d0d92",
+                  "parentUUID": "7e129352-093c-459b-979f-db3e37b19c06",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "1f7129ca-c160-4944-b5f9-ccadf60b8360"
+                "c89c65b5-ded3-45c1-a4da-057cc47d0d92"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 8,
+              "duration": 25,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000
             },
             {
-              "uuid": "bcee9be2-5c12-45c8-b6f5-9a29cb00c92a",
-              "title": "get /api/skuitems",
+              "uuid": "822550a6-f81b-4a52-a268-0fb5df122fae",
+              "title": "post /api/skuitem/",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
               "beforeHooks": [],
               "afterHooks": [],
               "tests": [
                 {
-                  "title": "Getting SKUitems",
-                  "fullTitle": "Test skuitem CRUD features get /api/skuitems Getting SKUitems",
-                  "timedOut": false,
-                  "duration": 10,
-                  "state": "passed",
-                  "speed": "fast",
-                  "pass": true,
-                  "fail": false,
-                  "pending": false,
-                  "context": null,
-                  "code": "agent.get('/api/skuitems')\n.then(function (res) {\n//                console.log(res.body[0]);\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.equal(size);\n    let idSKUs = ids.getIdSku();\n    for (let i = 0; i < size; i++) {\n        res.body[i].RFID.should.equal(skuitems[i].RFID);\n        res.body[i].SKUId.should.equal(idSKUs[skuitems[i].SKUId]);\n        res.body[i].DateOfStock.should.equal(skuitems[i].DateOfStock);\n        if(skuitems[i].Available !== undefined){\n            res.body[i].Available.should.equal(skuitems[i].Available);\n            //console.log('null');\n        }\n    }\n    \n    done();                \n}).catch(err=>done(err));",
-                  "err": {},
-                  "uuid": "034f4764-ec47-4c2e-afe4-23bddf2a5736",
-                  "parentUUID": "bcee9be2-5c12-45c8-b6f5-9a29cb00c92a",
-                  "isHook": false,
-                  "skipped": false
-                }
-              ],
-              "suites": [],
-              "passes": [
-                "034f4764-ec47-4c2e-afe4-23bddf2a5736"
-              ],
-              "failures": [],
-              "pending": [],
-              "skipped": [],
-              "duration": 10,
-              "root": false,
-              "rootEmpty": false,
-              "_timeout": 10000
-            },
-            {
-              "uuid": "3db23f40-0635-431d-bb4b-4b1fb4ab7c14",
-              "title": "put /api/skutems/:rfid",
-              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-              "file": "\\acceptanceTest\\testEzWhAPI.js",
-              "beforeHooks": [],
-              "afterHooks": [],
-              "tests": [
-                {
-                  "title": "Editing SKUitems details passing its rfid",
-                  "fullTitle": "Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
+                  "title": "Adding skuitem details",
+                  "fullTitle": "Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
                   "timedOut": false,
                   "duration": 27,
                   "state": "passed",
@@ -444,17 +288,17 @@
                   "fail": false,
                   "pending": false,
                   "context": null,
-                  "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
+                  "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "6a11f69c-1d67-4780-956e-df0176435f9a",
-                  "parentUUID": "3db23f40-0635-431d-bb4b-4b1fb4ab7c14",
+                  "uuid": "075dd0e2-2d58-463e-a796-40614ba7d4d8",
+                  "parentUUID": "822550a6-f81b-4a52-a268-0fb5df122fae",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "6a11f69c-1d67-4780-956e-df0176435f9a"
+                "075dd0e2-2d58-463e-a796-40614ba7d4d8"
               ],
               "failures": [],
               "pending": [],
@@ -465,7 +309,124 @@
               "_timeout": 10000
             },
             {
-              "uuid": "c01222a3-f396-47c4-a624-523774c957cc",
+              "uuid": "c395e647-6482-4731-8f1b-cfaad00d0b2d",
+              "title": "post /api/skuitem/",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Adding skuitem details",
+                  "fullTitle": "Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
+                  "timedOut": false,
+                  "duration": 12,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "06797178-8d17-40db-af4b-a6c31ed01ed4",
+                  "parentUUID": "c395e647-6482-4731-8f1b-cfaad00d0b2d",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "06797178-8d17-40db-af4b-a6c31ed01ed4"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 12,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "552d3451-4aac-4de2-9522-627651c2f522",
+              "title": "post /api/skuitem/",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Adding skuitem details",
+                  "fullTitle": "Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
+                  "timedOut": false,
+                  "duration": 10,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "1d43a3da-922a-495d-a713-9a947c32f249",
+                  "parentUUID": "552d3451-4aac-4de2-9522-627651c2f522",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "1d43a3da-922a-495d-a713-9a947c32f249"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 10,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "98274309-d285-4dba-bba5-0745c5a899b6",
+              "title": "get /api/skuitems",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Getting SKUitems",
+                  "fullTitle": "Test skuitem CRUD features get /api/skuitems Getting SKUitems",
+                  "timedOut": false,
+                  "duration": 11,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "agent.get('/api/skuitems')\n.then(function (res) {\n//                console.log(res.body[0]);\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.equal(size);\n    let idSKUs = ids.getIdSku();\n    for (let i = 0; i < size; i++) {\n        res.body[i].RFID.should.equal(skuitems[i].RFID);\n        res.body[i].SKUId.should.equal(idSKUs[skuitems[i].SKUId]);\n        res.body[i].DateOfStock.should.equal(skuitems[i].DateOfStock);\n        if(skuitems[i].Available !== undefined){\n            res.body[i].Available.should.equal(skuitems[i].Available);\n            //console.log('null');\n        }\n    }\n    \n    done();                \n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "8e01d08d-76f8-484e-ab7e-5cf61958e6ac",
+                  "parentUUID": "98274309-d285-4dba-bba5-0745c5a899b6",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "8e01d08d-76f8-484e-ab7e-5cf61958e6ac"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 11,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "a60a5882-e4a9-4652-b4b2-3241af97293d",
               "title": "put /api/skutems/:rfid",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -476,7 +437,7 @@
                   "title": "Editing SKUitems details passing its rfid",
                   "fullTitle": "Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
                   "timedOut": false,
-                  "duration": 7,
+                  "duration": 31,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
@@ -485,65 +446,26 @@
                   "context": null,
                   "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "7ae8506e-2ab7-4e32-a5f6-784ec5a7dfd0",
-                  "parentUUID": "c01222a3-f396-47c4-a624-523774c957cc",
+                  "uuid": "6f64f254-b267-480a-808b-07bdc36b4799",
+                  "parentUUID": "a60a5882-e4a9-4652-b4b2-3241af97293d",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "7ae8506e-2ab7-4e32-a5f6-784ec5a7dfd0"
+                "6f64f254-b267-480a-808b-07bdc36b4799"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 7,
+              "duration": 31,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000
             },
             {
-              "uuid": "dafdd83e-4f99-4a8b-b4c7-cf3f9208a405",
-              "title": "put /api/skutems/:rfid",
-              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-              "file": "\\acceptanceTest\\testEzWhAPI.js",
-              "beforeHooks": [],
-              "afterHooks": [],
-              "tests": [
-                {
-                  "title": "Editing SKUitems details passing its rfid",
-                  "fullTitle": "Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
-                  "timedOut": false,
-                  "duration": 5,
-                  "state": "passed",
-                  "speed": "fast",
-                  "pass": true,
-                  "fail": false,
-                  "pending": false,
-                  "context": null,
-                  "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
-                  "err": {},
-                  "uuid": "ad6c2f53-e08e-44c3-a794-e1ef0fd16fc2",
-                  "parentUUID": "dafdd83e-4f99-4a8b-b4c7-cf3f9208a405",
-                  "isHook": false,
-                  "skipped": false
-                }
-              ],
-              "suites": [],
-              "passes": [
-                "ad6c2f53-e08e-44c3-a794-e1ef0fd16fc2"
-              ],
-              "failures": [],
-              "pending": [],
-              "skipped": [],
-              "duration": 5,
-              "root": false,
-              "rootEmpty": false,
-              "_timeout": 10000
-            },
-            {
-              "uuid": "755a175a-1d67-4aa8-bf48-1a57ca33f08d",
+              "uuid": "c8256c35-4b56-4f36-9c2f-9a762b16cdab",
               "title": "put /api/skutems/:rfid",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -563,15 +485,15 @@
                   "context": null,
                   "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "9bedb0ef-d589-42d9-b778-4a561f9a0666",
-                  "parentUUID": "755a175a-1d67-4aa8-bf48-1a57ca33f08d",
+                  "uuid": "4a0145ae-1cac-48ff-9ccd-4aa5d59750e2",
+                  "parentUUID": "c8256c35-4b56-4f36-9c2f-9a762b16cdab",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "9bedb0ef-d589-42d9-b778-4a561f9a0666"
+                "4a0145ae-1cac-48ff-9ccd-4aa5d59750e2"
               ],
               "failures": [],
               "pending": [],
@@ -582,7 +504,124 @@
               "_timeout": 10000
             },
             {
-              "uuid": "dd1bcbf0-43a4-4a93-b7d2-fa84805906b9",
+              "uuid": "6b1614b6-8212-42d2-9a5c-6b02d1aed15a",
+              "title": "put /api/skutems/:rfid",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Editing SKUitems details passing its rfid",
+                  "fullTitle": "Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
+                  "timedOut": false,
+                  "duration": 6,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "c04bd142-08f6-4614-bb7c-5833ddca5ca0",
+                  "parentUUID": "6b1614b6-8212-42d2-9a5c-6b02d1aed15a",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "c04bd142-08f6-4614-bb7c-5833ddca5ca0"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 6,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "c665ddd6-96fb-4f7c-aa12-3cd4fdf2eee3",
+              "title": "put /api/skutems/:rfid",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Editing SKUitems details passing its rfid",
+                  "fullTitle": "Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
+                  "timedOut": false,
+                  "duration": 8,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "47d6e3a6-f5ef-4f3e-a439-e09ad9460a63",
+                  "parentUUID": "c665ddd6-96fb-4f7c-aa12-3cd4fdf2eee3",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "47d6e3a6-f5ef-4f3e-a439-e09ad9460a63"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 8,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "28f9bc64-5cd6-4856-bc0d-56af4623addf",
+              "title": "get /api/skuitems/sku/:id",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Getting SKUitems passing its id",
+                  "fullTitle": "Test skuitem CRUD features get /api/skuitems/sku/:id Getting SKUitems passing its id",
+                  "timedOut": false,
+                  "duration": 9,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
+                  "err": {},
+                  "uuid": "346efb21-574d-4ea5-b0a0-4542591f4a05",
+                  "parentUUID": "28f9bc64-5cd6-4856-bc0d-56af4623addf",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "346efb21-574d-4ea5-b0a0-4542591f4a05"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 9,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "269d3b4f-0173-45a3-b32d-7c39bffadbae",
               "title": "get /api/skuitems/sku/:id",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -602,15 +641,15 @@
                   "context": null,
                   "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
                   "err": {},
-                  "uuid": "3144eb33-6e75-4fd6-b7f8-e5d4ae73446d",
-                  "parentUUID": "dd1bcbf0-43a4-4a93-b7d2-fa84805906b9",
+                  "uuid": "00a87cda-92be-420a-abb1-48b0199fbc66",
+                  "parentUUID": "269d3b4f-0173-45a3-b32d-7c39bffadbae",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "3144eb33-6e75-4fd6-b7f8-e5d4ae73446d"
+                "00a87cda-92be-420a-abb1-48b0199fbc66"
               ],
               "failures": [],
               "pending": [],
@@ -621,7 +660,7 @@
               "_timeout": 10000
             },
             {
-              "uuid": "8e2b3142-80ed-481f-b26b-fc3fa72699c5",
+              "uuid": "dd6e9f8c-8eef-40eb-9d07-348d8db49966",
               "title": "get /api/skuitems/sku/:id",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -641,15 +680,15 @@
                   "context": null,
                   "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
                   "err": {},
-                  "uuid": "57380a8f-bf07-4285-b061-216012ae7d03",
-                  "parentUUID": "8e2b3142-80ed-481f-b26b-fc3fa72699c5",
+                  "uuid": "4b32a404-69d1-49d5-8f02-ff28999cf226",
+                  "parentUUID": "dd6e9f8c-8eef-40eb-9d07-348d8db49966",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "57380a8f-bf07-4285-b061-216012ae7d03"
+                "4b32a404-69d1-49d5-8f02-ff28999cf226"
               ],
               "failures": [],
               "pending": [],
@@ -660,46 +699,7 @@
               "_timeout": 10000
             },
             {
-              "uuid": "6facfe7a-b9a4-4d96-8105-4b279f4c7c2d",
-              "title": "get /api/skuitems/sku/:id",
-              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-              "file": "\\acceptanceTest\\testEzWhAPI.js",
-              "beforeHooks": [],
-              "afterHooks": [],
-              "tests": [
-                {
-                  "title": "Getting SKUitems passing its id",
-                  "fullTitle": "Test skuitem CRUD features get /api/skuitems/sku/:id Getting SKUitems passing its id",
-                  "timedOut": false,
-                  "duration": 9,
-                  "state": "passed",
-                  "speed": "fast",
-                  "pass": true,
-                  "fail": false,
-                  "pending": false,
-                  "context": null,
-                  "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
-                  "err": {},
-                  "uuid": "ed477cb5-62eb-45e5-ad78-4566cf50e0b1",
-                  "parentUUID": "6facfe7a-b9a4-4d96-8105-4b279f4c7c2d",
-                  "isHook": false,
-                  "skipped": false
-                }
-              ],
-              "suites": [],
-              "passes": [
-                "ed477cb5-62eb-45e5-ad78-4566cf50e0b1"
-              ],
-              "failures": [],
-              "pending": [],
-              "skipped": [],
-              "duration": 9,
-              "root": false,
-              "rootEmpty": false,
-              "_timeout": 10000
-            },
-            {
-              "uuid": "fe29fc2f-c7b6-484c-a6d4-d1e235161b39",
+              "uuid": "5a7a6ac0-c662-4665-915b-e9dac8c7a108",
               "title": "get /api/skuitems",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -710,7 +710,7 @@
                   "title": "Getting SKUitems",
                   "fullTitle": "Test skuitem CRUD features get /api/skuitems Getting SKUitems",
                   "timedOut": false,
-                  "duration": 13,
+                  "duration": 8,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
@@ -719,26 +719,26 @@
                   "context": null,
                   "code": "agent.get('/api/skuitems')\n.then(function (res) {\n//                console.log(res.body[0]);\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.equal(size);\n    let idSKUs = ids.getIdSku();\n    for (let i = 0; i < size; i++) {\n        res.body[i].RFID.should.equal(skuitems[i].RFID);\n        res.body[i].SKUId.should.equal(idSKUs[skuitems[i].SKUId]);\n        res.body[i].DateOfStock.should.equal(skuitems[i].DateOfStock);\n        if(skuitems[i].Available !== undefined){\n            res.body[i].Available.should.equal(skuitems[i].Available);\n            //console.log('null');\n        }\n    }\n    \n    done();                \n}).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "b3973f8b-70d7-4eab-97e7-5c4f2027f8d4",
-                  "parentUUID": "fe29fc2f-c7b6-484c-a6d4-d1e235161b39",
+                  "uuid": "55409cdf-3356-4436-8766-e4818502b637",
+                  "parentUUID": "5a7a6ac0-c662-4665-915b-e9dac8c7a108",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "b3973f8b-70d7-4eab-97e7-5c4f2027f8d4"
+                "55409cdf-3356-4436-8766-e4818502b637"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 13,
+              "duration": 8,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000
             },
             {
-              "uuid": "5769f406-ed3a-4b99-a331-de15c6cabbe2",
+              "uuid": "c424672f-372a-46ec-a431-a08776c02a14",
               "title": "get /api/skuitems/:RFID",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -749,39 +749,74 @@
                   "title": "Getting SKUitems passing its rfid",
                   "fullTitle": "Test skuitem CRUD features get /api/skuitems/:RFID Getting SKUitems passing its rfid",
                   "timedOut": false,
-                  "duration": 15,
-                  "state": "failed",
-                  "speed": null,
-                  "pass": false,
-                  "fail": true,
+                  "duration": 6,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
                   "pending": false,
                   "context": null,
                   "code": "let idskus = ids.getIdSku();\nagent.get('/api/skuitems/'+expectedskuitem.RFID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if(res.status==200){\n        res.body.should.be.a('object');\n        res.body.RFID.should.equal(expectedskuitem.RFID);\n        res.body.SKUId.should.equal(idskus[expectedskuitem.SKUId]);\n        res.body.DateOfStock.should.equal(expectedskuitem.DateOfStock);\n        if(res.body.Available !== undefined){\n            res.body.Available.should.equal(expAvail);\n        }\n    }\n    done();\n}).catch(err=>done(err));",
-                  "err": {
-                    "message": "AssertionError: expected [ { …(4) } ] to be an object",
-                    "estack": "AssertionError: expected [ { …(4) } ] to be an object\n    at C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\utils-skuitems.js:140:40\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
-                    "diff": null
-                  },
-                  "uuid": "0cd9cfc5-44eb-47ae-8b0c-b92e20480645",
-                  "parentUUID": "5769f406-ed3a-4b99-a331-de15c6cabbe2",
+                  "err": {},
+                  "uuid": "cd4aa456-e1e2-4f3c-bbb6-796d64e5a6ee",
+                  "parentUUID": "c424672f-372a-46ec-a431-a08776c02a14",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
-              "passes": [],
-              "failures": [
-                "0cd9cfc5-44eb-47ae-8b0c-b92e20480645"
+              "passes": [
+                "cd4aa456-e1e2-4f3c-bbb6-796d64e5a6ee"
               ],
+              "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 15,
+              "duration": 6,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000
             },
             {
-              "uuid": "4ca9d02b-97f7-4377-90c4-c0d758ea2de5",
+              "uuid": "784a25e6-01ce-42c5-afa4-791c5f3a132d",
+              "title": "get /api/skuitems/:RFID",
+              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+              "file": "\\acceptanceTest\\testEzWhAPI.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Getting SKUitems passing its rfid",
+                  "fullTitle": "Test skuitem CRUD features get /api/skuitems/:RFID Getting SKUitems passing its rfid",
+                  "timedOut": false,
+                  "duration": 7,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "let idskus = ids.getIdSku();\nagent.get('/api/skuitems/'+expectedskuitem.RFID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if(res.status==200){\n        res.body.should.be.a('object');\n        res.body.RFID.should.equal(expectedskuitem.RFID);\n        res.body.SKUId.should.equal(idskus[expectedskuitem.SKUId]);\n        res.body.DateOfStock.should.equal(expectedskuitem.DateOfStock);\n        if(res.body.Available !== undefined){\n            res.body.Available.should.equal(expAvail);\n        }\n    }\n    done();\n}).catch(err=>done(err));",
+                  "err": {},
+                  "uuid": "ea9fa426-ba3a-4cb4-a720-f4b70af11d4a",
+                  "parentUUID": "784a25e6-01ce-42c5-afa4-791c5f3a132d",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "ea9fa426-ba3a-4cb4-a720-f4b70af11d4a"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 7,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 10000
+            },
+            {
+              "uuid": "7d9a4d81-ceb3-4ed8-9576-5ed05e8a56aa",
               "title": "get /api/skuitems/:RFID",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -801,59 +836,20 @@
                   "context": null,
                   "code": "let idskus = ids.getIdSku();\nagent.get('/api/skuitems/'+expectedskuitem.RFID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if(res.status==200){\n        res.body.should.be.a('object');\n        res.body.RFID.should.equal(expectedskuitem.RFID);\n        res.body.SKUId.should.equal(idskus[expectedskuitem.SKUId]);\n        res.body.DateOfStock.should.equal(expectedskuitem.DateOfStock);\n        if(res.body.Available !== undefined){\n            res.body.Available.should.equal(expAvail);\n        }\n    }\n    done();\n}).catch(err=>done(err));",
                   "err": {},
-                  "uuid": "6df55fce-5987-4879-8080-0b846c90c16d",
-                  "parentUUID": "4ca9d02b-97f7-4377-90c4-c0d758ea2de5",
+                  "uuid": "b6157f8f-292a-4798-a37e-718d5da97f45",
+                  "parentUUID": "7d9a4d81-ceb3-4ed8-9576-5ed05e8a56aa",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "6df55fce-5987-4879-8080-0b846c90c16d"
+                "b6157f8f-292a-4798-a37e-718d5da97f45"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
               "duration": 9,
-              "root": false,
-              "rootEmpty": false,
-              "_timeout": 10000
-            },
-            {
-              "uuid": "0a404b76-36a1-47af-b11f-1feb9d11b9fb",
-              "title": "get /api/skuitems/:RFID",
-              "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-              "file": "\\acceptanceTest\\testEzWhAPI.js",
-              "beforeHooks": [],
-              "afterHooks": [],
-              "tests": [
-                {
-                  "title": "Getting SKUitems passing its rfid",
-                  "fullTitle": "Test skuitem CRUD features get /api/skuitems/:RFID Getting SKUitems passing its rfid",
-                  "timedOut": false,
-                  "duration": 17,
-                  "state": "passed",
-                  "speed": "fast",
-                  "pass": true,
-                  "fail": false,
-                  "pending": false,
-                  "context": null,
-                  "code": "let idskus = ids.getIdSku();\nagent.get('/api/skuitems/'+expectedskuitem.RFID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if(res.status==200){\n        res.body.should.be.a('object');\n        res.body.RFID.should.equal(expectedskuitem.RFID);\n        res.body.SKUId.should.equal(idskus[expectedskuitem.SKUId]);\n        res.body.DateOfStock.should.equal(expectedskuitem.DateOfStock);\n        if(res.body.Available !== undefined){\n            res.body.Available.should.equal(expAvail);\n        }\n    }\n    done();\n}).catch(err=>done(err));",
-                  "err": {},
-                  "uuid": "e89eb49d-4d2c-4cf5-8a6c-bb6e953574e9",
-                  "parentUUID": "0a404b76-36a1-47af-b11f-1feb9d11b9fb",
-                  "isHook": false,
-                  "skipped": false
-                }
-              ],
-              "suites": [],
-              "passes": [
-                "e89eb49d-4d2c-4cf5-8a6c-bb6e953574e9"
-              ],
-              "failures": [],
-              "pending": [],
-              "skipped": [],
-              "duration": 17,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000
@@ -869,7 +865,7 @@
           "_timeout": 10000
         },
         {
-          "uuid": "7ce81975-e7bc-4763-8ea8-e456749870b9",
+          "uuid": "00ffb15f-f7ce-44ac-9fce-f08b8a89538f",
           "title": "Testing Functional requirements pt2",
           "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
           "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -878,7 +874,7 @@
           "tests": [],
           "suites": [
             {
-              "uuid": "ba78dc15-0d1f-4e65-9c89-bded10f15400",
+              "uuid": "7d91e7bb-79d4-49b8-9ecf-fd28516be2a1",
               "title": "Test skuitem CRUD features",
               "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
               "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -887,7 +883,7 @@
               "tests": [],
               "suites": [
                 {
-                  "uuid": "16def5c8-783a-4378-beae-370ba441e630",
+                  "uuid": "b37ea7ed-782c-4824-9c0d-7ef6e875a7fb",
                   "title": "removing all skuitems",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -898,7 +894,7 @@
                       "title": "Getting SKUitems",
                       "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features removing all skuitems Getting SKUitems",
                       "timedOut": false,
-                      "duration": 16,
+                      "duration": 14,
                       "state": "passed",
                       "speed": "fast",
                       "pass": true,
@@ -907,26 +903,26 @@
                       "context": null,
                       "code": "agent.get('/api/skuitems')\n.then(function (res) {\n    res.should.have.status(200);\n    if (res.body.length !==0) {\n        for (let i = 0; i < res.body.length; i++) {\n            agent.delete('/api/skuitems/'+res.body[i].RFID)\n            .then(function (res2) {\n                res2.should.have.status(204); \n            });\n        }\n        \n    } \n    done();\n}).catch(err => done(err));",
                       "err": {},
-                      "uuid": "e08eb8be-4b70-43a4-be26-2f24fd3ee6f9",
-                      "parentUUID": "16def5c8-783a-4378-beae-370ba441e630",
+                      "uuid": "4d88f17d-33ec-483a-bfd7-d59e29aa5189",
+                      "parentUUID": "b37ea7ed-782c-4824-9c0d-7ef6e875a7fb",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "e08eb8be-4b70-43a4-be26-2f24fd3ee6f9"
+                    "4d88f17d-33ec-483a-bfd7-d59e29aa5189"
                   ],
                   "failures": [],
                   "pending": [],
                   "skipped": [],
-                  "duration": 16,
+                  "duration": 14,
                   "root": false,
                   "rootEmpty": false,
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "7edbaa1a-9f25-4c59-9468-97d04b3e5f11",
+                  "uuid": "9005ae8c-8e2f-4748-bced-9421a1a998d2",
                   "title": "removing all skus",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -937,7 +933,7 @@
                       "title": "Getting SKUs",
                       "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features removing all skus Getting SKUs",
                       "timedOut": false,
-                      "duration": 46,
+                      "duration": 48,
                       "state": "passed",
                       "speed": "medium",
                       "pass": true,
@@ -946,26 +942,26 @@
                       "context": null,
                       "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(200);\n    if (res.body.length !==0) {\n        for (let i = 0; i < res.body.length; i++) {\n            \n            agent.delete('/api/skus/'+res.body[i].id)\n            .then(function (res2) {\n                res2.should.have.status(204);\n            });\n        }\n    } \n    done();\n}).catch(err => done(err));",
                       "err": {},
-                      "uuid": "2cfda172-63e8-4fdb-987e-4c499f6b5f08",
-                      "parentUUID": "7edbaa1a-9f25-4c59-9468-97d04b3e5f11",
+                      "uuid": "3a33063a-d4e3-467b-a88c-baa8ad60be3a",
+                      "parentUUID": "9005ae8c-8e2f-4748-bced-9421a1a998d2",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "2cfda172-63e8-4fdb-987e-4c499f6b5f08"
+                    "3a33063a-d4e3-467b-a88c-baa8ad60be3a"
                   ],
                   "failures": [],
                   "pending": [],
                   "skipped": [],
-                  "duration": 46,
+                  "duration": 48,
                   "root": false,
                   "rootEmpty": false,
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "72882864-7481-445d-aea5-c6cf7a4d5795",
+                  "uuid": "6227f0ad-7fb5-4c50-ad70-e028ab7ae07d",
                   "title": "post /api/sku/",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -976,7 +972,7 @@
                       "title": "FR 2.1 a -> Define a new SKU",
                       "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
                       "timedOut": false,
-                      "duration": 51,
+                      "duration": 50,
                       "state": "passed",
                       "speed": "medium",
                       "pass": true,
@@ -985,26 +981,26 @@
                       "context": null,
                       "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                       "err": {},
-                      "uuid": "2944b405-6063-461c-b531-f8a2598b7884",
-                      "parentUUID": "72882864-7481-445d-aea5-c6cf7a4d5795",
+                      "uuid": "37ad5618-32d8-4344-825a-b43253c09a01",
+                      "parentUUID": "6227f0ad-7fb5-4c50-ad70-e028ab7ae07d",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "2944b405-6063-461c-b531-f8a2598b7884"
+                    "37ad5618-32d8-4344-825a-b43253c09a01"
                   ],
                   "failures": [],
                   "pending": [],
                   "skipped": [],
-                  "duration": 51,
+                  "duration": 50,
                   "root": false,
                   "rootEmpty": false,
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "58e331c2-29c3-448b-a5e7-a5461c36819f",
+                  "uuid": "090a6351-4325-46a3-9c4a-c8c3a0a7074c",
                   "title": "post /api/sku/",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -1015,7 +1011,7 @@
                       "title": "FR 2.1 a -> Define a new SKU",
                       "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features post /api/sku/ FR 2.1 a -> Define a new SKU",
                       "timedOut": false,
-                      "duration": 22,
+                      "duration": 20,
                       "state": "passed",
                       "speed": "fast",
                       "pass": true,
@@ -1024,132 +1020,15 @@
                       "context": null,
                       "code": "agent.post('/api/sku/')\n.send(thesku)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                       "err": {},
-                      "uuid": "61d28643-d736-430c-b818-390ed2d04daa",
-                      "parentUUID": "58e331c2-29c3-448b-a5e7-a5461c36819f",
+                      "uuid": "7bc3969a-3a75-446c-87b4-1b9bc357d33a",
+                      "parentUUID": "090a6351-4325-46a3-9c4a-c8c3a0a7074c",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "61d28643-d736-430c-b818-390ed2d04daa"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 22,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "e1a95e3b-7985-4e42-85e0-05b0c804fd06",
-                  "title": "get /api/skus",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "FR 2.3 -> List all SKUs",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skus FR 2.3 -> List all SKUs",
-                      "timedOut": false,
-                      "duration": 7,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.eql(size);\n    let id = [];\n    if (size > 0) {\n        for (let i = 0; i < size; i++) {\n            id[i] = res.body[i].id;\n            res.body[i].description.should.equal(sku[i].description);\n            res.body[i].weight.should.equal(sku[i].weight);\n            res.body[i].volume.should.equal(sku[i].volume);\n            res.body[i].notes.should.equal(sku[i].notes);\n            res.body[i].availableQuantity.should.equal(sku[i].availableQuantity);\n            res.body[i].price.should.equal(sku[i].price);\n        }\n        ids.setIdSku(id);\n    }             \n    done();\n}).catch(err=>done(err));",
-                      "err": {},
-                      "uuid": "493b9da0-eeae-48be-a82d-62e741f9622c",
-                      "parentUUID": "e1a95e3b-7985-4e42-85e0-05b0c804fd06",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "493b9da0-eeae-48be-a82d-62e741f9622c"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 7,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "83a5e4be-b1fc-4e21-abe1-1ebf4c2d9dc3",
-                  "title": "post /api/skuitem/",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Adding skuitem details",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
-                      "timedOut": false,
-                      "duration": 19,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
-                      "err": {},
-                      "uuid": "5f5737b6-0f40-4336-b03c-d6325c00727f",
-                      "parentUUID": "83a5e4be-b1fc-4e21-abe1-1ebf4c2d9dc3",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "5f5737b6-0f40-4336-b03c-d6325c00727f"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 19,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "395b1ed1-e138-449c-a3e0-94db8c515711",
-                  "title": "post /api/skuitem/",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Adding skuitem details",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
-                      "timedOut": false,
-                      "duration": 20,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
-                      "err": {},
-                      "uuid": "868867d7-1287-45cb-a3d3-733c8e656309",
-                      "parentUUID": "395b1ed1-e138-449c-a3e0-94db8c515711",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "868867d7-1287-45cb-a3d3-733c8e656309"
+                    "7bc3969a-3a75-446c-87b4-1b9bc357d33a"
                   ],
                   "failures": [],
                   "pending": [],
@@ -1160,7 +1039,46 @@
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "69399b15-3a7b-4bee-a4ed-ee7f6b68cc88",
+                  "uuid": "55cf7dd7-2497-4d32-9297-d6dcd4f43f73",
+                  "title": "get /api/skus",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "FR 2.3 -> List all SKUs",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skus FR 2.3 -> List all SKUs",
+                      "timedOut": false,
+                      "duration": 11,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.get('/api/skus')\n.then(function (res) {\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.eql(size);\n    let id = [];\n    if (size > 0) {\n        for (let i = 0; i < size; i++) {\n            id[i] = res.body[i].id;\n            res.body[i].description.should.equal(sku[i].description);\n            res.body[i].weight.should.equal(sku[i].weight);\n            res.body[i].volume.should.equal(sku[i].volume);\n            res.body[i].notes.should.equal(sku[i].notes);\n            res.body[i].availableQuantity.should.equal(sku[i].availableQuantity);\n            res.body[i].price.should.equal(sku[i].price);\n        }\n        ids.setIdSku(id);\n    }             \n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "8b8a32e9-f997-4b06-be22-d1c107028722",
+                      "parentUUID": "55cf7dd7-2497-4d32-9297-d6dcd4f43f73",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "8b8a32e9-f997-4b06-be22-d1c107028722"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 11,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "304f4e9d-dfe1-4c23-ad08-6c463d451fc4",
                   "title": "post /api/skuitem/",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -1171,7 +1089,7 @@
                       "title": "Adding skuitem details",
                       "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
                       "timedOut": false,
-                      "duration": 8,
+                      "duration": 26,
                       "state": "passed",
                       "speed": "fast",
                       "pass": true,
@@ -1180,26 +1098,26 @@
                       "context": null,
                       "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                       "err": {},
-                      "uuid": "09653255-e706-4d6f-8955-35a3b73806f4",
-                      "parentUUID": "69399b15-3a7b-4bee-a4ed-ee7f6b68cc88",
+                      "uuid": "f243fdec-4b11-4459-a555-8bfbda420161",
+                      "parentUUID": "304f4e9d-dfe1-4c23-ad08-6c463d451fc4",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "09653255-e706-4d6f-8955-35a3b73806f4"
+                    "f243fdec-4b11-4459-a555-8bfbda420161"
                   ],
                   "failures": [],
                   "pending": [],
                   "skipped": [],
-                  "duration": 8,
+                  "duration": 26,
                   "root": false,
                   "rootEmpty": false,
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "e615c038-9903-43e7-8f09-763b476454ee",
+                  "uuid": "da8cae81-025e-4105-ac75-5291a36706ea",
                   "title": "post /api/skuitem/",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -1210,7 +1128,7 @@
                       "title": "Adding skuitem details",
                       "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
                       "timedOut": false,
-                      "duration": 6,
+                      "duration": 17,
                       "state": "passed",
                       "speed": "fast",
                       "pass": true,
@@ -1219,191 +1137,74 @@
                       "context": null,
                       "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                       "err": {},
-                      "uuid": "2d03fba3-ca56-4a20-a629-85ee53795f35",
-                      "parentUUID": "e615c038-9903-43e7-8f09-763b476454ee",
+                      "uuid": "f3bdb480-0753-43db-b3c8-820543489e66",
+                      "parentUUID": "da8cae81-025e-4105-ac75-5291a36706ea",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "2d03fba3-ca56-4a20-a629-85ee53795f35"
+                    "f3bdb480-0753-43db-b3c8-820543489e66"
                   ],
                   "failures": [],
                   "pending": [],
                   "skipped": [],
-                  "duration": 6,
+                  "duration": 17,
                   "root": false,
                   "rootEmpty": false,
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "6c2c6dae-925f-4c16-bca9-5ab6c4772664",
-                  "title": "get /api/skuitems",
+                  "uuid": "26f4b366-f0b2-47c5-944c-8991ce20d556",
+                  "title": "post /api/skuitem/",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
                   "beforeHooks": [],
                   "afterHooks": [],
                   "tests": [
                     {
-                      "title": "Getting SKUitems",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems Getting SKUitems",
+                      "title": "Adding skuitem details",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
                       "timedOut": false,
-                      "duration": 6,
+                      "duration": 10,
                       "state": "passed",
                       "speed": "fast",
                       "pass": true,
                       "fail": false,
                       "pending": false,
                       "context": null,
-                      "code": "agent.get('/api/skuitems')\n.then(function (res) {\n//                console.log(res.body[0]);\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.equal(size);\n    let idSKUs = ids.getIdSku();\n    for (let i = 0; i < size; i++) {\n        res.body[i].RFID.should.equal(skuitems[i].RFID);\n        res.body[i].SKUId.should.equal(idSKUs[skuitems[i].SKUId]);\n        res.body[i].DateOfStock.should.equal(skuitems[i].DateOfStock);\n        if(skuitems[i].Available !== undefined){\n            res.body[i].Available.should.equal(skuitems[i].Available);\n            //console.log('null');\n        }\n    }\n    \n    done();                \n}).catch(err=>done(err));",
+                      "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                       "err": {},
-                      "uuid": "46abdf48-d119-4c0f-ad80-c2e841dd8b8b",
-                      "parentUUID": "6c2c6dae-925f-4c16-bca9-5ab6c4772664",
+                      "uuid": "9d7a7b7e-3825-4434-afb1-40e7c1502354",
+                      "parentUUID": "26f4b366-f0b2-47c5-944c-8991ce20d556",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "46abdf48-d119-4c0f-ad80-c2e841dd8b8b"
+                    "9d7a7b7e-3825-4434-afb1-40e7c1502354"
                   ],
                   "failures": [],
                   "pending": [],
                   "skipped": [],
-                  "duration": 6,
+                  "duration": 10,
                   "root": false,
                   "rootEmpty": false,
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "16df4847-937f-461d-9e64-d9ea6ef06105",
-                  "title": "put /api/skutems/:rfid",
+                  "uuid": "02aa205f-9795-4995-b987-502a6cccdf84",
+                  "title": "post /api/skuitem/",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
                   "beforeHooks": [],
                   "afterHooks": [],
                   "tests": [
                     {
-                      "title": "Editing SKUitems details passing its rfid",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
-                      "timedOut": false,
-                      "duration": 21,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
-                      "err": {},
-                      "uuid": "bb60919a-6abc-465e-a6e3-ba8955956a9f",
-                      "parentUUID": "16df4847-937f-461d-9e64-d9ea6ef06105",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "bb60919a-6abc-465e-a6e3-ba8955956a9f"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 21,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "2b6722b6-1c8f-4a70-a43a-21749b1e7d0b",
-                  "title": "put /api/skutems/:rfid",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Editing SKUitems details passing its rfid",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
-                      "timedOut": false,
-                      "duration": 6,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
-                      "err": {},
-                      "uuid": "0ee58643-952c-4da5-a1b1-9d3711b13e7b",
-                      "parentUUID": "2b6722b6-1c8f-4a70-a43a-21749b1e7d0b",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "0ee58643-952c-4da5-a1b1-9d3711b13e7b"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 6,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "fc9f926b-39c5-4150-8982-785ec4f29162",
-                  "title": "put /api/skutems/:rfid",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Editing SKUitems details passing its rfid",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
-                      "timedOut": false,
-                      "duration": 5,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
-                      "err": {},
-                      "uuid": "b2ecb947-cdd8-48e9-9a98-df4cdec7c436",
-                      "parentUUID": "fc9f926b-39c5-4150-8982-785ec4f29162",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "b2ecb947-cdd8-48e9-9a98-df4cdec7c436"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 5,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "37c1bba7-14a6-4850-893b-aca32802d3df",
-                  "title": "put /api/skutems/:rfid",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Editing SKUitems details passing its rfid",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
+                      "title": "Adding skuitem details",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features post /api/skuitem/ Adding skuitem details",
                       "timedOut": false,
                       "duration": 4,
                       "state": "passed",
@@ -1412,17 +1213,17 @@
                       "fail": false,
                       "pending": false,
                       "context": null,
-                      "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
+                      "code": "let id = ids.getIdSku();\nlet skuitem;\nif(myskuitem.SKUId > id.length || myskuitem.SKUId === null){\n    skuitem = newSkuItem(myskuitem.RFID, myskuitem.SKUId , myskuitem.DateOfStock); \n}\nelse{\n    skuitem = newSkuItem(myskuitem.RFID, id[myskuitem.SKUId] , myskuitem.DateOfStock);\n}\nagent.post('/api/skuitem/')\n.send(skuitem)\n.then(function (res) {\n    res.should.have.status(expCode);\n    done();\n}).catch(err=>done(err));",
                       "err": {},
-                      "uuid": "a07ff9f5-6eb4-4586-b539-1a37ad84f2a2",
-                      "parentUUID": "37c1bba7-14a6-4850-893b-aca32802d3df",
+                      "uuid": "fa96a603-b648-4529-aeb7-a28a1f838cab",
+                      "parentUUID": "02aa205f-9795-4995-b987-502a6cccdf84",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "a07ff9f5-6eb4-4586-b539-1a37ad84f2a2"
+                    "fa96a603-b648-4529-aeb7-a28a1f838cab"
                   ],
                   "failures": [],
                   "pending": [],
@@ -1433,124 +1234,7 @@
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "0a67c029-f266-427e-90ab-0a3d3e01563c",
-                  "title": "get /api/skuitems/sku/:id",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Getting SKUitems passing its id",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/sku/:id Getting SKUitems passing its id",
-                      "timedOut": false,
-                      "duration": 8,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
-                      "err": {},
-                      "uuid": "42f6eeb0-e5b2-4941-b405-3e51902e89f6",
-                      "parentUUID": "0a67c029-f266-427e-90ab-0a3d3e01563c",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "42f6eeb0-e5b2-4941-b405-3e51902e89f6"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 8,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "f5a29ac5-eb2c-41f9-b93e-82d66ad3ca86",
-                  "title": "get /api/skuitems/sku/:id",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Getting SKUitems passing its id",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/sku/:id Getting SKUitems passing its id",
-                      "timedOut": false,
-                      "duration": 4,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
-                      "err": {},
-                      "uuid": "00d3530e-a6ba-4fec-b56a-22fcca7d0bff",
-                      "parentUUID": "f5a29ac5-eb2c-41f9-b93e-82d66ad3ca86",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "00d3530e-a6ba-4fec-b56a-22fcca7d0bff"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 4,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "26364c87-e2b5-48b7-8840-0402cf07198a",
-                  "title": "get /api/skuitems/sku/:id",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Getting SKUitems passing its id",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/sku/:id Getting SKUitems passing its id",
-                      "timedOut": false,
-                      "duration": 5,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
-                      "err": {},
-                      "uuid": "59d9829b-2973-4ef2-ab5e-91c14e8b0f0d",
-                      "parentUUID": "26364c87-e2b5-48b7-8840-0402cf07198a",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "59d9829b-2973-4ef2-ab5e-91c14e8b0f0d"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 5,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "cdbf8084-313b-401d-8433-4e34dea652bf",
+                  "uuid": "27932f68-7810-4631-b1f2-a2e39e6b1698",
                   "title": "get /api/skuitems",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -1560,70 +1244,27 @@
                     {
                       "title": "Getting SKUitems",
                       "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems Getting SKUitems",
-                      "timedOut": false,
-                      "duration": 5,
-                      "state": "passed",
-                      "speed": "fast",
-                      "pass": true,
-                      "fail": false,
-                      "pending": false,
-                      "context": null,
-                      "code": "agent.get('/api/skuitems')\n.then(function (res) {\n//                console.log(res.body[0]);\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.equal(size);\n    let idSKUs = ids.getIdSku();\n    for (let i = 0; i < size; i++) {\n        res.body[i].RFID.should.equal(skuitems[i].RFID);\n        res.body[i].SKUId.should.equal(idSKUs[skuitems[i].SKUId]);\n        res.body[i].DateOfStock.should.equal(skuitems[i].DateOfStock);\n        if(skuitems[i].Available !== undefined){\n            res.body[i].Available.should.equal(skuitems[i].Available);\n            //console.log('null');\n        }\n    }\n    \n    done();                \n}).catch(err=>done(err));",
-                      "err": {},
-                      "uuid": "575929ee-2b91-4b29-9da0-a27c66fab337",
-                      "parentUUID": "cdbf8084-313b-401d-8433-4e34dea652bf",
-                      "isHook": false,
-                      "skipped": false
-                    }
-                  ],
-                  "suites": [],
-                  "passes": [
-                    "575929ee-2b91-4b29-9da0-a27c66fab337"
-                  ],
-                  "failures": [],
-                  "pending": [],
-                  "skipped": [],
-                  "duration": 5,
-                  "root": false,
-                  "rootEmpty": false,
-                  "_timeout": 10000
-                },
-                {
-                  "uuid": "71779e0d-ea42-44f3-be5c-64d5034edcd6",
-                  "title": "get /api/skuitems/:RFID",
-                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
-                  "file": "\\acceptanceTest\\testEzWhAPI.js",
-                  "beforeHooks": [],
-                  "afterHooks": [],
-                  "tests": [
-                    {
-                      "title": "Getting SKUitems passing its rfid",
-                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/:RFID Getting SKUitems passing its rfid",
                       "timedOut": false,
                       "duration": 9,
-                      "state": "failed",
-                      "speed": null,
-                      "pass": false,
-                      "fail": true,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
                       "pending": false,
                       "context": null,
-                      "code": "let idskus = ids.getIdSku();\nagent.get('/api/skuitems/'+expectedskuitem.RFID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if(res.status==200){\n        res.body.should.be.a('object');\n        res.body.RFID.should.equal(expectedskuitem.RFID);\n        res.body.SKUId.should.equal(idskus[expectedskuitem.SKUId]);\n        res.body.DateOfStock.should.equal(expectedskuitem.DateOfStock);\n        if(res.body.Available !== undefined){\n            res.body.Available.should.equal(expAvail);\n        }\n    }\n    done();\n}).catch(err=>done(err));",
-                      "err": {
-                        "message": "AssertionError: expected [ { …(4) } ] to be an object",
-                        "estack": "AssertionError: expected [ { …(4) } ] to be an object\n    at C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\utils-skuitems.js:140:40\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)",
-                        "diff": null
-                      },
-                      "uuid": "00b31116-4640-4282-87dc-1dd46d73e093",
-                      "parentUUID": "71779e0d-ea42-44f3-be5c-64d5034edcd6",
+                      "code": "agent.get('/api/skuitems')\n.then(function (res) {\n//                console.log(res.body[0]);\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.equal(size);\n    let idSKUs = ids.getIdSku();\n    for (let i = 0; i < size; i++) {\n        res.body[i].RFID.should.equal(skuitems[i].RFID);\n        res.body[i].SKUId.should.equal(idSKUs[skuitems[i].SKUId]);\n        res.body[i].DateOfStock.should.equal(skuitems[i].DateOfStock);\n        if(skuitems[i].Available !== undefined){\n            res.body[i].Available.should.equal(skuitems[i].Available);\n            //console.log('null');\n        }\n    }\n    \n    done();                \n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "c9fa5edf-3928-4e47-ac12-fb2f0db04fc7",
+                      "parentUUID": "27932f68-7810-4631-b1f2-a2e39e6b1698",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
-                  "passes": [],
-                  "failures": [
-                    "00b31116-4640-4282-87dc-1dd46d73e093"
+                  "passes": [
+                    "c9fa5edf-3928-4e47-ac12-fb2f0db04fc7"
                   ],
+                  "failures": [],
                   "pending": [],
                   "skipped": [],
                   "duration": 9,
@@ -1632,7 +1273,319 @@
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "9dd3a819-471a-40df-b936-d3830e9ac15c",
+                  "uuid": "85ed219b-1616-43ae-9d33-8586c07579a1",
+                  "title": "put /api/skutems/:rfid",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Editing SKUitems details passing its rfid",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
+                      "timedOut": false,
+                      "duration": 18,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "48e33e7d-7bfc-43b1-991e-c6e12e07eeb9",
+                      "parentUUID": "85ed219b-1616-43ae-9d33-8586c07579a1",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "48e33e7d-7bfc-43b1-991e-c6e12e07eeb9"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 18,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "adaa1dbb-0113-4f5b-ab48-2f25ee0d0572",
+                  "title": "put /api/skutems/:rfid",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Editing SKUitems details passing its rfid",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
+                      "timedOut": false,
+                      "duration": 7,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "66b2069a-7cb3-4eb0-a66d-2a90c233484e",
+                      "parentUUID": "adaa1dbb-0113-4f5b-ab48-2f25ee0d0572",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "66b2069a-7cb3-4eb0-a66d-2a90c233484e"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 7,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "d11089b1-f5a5-44e4-9c19-956cbed3e79b",
+                  "title": "put /api/skutems/:rfid",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Editing SKUitems details passing its rfid",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
+                      "timedOut": false,
+                      "duration": 3,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "9794f6cd-a97d-4dcf-a52b-4a32eaacf20a",
+                      "parentUUID": "d11089b1-f5a5-44e4-9c19-956cbed3e79b",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "9794f6cd-a97d-4dcf-a52b-4a32eaacf20a"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 3,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "18c7266e-0cf2-4d6b-9200-4c4351bdf724",
+                  "title": "put /api/skutems/:rfid",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Editing SKUitems details passing its rfid",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features put /api/skutems/:rfid Editing SKUitems details passing its rfid",
+                      "timedOut": false,
+                      "duration": 5,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "//            console.log(newskuitem);\n            agent.put('/api/skuitems/'+newskuitem.newRFID)\n            .send(newskuitem)\n            .then(function (res) {\n//                console.log(res.body);\n                res.should.have.status(expCode);\n                done();\n            }).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "8cd14153-1db3-4085-8118-ee83592c4ec4",
+                      "parentUUID": "18c7266e-0cf2-4d6b-9200-4c4351bdf724",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "8cd14153-1db3-4085-8118-ee83592c4ec4"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "0b792279-cb06-470c-8115-5c5a6c7b40ec",
+                  "title": "get /api/skuitems/sku/:id",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Getting SKUitems passing its id",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/sku/:id Getting SKUitems passing its id",
+                      "timedOut": false,
+                      "duration": 8,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
+                      "err": {},
+                      "uuid": "a8793176-a594-4751-9aab-c6c00442a1b5",
+                      "parentUUID": "0b792279-cb06-470c-8115-5c5a6c7b40ec",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "a8793176-a594-4751-9aab-c6c00442a1b5"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 8,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "0bcd4e82-190a-4307-a1a4-25790f377965",
+                  "title": "get /api/skuitems/sku/:id",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Getting SKUitems passing its id",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/sku/:id Getting SKUitems passing its id",
+                      "timedOut": false,
+                      "duration": 6,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
+                      "err": {},
+                      "uuid": "bf5dddb5-7c98-42b0-b222-2134d25e03e1",
+                      "parentUUID": "0bcd4e82-190a-4307-a1a4-25790f377965",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "bf5dddb5-7c98-42b0-b222-2134d25e03e1"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 6,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "f955e64b-3b9e-44f9-bc58-7987799aa346",
+                  "title": "get /api/skuitems/sku/:id",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Getting SKUitems passing its id",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/sku/:id Getting SKUitems passing its id",
+                      "timedOut": false,
+                      "duration": 5,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let idskus = ids.getIdSku();\nlet nowskuid;\nif(skuidith > idskus.length || skuidith === null){\n    nowskuid = skuidith;\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        done();\n    }).catch(err=>done(err));\n}\nelse{\n    nowskuid = idskus[skuidith];\n    agent.get('/api/skuitems/sku/'+nowskuid)\n    .then(function (res) {\n        res.should.have.status(expCode);\n        res.body.should.be.a('array');\n        res.body.length.should.be.eql(expectedsize);\n        for (let i = 0; i < expectedsize; i++) {\n            res.body[i].RFID.should.equal(expectedskuitem[i].RFID);\n            res.body[i].SKUId.should.equal(idskus[expectedskuitem[i].SKUId]);\n            res.body[i].DateOfStock.should.equal(expectedskuitem[i].DateOfStock);                    \n        }\n        done();\n    }).catch(err=>done(err));\n}",
+                      "err": {},
+                      "uuid": "68099c58-d3dc-4cc5-9267-f3bc59062f29",
+                      "parentUUID": "f955e64b-3b9e-44f9-bc58-7987799aa346",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "68099c58-d3dc-4cc5-9267-f3bc59062f29"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "052584da-97e5-4cac-b597-bfa263b5db48",
+                  "title": "get /api/skuitems",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Getting SKUitems",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems Getting SKUitems",
+                      "timedOut": false,
+                      "duration": 8,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "agent.get('/api/skuitems')\n.then(function (res) {\n//                console.log(res.body[0]);\n    res.should.have.status(expCode);\n    res.body.should.be.a('array');\n    res.body.length.should.be.equal(size);\n    let idSKUs = ids.getIdSku();\n    for (let i = 0; i < size; i++) {\n        res.body[i].RFID.should.equal(skuitems[i].RFID);\n        res.body[i].SKUId.should.equal(idSKUs[skuitems[i].SKUId]);\n        res.body[i].DateOfStock.should.equal(skuitems[i].DateOfStock);\n        if(skuitems[i].Available !== undefined){\n            res.body[i].Available.should.equal(skuitems[i].Available);\n            //console.log('null');\n        }\n    }\n    \n    done();                \n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "57489942-8784-43a3-80a1-9c7b832cd2c5",
+                      "parentUUID": "052584da-97e5-4cac-b597-bfa263b5db48",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "57489942-8784-43a3-80a1-9c7b832cd2c5"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 8,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "2d13290c-a6a9-4deb-a6ca-b31b675dc285",
                   "title": "get /api/skuitems/:RFID",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -1643,7 +1596,7 @@
                       "title": "Getting SKUitems passing its rfid",
                       "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/:RFID Getting SKUitems passing its rfid",
                       "timedOut": false,
-                      "duration": 4,
+                      "duration": 6,
                       "state": "passed",
                       "speed": "fast",
                       "pass": true,
@@ -1652,26 +1605,26 @@
                       "context": null,
                       "code": "let idskus = ids.getIdSku();\nagent.get('/api/skuitems/'+expectedskuitem.RFID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if(res.status==200){\n        res.body.should.be.a('object');\n        res.body.RFID.should.equal(expectedskuitem.RFID);\n        res.body.SKUId.should.equal(idskus[expectedskuitem.SKUId]);\n        res.body.DateOfStock.should.equal(expectedskuitem.DateOfStock);\n        if(res.body.Available !== undefined){\n            res.body.Available.should.equal(expAvail);\n        }\n    }\n    done();\n}).catch(err=>done(err));",
                       "err": {},
-                      "uuid": "7e5daaa3-63d4-455f-b1aa-f5baf68171e2",
-                      "parentUUID": "9dd3a819-471a-40df-b936-d3830e9ac15c",
+                      "uuid": "776aead5-6509-4087-8a12-2133fa0e2a2d",
+                      "parentUUID": "2d13290c-a6a9-4deb-a6ca-b31b675dc285",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "7e5daaa3-63d4-455f-b1aa-f5baf68171e2"
+                    "776aead5-6509-4087-8a12-2133fa0e2a2d"
                   ],
                   "failures": [],
                   "pending": [],
                   "skipped": [],
-                  "duration": 4,
+                  "duration": 6,
                   "root": false,
                   "rootEmpty": false,
                   "_timeout": 10000
                 },
                 {
-                  "uuid": "fbf0add7-0f1a-49e3-8e3a-f483c1b25c18",
+                  "uuid": "f2074475-3469-4093-8336-e26aa47e866e",
                   "title": "get /api/skuitems/:RFID",
                   "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
                   "file": "\\acceptanceTest\\testEzWhAPI.js",
@@ -1691,20 +1644,59 @@
                       "context": null,
                       "code": "let idskus = ids.getIdSku();\nagent.get('/api/skuitems/'+expectedskuitem.RFID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if(res.status==200){\n        res.body.should.be.a('object');\n        res.body.RFID.should.equal(expectedskuitem.RFID);\n        res.body.SKUId.should.equal(idskus[expectedskuitem.SKUId]);\n        res.body.DateOfStock.should.equal(expectedskuitem.DateOfStock);\n        if(res.body.Available !== undefined){\n            res.body.Available.should.equal(expAvail);\n        }\n    }\n    done();\n}).catch(err=>done(err));",
                       "err": {},
-                      "uuid": "0c500af2-a814-41f5-9a2a-0bbcc2d94743",
-                      "parentUUID": "fbf0add7-0f1a-49e3-8e3a-f483c1b25c18",
+                      "uuid": "06473cb3-a8b4-4024-9128-4a775791d061",
+                      "parentUUID": "f2074475-3469-4093-8336-e26aa47e866e",
                       "isHook": false,
                       "skipped": false
                     }
                   ],
                   "suites": [],
                   "passes": [
-                    "0c500af2-a814-41f5-9a2a-0bbcc2d94743"
+                    "06473cb3-a8b4-4024-9128-4a775791d061"
                   ],
                   "failures": [],
                   "pending": [],
                   "skipped": [],
                   "duration": 5,
+                  "root": false,
+                  "rootEmpty": false,
+                  "_timeout": 10000
+                },
+                {
+                  "uuid": "b015134a-243a-406d-b8ce-abd75bdd9d62",
+                  "title": "get /api/skuitems/:RFID",
+                  "fullFile": "C:\\Users\\maste\\OneDrive\\Desktop\\Progetto di gruppo\\EzWh\\code\\server\\acceptanceTest\\testEzWhAPI.js",
+                  "file": "\\acceptanceTest\\testEzWhAPI.js",
+                  "beforeHooks": [],
+                  "afterHooks": [],
+                  "tests": [
+                    {
+                      "title": "Getting SKUitems passing its rfid",
+                      "fullTitle": "Testing Functional requirements pt2 Test skuitem CRUD features get /api/skuitems/:RFID Getting SKUitems passing its rfid",
+                      "timedOut": false,
+                      "duration": 2,
+                      "state": "passed",
+                      "speed": "fast",
+                      "pass": true,
+                      "fail": false,
+                      "pending": false,
+                      "context": null,
+                      "code": "let idskus = ids.getIdSku();\nagent.get('/api/skuitems/'+expectedskuitem.RFID)\n.then(function (res) {\n    res.should.have.status(expCode);\n    if(res.status==200){\n        res.body.should.be.a('object');\n        res.body.RFID.should.equal(expectedskuitem.RFID);\n        res.body.SKUId.should.equal(idskus[expectedskuitem.SKUId]);\n        res.body.DateOfStock.should.equal(expectedskuitem.DateOfStock);\n        if(res.body.Available !== undefined){\n            res.body.Available.should.equal(expAvail);\n        }\n    }\n    done();\n}).catch(err=>done(err));",
+                      "err": {},
+                      "uuid": "828585c6-7b75-473e-8de4-b1db595ced9e",
+                      "parentUUID": "b015134a-243a-406d-b8ce-abd75bdd9d62",
+                      "isHook": false,
+                      "skipped": false
+                    }
+                  ],
+                  "suites": [],
+                  "passes": [
+                    "828585c6-7b75-473e-8de4-b1db595ced9e"
+                  ],
+                  "failures": [],
+                  "pending": [],
+                  "skipped": [],
+                  "duration": 2,
                   "root": false,
                   "rootEmpty": false,
                   "_timeout": 10000
