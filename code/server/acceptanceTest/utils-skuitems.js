@@ -74,7 +74,7 @@ function testGetAllSkuItems(agent, size, skuitems, expCode) {
         it('Getting SKUitems', function (done) {
             agent.get('/api/skuitems')
             .then(function (res) {
-//                console.log(res.body[0]);
+                console.log(res.body[0]);
                 res.should.have.status(expCode);
                 res.body.should.be.a('array');
                 res.body.length.should.be.equal(size);
@@ -154,11 +154,11 @@ function testGetSkuItemsByRFID(agent, expectedskuitem, expAvail, expCode) {
 function testEditSkuItem(agent, newskuitem, expCode) {
     describe('put /api/skutems/:rfid', function() {
         it('Editing SKUitems details passing its rfid', function (done) {
-//            console.log(newskuitem);
+            console.log(newskuitem);
             agent.put('/api/skuitems/'+newskuitem.newRFID)
             .send(newskuitem)
             .then(function (res) {
-//                console.log(res.body);
+               console.log(res.body);
                 res.should.have.status(expCode);
                 done();
             }).catch(err=>done(err));
