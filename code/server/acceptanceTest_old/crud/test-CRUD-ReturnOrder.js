@@ -84,7 +84,7 @@ function testReturnOrderCRUD(){
         returnorders.testPostNewReturnOrder(agent, myreturnorderwithnosuppid, 404);
         returnorders.testPostWrongNewReturnOrder(agent, myretnull, 422);
         returnorders.testGetAllReturnOrders(agent, myreturnorders, 200);
-        returnorders.testGetReturnOrderById(agent, myreturnorders[0], 0, 200);
+        returnorders.testGetReturnOrderById(agent, myreturnorders[0], 0, 200);       
         returnorders.testGetWrongReturnOrderById(agent, 1000000, 404);
         returnorders.testGetWrongReturnOrderById(agent, null, 422);
     });

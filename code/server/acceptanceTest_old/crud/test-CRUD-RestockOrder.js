@@ -1,20 +1,21 @@
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+
 chai.use(chaiHttp);
 chai.should();
 
 const app = require('../../server'); 
 var agent = chai.request.agent(app);
 
-const skus = require('../utils-sku');
 const users = require('../utils-users');
-const returnorders = require('../utils-returnorder');
+const skus = require('../utils-sku');
 const skuitems = require('../utils-skuitems');
 const restockorders = require('../utils-restockorder');
 
-testReturnOrderCRUD();
+testRestockOrderCRUD();
 
-function testReturnOrderCRUD(){
+function testRestockOrderCRUD(){
     
     let mysku = []
     mysku[0] = skus.newSku('a','b',20,30,40,10);
@@ -37,7 +38,7 @@ function testReturnOrderCRUD(){
     myskuitems[3] = skuitems.newSkuItem(rfids[3], 1, '2022/12/29 20:45');
 
     let addskuitems = [];
-    addskuitems[0] = {"SKUId":0, "rfid":rfids[2]};
+    addskuitems[0] = {"SKUId":1, "rfid":rfids[2]};
     addskuitems[1]= {"SKUId":1, "rfid":rfids[3]};
 
 
@@ -49,17 +50,8 @@ function testReturnOrderCRUD(){
     myrestocks[0] = restockorders.newRestockOrder("2022/05/16 09:33", myproducts, 0); 
     myrestocks[1] = restockorders.newRestockOrder("2022/05/17 19:00", myproducts, 1); 
     
-    let myproductswithrfid = [];
-    myproductswithrfid[0] = returnorders.newProductwithRFID(myproducts[0], rfids[2]);
-    myproductswithrfid[1] = returnorders.newProductwithRFID(myproducts[1], rfids[3]);
-        
-    let myreturnorders = [];
-    myreturnorders[0] = returnorders.newReturnOrder('2022/05/16 23:33', myproductswithrfid, 0);
-    myreturnorderwithnosuppid = returnorders.newReturnOrder('2022/05/16 23:33', myproductswithrfid, 100000);
-    myretnull = returnorders.newReturnOrder(null, null, 0);
 
-    describe('Test ReturnOrder CRUD features', ()=>{
-        returnorders.deleteAllReturnOrders(agent);
+    describe('Test RestockOrder CRUD features', ()=>{
         restockorders.deleteAllRestockOrders(agent);
         skuitems.deleteAllSkuItems(agent);      
         skus.deleteAllSkus(agent);
@@ -74,20 +66,27 @@ function testReturnOrderCRUD(){
         users.testGetAllSuppliers(agent);
         restockorders.testPostNewRestockOrder(agent, myrestocks[0], 201);
         restockorders.testPostNewRestockOrder(agent, myrestocks[1], 201);
+        skuitems.testPostNewSkuItem(agent, myskuitems[2], 201);
+        skuitems.testPostNewSkuItem(agent, myskuitems[3], 201);
+        restockorders.testPostNewWrongRestockOrder(agent, null, 422);
         restockorders.testGetAllRestockOrders(agent, myrestocks, 200);
         restockorders.testGetAllRestockIssued(agent, 200);
         restockorders.testEditRestockOrder(agent, "DELIVERED", 200);
+        restockorders.testEditRestockOrder(agent, null, 422);
+        restockorders.testEditWrongRestockOrder(agent, "DELIVERED", 10000, 404);
+        restockorders.testGetAllRestockOrders(agent, myrestocks, 200);
         restockorders.testEditRestockOrderSkuItems(agent, addskuitems, 200);
         restockorders.testGetAllRestockOrders(agent, myrestocks, 200);
-        restockorders.testGetAllRestockIssued(agent, 200);
-        returnorders.testPostNewReturnOrder(agent, myreturnorders[0], 201);
-        returnorders.testPostNewReturnOrder(agent, myreturnorderwithnosuppid, 404);
-        returnorders.testPostWrongNewReturnOrder(agent, myretnull, 422);
-        returnorders.testGetAllReturnOrders(agent, myreturnorders, 200);
-        returnorders.testGetReturnOrderById(agent, myreturnorders[0], 0, 200);
-        returnorders.testGetWrongReturnOrderById(agent, 1000000, 404);
-        returnorders.testGetWrongReturnOrderById(agent, null, 422);
+        restockorders.testEditRestockWrongOrderSkuItems(agent, 404);
+        restockorders.testEditRestockWrongBodyOrderSkuItems(agent, 422);
+        restockorders.testEditRestockOrderTransportNote(agent, 422);
+        restockorders.testEditRestockOrder(agent, "DELIVERY", 200);
+        restockorders.testEditRestockOrderTransportNote(agent, 200);
+        restockorders.testEditRestockOrderTransportNoteNotFound(agent, 404);       
+        restockorders.deleteAllRestockOrders(agent);
+        skuitems.deleteAllSkuItems(agent);      
+        skus.deleteAllSkus(agent);
     });
 }
 
-exports.testReturnOrderCRUD = testReturnOrderCRUD
+exports.testRestockOrderCRUD = testRestockOrderCRUD
