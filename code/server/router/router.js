@@ -1560,6 +1560,7 @@ async (req, res) => {
   
     return res.status(422).end();
  }
+ console.log(req.body);
   let returnDate = req.body.returnDate;
   const products = req.body.products;
   let restockOrderId = req.body.restockOrderId;

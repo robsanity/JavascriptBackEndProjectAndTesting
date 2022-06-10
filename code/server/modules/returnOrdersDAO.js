@@ -3,7 +3,7 @@ const sqlite = require('sqlite3');
 const db = new sqlite.Database('database.db', (err) => {
     if (err) throw err;
   });
-function listReturnOrders() {
+/* function listReturnOrders() {
     return new Promise((resolve, reject) => {
         
         const sql = "SELECT idReturnOrder,idRestockOrder,returnDate FROM ReturnOrders";
@@ -39,9 +39,9 @@ function listReturnOrders() {
 
     });
 };
-//funzionante
+//funzionante */
 
-function findRetOrder(idReturnOrder) {
+/* function findRetOrder(idReturnOrder) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT idReturnOrder,idRestockOrder,returnDate FROM ReturnOrders WHERE idReturnOrder = ?";
         const sql2 = "SELECT idSKU, description,price,RFID from Products WHERE idReturnOrder = ?";
@@ -67,7 +67,7 @@ function findRetOrder(idReturnOrder) {
     });
 };
 
-//funzionante
+ *///funzionante
 function getRetID() {
     return new Promise((resolve, reject) => {
         const sql = "SELECT idReturnOrder FROM ReturnOrders ";
@@ -162,7 +162,7 @@ function deleteDatas(){
     })
 }
 
-function addProducts(idSKU,description,price,RFID,idReturnOrder){
+/* function addProducts(idSKU,description,price,RFID,idReturnOrder){
     return new Promise((resolve,reject)=>{
         const sql = "INSERT INTO Products (idSKU,description,price,RFID,idReturnOrder) VALUES (?,?,?,?,?)";
         db.run(sql,[idSKU,description,price,RFID,idReturnOrder],function(err){
@@ -175,7 +175,7 @@ function addProducts(idSKU,description,price,RFID,idReturnOrder){
         })
     })
 }
-
+ */
 
 function deleteProducts(){
     return new Promise((resolve,reject)=>{
@@ -192,5 +192,76 @@ function deleteProducts(){
 }
 
 
+ 
 
-module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder, deleteDatas, deleteProducts,addProducts }
+
+function listReturnOrders() {
+    return new Promise((resolve, reject) => {
+        
+        const sql = "SELECT idReturnOrder,idRestockOrder,returnDate FROM ReturnOrders";
+        const sql2 = "SELECT RFID,Z.idSKU,Z.description,Z.price,returnOrderId,idItems FROM SKUItems JOIN SKUs Z JOIN Items"
+        db.all(sql2, [], (err, rows) => {
+            if (err) {
+                reject({ error: `Database error` });
+                return;
+            }
+            
+            let array2 = rows.map((t) => ({RFID : t.RFID,idSKU:t.idSKU,returnOrderId:t.returnOrderId,description: t.description,price:t.price, idItems:t.idItems}));
+            
+                db.all(sql,[], (err, rows)=>{
+                    if (err) {
+                        reject({ error: `Database error` });
+                        return;
+                    }
+                      
+                    const we = rows.map((k) => ({ id: k.idReturnOrder, returnDate: k.returnDate, restockOrderId: k.idRestockOrder, products: []}));
+                    
+                
+                    let arrayProducts = we.map((uno)=>({
+                       id: uno.id,
+                       returnDate:uno.returnDate,
+                       products:
+                       array2.filter((z)=>uno.id == z.returnOrderId)
+                       .map(element => ({
+                        RFID : element.RFID,
+                        SKUid: element.idSKU,
+                        itemId: element.idItems,
+                        description: element.description,
+                        price: element.price
+                       })),
+                       restockOrderId: uno.restockOrderId
+                   }));
+                    resolve(arrayProducts);
+            });
+        });
+
+    });
+};
+
+function findRetOrder(idReturnOrder) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT idReturnOrder,idRestockOrder,returnDate FROM ReturnOrders WHERE idReturnOrder = ?";
+        const sql2 = "SELECT RFID,Z.idSKU,Z.description,Z.price,returnOrderId FROM idItems FROM SKUItems JOIN SKUs Z JOIN Items WHERE returnOrderId = ?";;
+        db.all(sql2, [idReturnOrder], (err, rows) => {
+            if (err) {
+                reject({ error: `Database error` });
+                return;
+            }
+            const array = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, price: t.price, RFID: t.RFID,idItems:t.idItems}));
+            db.all(sql, [idReturnOrder], (err, rows) => {
+                if (err) {
+                    reject({ error: `Database error` });
+                    return;
+                }
+                const products = rows.map((k) => ({returnDate: k.returnDate, idRestockOrder: k.idRestockOrder }));
+                products.map((elem) => {
+                    elem.products = [array];
+                    resolve(products);
+                });
+
+            });
+        });
+    });
+};
+
+module.exports = { listReturnOrders, findRetOrder, getRetID, createRetOrder, getIDMax,updateProducts,deleteRetOrder, deleteDatas, deleteProducts }
