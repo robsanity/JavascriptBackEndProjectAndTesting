@@ -8,10 +8,10 @@ function listSKUs() {
         const sql = `SELECT * FROM SKUs`;
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: `Database error during the retrieval of the SKUs` });
+                reject({ error: 'Database error during the retrieval of the SKUs' });
                 return;
             }
-            const SKUs = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, availableQuantity: t.availableQuantity, price: t.price }));
+            const SKUs = rows.map((t) => ({ id: t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition,availableQuantity: t.availableQuantity, price: t.price }));
             resolve(SKUs);
         });
     });
@@ -27,7 +27,7 @@ function findSKU(idSKU) {
                 reject({ error: `Database error during the retrieval of the SKUs` });
                 return;
             }
-            const SKUs = rows.map((t) => ({idSKU:t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, availableQuantity: t.availableQuantity, price: t.price }));
+            const SKUs = rows.map((t) => ({id:t.idSKU, description: t.description, weight: t.weight, volume: t.volume, notes: t.notes, idPosition: t.idPosition, availableQuantity: t.availableQuantity, price: t.price }));
             resolve(SKUs);
         });
     });
@@ -134,7 +134,7 @@ function deleteSKU(idSKU) {
                 reject(err +'Error')
             }
             else {
-                resolve(this.lastID)
+                resolve(this.lastID);
             }
         })
     });

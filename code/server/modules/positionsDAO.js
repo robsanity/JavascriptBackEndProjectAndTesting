@@ -45,12 +45,12 @@ function createPositions(positionID, aisleID, row, col, maxWeight, maxVolume) {
 };
 
 
-function modifyPosition(positionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) {
+function modifyPosition(positionID, newPositionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) {
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE Positions SET aisleId=?, row=?, col=?, maxWeight=?, maxVolume=?, occupiedWeight=?, occupiedVolume=? WHERE idPosition=?";
-        db.all(sql, [newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume, positionID], (err, rows) => {
+        const sql = "UPDATE Positions SET idPosition=?, aisleId=?, row=?, col=?, maxWeight=?, maxVolume=?, occupiedWeight=?, occupiedVolume=? WHERE idPosition=?";
+        db.all(sql, [newPositionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume, positionID], (err, rows) => {
             if (err) {
-                reject({ error: "no update" });
+                reject(err);
 
             }
             resolve(true);
@@ -58,12 +58,12 @@ function modifyPosition(positionID, newAisleID, newRow, newCol, newMaxWeight, ne
     });
 };
 
-function modifyPositionID(positionID,newPositionID ) {
+function modifyPositionID(newPositionID,positionID,newAisleID, newRow, newCol) {
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE Positions SET idPosition=? WHERE idPosition=?";
-        db.all(sql, [newPositionID, positionID], (err, rows) => {
+        const sql = "UPDATE Positions SET idPosition = ?, aisleId=?, row=?, col=? WHERE idPosition = ?";
+        db.run(sql, [newPositionID, positionID, newAisleID, newRow, newCol], function(err){
             if (err) {
-                reject({ error: "no update" });
+                reject(err);
 
             }
             resolve(true);
@@ -89,7 +89,7 @@ function deleteALLPosition() {
         const sql = "DELETE FROM PositionS";
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject({ error: "no delete" });
+                reject(err);
 
             }
             resolve(true);
