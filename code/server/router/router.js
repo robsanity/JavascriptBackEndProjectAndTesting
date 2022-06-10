@@ -1128,6 +1128,8 @@ router.get('/api/restockOrders', async (req, res) => {
               .filter((p) => p.id == ro.id)
               .map(element => ({
                 SKUId: element.SKUId,
+                //add itemId
+                itemId: element.itemId,
                 description: element.description,
                 price: element.price,
                 qty: element.qty
@@ -1139,6 +1141,7 @@ router.get('/api/restockOrders', async (req, res) => {
               .filter((si) => si.id == ro.id)
               .map(element => ({
                 SKUId: element.SKUId,
+                itemId: element.itemId,
                 rfid: element.rfid
               }))
           )
@@ -1170,6 +1173,7 @@ router.get('/api/restockOrdersIssued', async (req, res) => {
               .filter((p) => p.id == ro.id)
               .map(element => ({
                 SKUId: element.SKUId,
+                itemId: element.itemId,
                 description: element.description,
                 price: element.price,
                 qty: element.qty
@@ -1181,6 +1185,7 @@ router.get('/api/restockOrdersIssued', async (req, res) => {
               .filter((si) => si.id == ro.id)
               .map(element => ({
                 SKUId: element.SKUId,
+                itemId: element.itemId,
                 rfid: element.rfid
               }))
           )
@@ -1228,6 +1233,7 @@ async (req, res) => {
               .filter((p) => p.id == ro.id)
               .map(element => ({
                 SKUId: element.SKUId,
+                itemId: element.itemId,
                 description: element.description,
                 price: element.price,
                 qty: element.qty
@@ -1239,6 +1245,7 @@ async (req, res) => {
               .filter((si) => si.id == ro.id)
               .map(element => ({
                 SKUId: element.SKUId,
+                itemId: element.itemId,
                 rfid: element.rfid
               }))
           )
@@ -1304,10 +1311,22 @@ async (req, res) => {
     }
 
     let idRestockOrder = await restockOrdersDAO.insertRO(issueDate, supplierId);
-    let idItem = 0;
+    //let idItem = 0;
+    let item;
     for (let p of products) {
-      idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, supplierId);
-      await restockOrdersDAO.insertROI(idRestockOrder, idItem, p.qty);
+      /* idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, supplierId);
+      await restockOrdersDAO.insertROI(idRestockOrder, idItem, p.qty); */
+      /* await itemsDAO.createItem(p.description, p.itemId, p.SKUId, supplierId, p.price); //item deve essere già inserito */
+
+      item=await itemsDAO.findItemWithSupplier(itemId, supplierId);
+      if (item.length==0) {
+        return res.status(422).end();
+      }
+      if (item[0].SKUId!=p.SKUId) {
+        return res.status(422).end();
+      }
+
+      await restockOrdersDAO.insertROI(idRestockOrder, p.itemId, p.qty);
     }
     return res.status(201).end();
 
@@ -1399,6 +1418,9 @@ body('skuItems').notEmpty(),
       }
     }
  */
+
+
+    // IN CASO DI ERRORE CONTROLLARE POTREBBE ESSERE IL MANCATO CONTROLLO SU ITEMID
     for (let si of skuItems) {
       await restockOrdersDAO.putSkuItemsOfRestockOrder(id, si.rfid, si.SKUId);
     }

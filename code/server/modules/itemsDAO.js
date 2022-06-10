@@ -32,6 +32,20 @@ function findItem(id) {
     });
 }
 
+function findItemWithSupplier(id, supplierId) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM Items WHERE idItems=? AND idSupplier=?";
+        db.all(sql, [id, supplierId], (err, rows) => {
+            if (err) {
+                reject({ error: "no item in database" });
+                return;
+            }
+            const item = rows.map((t) => ({ id: t.idItems, description: t.description, price: t.price, SKUId: t.idSKU, supplierId: t.idSupplier }));
+            resolve(item);
+        });
+    });
+}
+
 function createItem(description, id, SKUId, supplierId, price) {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO Items (idItems, idSKU, description, price, idSupplier) values (?,?,?,?,?)";
@@ -84,4 +98,4 @@ function deleteALLItems() {
     });
 }
 
-module.exports = { listItems, findItem, createItem, updateItem, deleteItem, deleteALLItems }
+module.exports = { listItems, findItem, findItemWithSupplier, createItem, updateItem, deleteItem, deleteALLItems }

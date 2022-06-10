@@ -63,7 +63,8 @@ function getByIdRestockOrders(id) {
 
 function getToBeReturnRestockOrders(id) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT SI.idSKU AS SKUId, TR.idSKUItem AS rfid FROM SKUItems SI, TestResults TR WHERE SI.RFID=TR.idSKUItem AND TR.result=0 AND restockOrderId=?";
+        //const sql = "SELECT SI.idSKU AS SKUId, TR.idSKUItem AS rfid FROM SKUItems SI, TestResults TR WHERE SI.RFID=TR.idSKUItem AND TR.result=0 AND restockOrderId=?";
+        const sql = "SELECT SI.idSKU AS SKUId, ROI.idItem AS itemId, TR.idSKUItem AS rfid FROM SKUItems SI, TestResults TR, RestockOrderItems ROI WHERE SI.RFID=TR.idSKUItem AND ROI.idRestockOrder=SI.restockOrderId AND TR.result=0 AND SI.restockOrderId=?";
         db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject({ error: "no restock orders to be return in database" });
@@ -111,7 +112,7 @@ function insertRO(issueDate, supplierId) {
     });
 }
  
-function insertI(SKUId, description, price, supplierId) {
+/* function insertI(SKUId, description, price, supplierId) {
     return new Promise((resolve, reject) => {
         let sqlI = "INSERT INTO Items (idSKU, description, price, idSupplier) values (?,?,?,?)";
         let idItemSQL = "SELECT last_insert_rowid() as lastId";
@@ -134,7 +135,7 @@ function insertI(SKUId, description, price, supplierId) {
             }
         })
     });
-}
+} */
 
 function insertROI(idRestockOrder, idItem, qty) {
     return new Promise((resolve, reject) => {
@@ -241,7 +242,8 @@ function getRestockList() {
 
 function getProducts() {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT ROI.idRestockOrder AS id, I.idSKU AS SKUId, I.description AS description, I.price AS price, ROI.quantity AS qty FROM RestockOrderItems ROI, Items I WHERE ROI.idItem=I.idItems"
+        //const sql = "SELECT ROI.idRestockOrder AS id, I.idSKU AS SKUId, I.description AS description, I.price AS price, ROI.quantity AS qty FROM RestockOrderItems ROI, Items I WHERE ROI.idItem=I.idItems"
+        const sql = "SELECT ROI.idRestockOrder AS id, I.idSKU AS SKUId, I.idItems AS itemId, I.description AS description, I.price AS price, ROI.quantity AS qty FROM RestockOrderItems ROI, Items I WHERE ROI.idItem=I.idItems"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in1 " });
@@ -254,7 +256,8 @@ function getProducts() {
 
 function getSkuItems() {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT restockOrderId AS id, idSKU AS SKUId, RFID AS rfid FROM SKUItems"
+        //const sql = "SELECT restockOrderId AS id, idSKU AS SKUId, RFID AS rfid FROM SKUItems"
+        const sql = "SELECT SI.restockOrderId AS id, SI.idSKU AS SKUId, ROI.idItem AS itemId, SI.RFID AS rfid FROM SKUItems SI, RestockOrderItems ROI WHERE SI.RestockOrderId=ROI.idRestockOrder"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in database" });
@@ -304,4 +307,4 @@ function initialize() {
 
 
 
-module.exports = { getByIdRestockOrders, getToBeReturnRestockOrders, insertROI, insertRO, insertI, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, initialize, getRestockList, getProducts, getSkuItems };
+module.exports = { getByIdRestockOrders, getToBeReturnRestockOrders, insertROI, insertRO, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, initialize, getRestockList, getProducts, getSkuItems };
