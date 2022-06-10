@@ -241,7 +241,7 @@ function listReturnOrders() {
 function findRetOrder(idReturnOrder) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT idReturnOrder,idRestockOrder,returnDate FROM ReturnOrders WHERE idReturnOrder = ?";
-        const sql2 = "SELECT RFID,Z.idSKU,Z.description,Z.price,returnOrderId FROM idItems FROM SKUItems JOIN SKUs Z JOIN Items WHERE returnOrderId = ?";;
+        const sql2 = "SELECT RFID,Z.idSKU,Z.description,Z.price,returnOrderId,idItems FROM SKUItems JOIN SKUs Z JOIN Items WHERE returnOrderId = ?";;
         db.all(sql2, [idReturnOrder], (err, rows) => {
             if (err) {
                 reject({ error: `Database error` });
