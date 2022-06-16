@@ -1951,14 +1951,16 @@ router.get('/api/items', async (req, res) => {
 });
 
 //Return an item, given its id..
-router.get('/api/items/:id', 
+router.get('/api/items/:id/:supplierId', 
 param('id').notEmpty().isInt(),
+param('supplierId').notEmpty().isInt(),
 async (req, res) => {
   try {
     if (!validationResult(res).isEmpty() || req.params.id === 'null' ) {
       return res.status(422).end();
     }
-    const item = await itemsDAO.findItem(req.params.id);
+    
+    const item = await itemsDAO.findItem(req.params.id, req.params.supplierId);
     if (item.length === 0)
       return res.status(404).end();
     return res.status(200).json(item[0]);
@@ -2011,8 +2013,9 @@ async (req, res) => {
 });
 
 //Modify an existing item.
-router.put('/api/item/:id', 
+router.put('/api/item/:id/:supplierId', 
 param('id').notEmpty().isInt(),
+param('supplierId').notEmpty().isInt(),
 body('newDescription').notEmpty().isString(),
 body('newPrice').notEmpty().isFloat(),
 async (req, res) => {
@@ -2030,7 +2033,7 @@ async (req, res) => {
   let price = req.body.newPrice;
 
   try {
-    let found = await itemsDAO.updateItem(req.params.id, description, price);
+    let found = await itemsDAO.updateItem(req.params.id, description, price, req.params.supplierId);
     if (found.length === 0) {
       return res.status(404).end();
     }
@@ -2044,7 +2047,8 @@ async (req, res) => {
 });
 
 //Delete an item receiving its id.
-router.delete('/api/items/:id', 
+router.delete('/api/items/:id/:supplierId', 
+param('supplierId').notEmpty().isInt(),
 param('id').notEmpty().isInt(),
 async (req, res) => {
   if (!validationResult(res).isEmpty() || req.params.id === 'null' ) {
@@ -2054,7 +2058,7 @@ async (req, res) => {
     return res.status(422).end(); */
 
   try {
-    await itemsDAO.deleteItem(req.params.id);
+    await itemsDAO.deleteItem(req.params.id, req.params.supplierId);
     return res.status(204).end();
   }
   catch (error) {

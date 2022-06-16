@@ -18,10 +18,10 @@ function listItems() {
     });
 }
 
-function findItem(id) {
+function findItem(id, supplierId) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM Items WHERE idItems=?";
-        db.all(sql, [id], (err, rows) => {
+        const sql = "SELECT * FROM Items WHERE idItems=? AND idSupplier=?";
+        db.all(sql, [id, supplierId], (err, rows) => {
             if (err) {
                 reject({ error: "no item in database" });
                 return;
@@ -59,10 +59,10 @@ function createItem(description, id, SKUId, supplierId, price) {
     });
 }
 
-function updateItem(id, newDescription, newPrice) {
+function updateItem(id, newDescription, newPrice, supplierId) {
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE Items SET description=?, price=? WHERE idItems=?";
-        db.all(sql, [newDescription, newPrice, id], (err, rows) => {
+        const sql = "UPDATE Items SET description=?, price=? WHERE idItems=? AND idSupplier=? ";
+        db.all(sql, [newDescription, newPrice, id, supplierId], (err, rows) => {
             if (err) {
                 reject({ error: "no update" });
 
@@ -72,9 +72,9 @@ function updateItem(id, newDescription, newPrice) {
     });
 }
 
-function deleteItem(id) {
+function deleteItem(id, supplierId) {
     return new Promise((resolve, reject) => {
-        const sql = "DELETE FROM Items WHERE idItems=?";
+        const sql = "DELETE FROM Items WHERE idItems=? AND idSupplier=?";
         db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject({ error: "no delete" });
