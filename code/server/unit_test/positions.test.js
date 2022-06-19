@@ -16,8 +16,8 @@ describe("Test positions", () => {
     testGetPositions();
     testCheckPositions(1);
     testCreatePositions(1, 123, 5, 6, 100, 100);
-    testUpdatePositions(1, 456, 7, 8, 200, 200, 100, 100);
-    testUpdatePositionsId(1, 2);
+    testUpdatePositions(1, 111222333, 111, 222, 333, 200, 200, 100, 100);
+    testUpdatePositionsId(1, 111222333, 111, 222, 333);
     testDeletePositions(1);
 
 })
@@ -95,7 +95,7 @@ function testCreatePositions(positionID, aisleID, row, col, maxWeight, maxVolume
     })
 }
 
-function testUpdatePositions(positionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) {
+function testUpdatePositions(positionID, newPositionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) {
     test("update positions", async () => {
         let res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(0);
@@ -113,7 +113,7 @@ function testUpdatePositions(positionID, newAisleID, newRow, newCol, newMaxWeigh
         res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(1);
 
-        expect(res[0].positionID).toStrictEqual(positionID);
+        expect(res[0].positionID).toStrictEqual(newPosition);
         expect(res[0].aisleID).toStrictEqual(123);
         expect(res[0].row).toStrictEqual(5);
         expect(res[0].col).toStrictEqual(6);
@@ -122,13 +122,13 @@ function testUpdatePositions(positionID, newAisleID, newRow, newCol, newMaxWeigh
         expect(res[0].occupiedWeight).toStrictEqual(0);
         expect(res[0].occupiedVolume).toStrictEqual(0);
 
-        res = await positionsDAO.modifyPosition(positionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume);
+        res = await positionsDAO.modifyPosition(positionID, newPositionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume);
         expect(res).toStrictEqual(true);
 
         res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(1);
 
-        expect(res[0].positionID).toStrictEqual(positionID);
+        expect(res[0].positionID).toStrictEqual(newPositionID);
         expect(res[0].aisleID).toStrictEqual(newAisleID);
         expect(res[0].row).toStrictEqual(newRow);
         expect(res[0].col).toStrictEqual(newCol);
@@ -139,7 +139,7 @@ function testUpdatePositions(positionID, newAisleID, newRow, newCol, newMaxWeigh
     })
 } 
 
-function testUpdatePositionsId(positionID, newPositionID) {
+function testUpdatePositionsId(positionID, newPositionID, newAisleID, newRow, newCol) {
     test("update position id", async () => {
         let res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(0);
@@ -166,16 +166,16 @@ function testUpdatePositionsId(positionID, newPositionID) {
         expect(res[0].occupiedWeight).toStrictEqual(0);
         expect(res[0].occupiedVolume).toStrictEqual(0);
 
-        res = await positionsDAO.modifyPositionID(positionID, newPositionID);
+        res = await positionsDAO.modifyPositionID(newPositionID, positionID,  newAisleID, newRow, newCol);
         expect(res).toStrictEqual(true);
 
         res = await positionsDAO.listPositions();
         expect(res.length).toStrictEqual(1);
 
         expect(res[0].positionID).toStrictEqual(newPositionID);
-        expect(res[0].aisleID).toStrictEqual(123);
-        expect(res[0].row).toStrictEqual(5);
-        expect(res[0].col).toStrictEqual(6);
+        expect(res[0].aisleID).toStrictEqual(newAisleID);
+        expect(res[0].row).toStrictEqual(newRow);
+        expect(res[0].col).toStrictEqual(newCol);
         expect(res[0].maxWeight).toStrictEqual(100);
         expect(res[0].maxVolume).toStrictEqual(100);
         expect(res[0].occupiedWeight).toStrictEqual(0);

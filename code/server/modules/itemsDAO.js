@@ -75,7 +75,7 @@ function updateItem(id, newDescription, newPrice, supplierId) {
 function deleteItem(id, supplierId) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM Items WHERE idItems=? AND idSupplier=?";
-        db.all(sql, [id], (err, rows) => {
+        db.all(sql, [id, supplierId], (err, rows) => {
             if (err) {
                 reject({ error: "no delete" });
 

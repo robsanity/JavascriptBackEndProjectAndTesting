@@ -61,7 +61,7 @@ function modifyPosition(positionID, newPositionID, newAisleID, newRow, newCol, n
 function modifyPositionID(newPositionID,positionID,newAisleID, newRow, newCol) {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE Positions SET idPosition = ?, aisleId=?, row=?, col=? WHERE idPosition = ?";
-        db.run(sql, [newPositionID, positionID, newAisleID, newRow, newCol], function(err){
+        db.run(sql, [newPositionID, newAisleID, newRow, newCol, positionID], function(err){
             if (err) {
                 reject(err);
 

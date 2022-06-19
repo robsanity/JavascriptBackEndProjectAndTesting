@@ -77,9 +77,9 @@ function testlistSKUs(){
     
         res = await SKUsDAO.listSKUs();
         expect(res.length).toStrictEqual(1);
-        let z  = res[0].idSKU;
+        let z  = res[0].id;
         let k = await SKUsDAO.findSKU(z);
-        expect(k).toStrictEqual(res);
+        expect(k[0].id).toStrictEqual(res[0].id);
     })
   }
 
@@ -87,12 +87,10 @@ function testlistSKUs(){
     test('create sku test',async()=>{
     let res = await SKUsDAO.listSKUs();
         expect(res.length).toStrictEqual(0);
-        let newSKU = await SKUsDAO.createSKU(description, weight, volume, notes, availableQuantity, price);
-        
+        let newSKU = await SKUsDAO.createSKU(description, weight, volume, notes, availableQuantity, price); 
     
         res = await SKUsDAO.listSKUs();
         expect(res.length).toStrictEqual(1);
-        expect(res[0].idSKU).toStrictEqual(newSKU);
         expect(res[0].description).toStrictEqual(description);
         expect(res[0].weight).toStrictEqual(weight);
         expect(res[0].volume).toStrictEqual(volume);
@@ -114,6 +112,7 @@ function testlistSKUs(){
       );
       let fre = await SKUsDAO.listSKUs();
       expect(fre.length).toStrictEqual(1);
+      z=fre[0].id;
       await SKUsDAO.updateSKU(description,weight,volume,notes,price,availableQuantity,z);
       
       let es = await SKUsDAO.listSKUs();
@@ -125,7 +124,7 @@ function testlistSKUs(){
       expect(res[0].weight).toStrictEqual(weight);
       expect(res[0].notes).toStrictEqual(notes);
       expect(res[0].price).toStrictEqual(price);
-      expect(res[0].idSKU).toStrictEqual(z);      
+      expect(res[0].id).toStrictEqual(z);      
     })
 
   }
@@ -145,7 +144,7 @@ function testlistSKUs(){
       let newPosition = await SKUsDAO.createPositionforSKU(800211,12,3,3,50,50);
       let z = await SKUsDAO.listSKUs();
       expect(z.length).toStrictEqual(1);
-      let idposition = newPosition;
+      let idposition = 800211;
       let idsku = newsku;
       await SKUsDAO.updatePosition(idposition,idsku,idsku,idsku,idposition,idsku,idsku,idsku,idposition);
       let res = await SKUsDAO.findSKU(idsku);

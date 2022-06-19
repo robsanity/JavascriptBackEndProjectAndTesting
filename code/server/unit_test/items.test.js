@@ -67,11 +67,11 @@ function testFindItem(id) {
         res = await itemsDAO.listItems();
         expect(res.length).toStrictEqual(1);
 
-        let findItem = await itemsDAO.findItem(id);
+        let findItem = await itemsDAO.findItem(id, 2);
         expect(findItem[0].description).toStrictEqual("a new item");
         expect(findItem[0].id).toStrictEqual(id);
         expect(findItem[0].SKUId).toStrictEqual(1);
-        expect(findItem[0].suppliersId).toStrictEqual(2);
+        expect(findItem[0].supplierId).toStrictEqual(2);
         expect(findItem[0].price).toStrictEqual(10.99);
     })
 }
@@ -92,10 +92,10 @@ function testUpdateItem(id, newDescription, newPrice) {
         res = await itemsDAO.listItems();
         expect(res.length).toStrictEqual(1);
 
-        res = await itemsDAO.updateItem(id, newDescription, newPrice);
+        res = await itemsDAO.updateItem(id, newDescription, newPrice, 2);
         expect(res).toStrictEqual(true);
 
-        let findItem = await itemsDAO.findItem(id);
+        let findItem = await itemsDAO.findItem(id, 2);
 
         expect(findItem[0].description).toStrictEqual(newDescription);
         expect(findItem[0].id).toStrictEqual(id);
@@ -120,7 +120,7 @@ function testDeleteItem(id) {
         res = await itemsDAO.listItems();
         expect(res.length).toStrictEqual(1);
 
-        res = await itemsDAO.deleteItem(id);
+        res = await itemsDAO.deleteItem(id, 2);
         expect(res).toStrictEqual(true);
 
         res = await itemsDAO.listItems();
