@@ -16,8 +16,8 @@ describe('test', () => {
 
     newSKU(201, 'ciao', 12, 12, 'we', 12, 12);
     getSKU(200, 'iao', 12, 12, 'we', 12, 12);
-    update(200, 'bella', 10, 10, 'campione', 8, 30);
-    updateSkuPosition(200, 800211);
+    update(200, 'item', 10, 10, 'item', 8, 30);
+    updateSkuPosition(200, '111122223333');
     deletesku(204);
     newSKU(201, 'ciao', 12, 12, 'we', 12, 12);
 
@@ -29,9 +29,9 @@ function newSKU(expectedHTTPStatus, description, weight, volume, notes, availabl
         agent.post('/api/sku')
             .send(k)
             .then(function (res) {
-                done();
+
                 res.should.have.status(expectedHTTPStatus);
-                
+                done();
             }).catch(done);
 
 
@@ -46,15 +46,15 @@ function getSKU(expectedHTTPStatus, description, weight, volume, notes, availabl
         agent.post('/api/sku')
             .send(sku)
             .then(function (r) {
-                r.should.have.status(expectedHTTPStatus);
-                done();
-            })
-        agent.get('/api/skus')
-            .then(function (res) {
-                done();
-                res.should.have.status(expectedHTTPStatus);
-                
+                r.should.have.status(201);
+                agent.get('/api/skus')
+                    .then(function (res) {
+
+                        res.should.have.status(expectedHTTPStatus);
+                        done();
+                    }).catch(done);
             }).catch(done);
+
 
     })
 }
@@ -63,53 +63,54 @@ function getSKU(expectedHTTPStatus, description, weight, volume, notes, availabl
 function update(expectedHTTPStatus, description, weight, volume, notes, price, availableQuantity) {
     it('update SKU', function (done) {
         SKUsDAO.createSKU('allora', 10, 10, 'hola', 44, 43)
-        .then((res)=>{
-        const body = {
-            description: description,
-            weight: weight,
-            volume: volume,
-            notes: notes,
-            price: price,
-            availableQuantity: availableQuantity,
-        };
-        agent.put('/api/sku/' + res)
-            .send(body)
-            .then(function (r) {
-                r.should.have.status(expectedHTTPStatus);
-                done();
-            })
-        }).catch(done);
+            .then((res) => {
+                const body = {
+                    newDescription: description,
+                    newWeight: weight,
+                    newVolume: volume,
+                    newNotes: notes,
+                    newPrice: price,
+                    newAvailableQuantity: availableQuantity
+                };
+                
+                agent.put('/api/sku/' + res)
+                    .send(body)
+                    .then(function (r) {
+                        r.should.have.status(expectedHTTPStatus);
+                        done();
+                    }).catch(done);
+            }).catch(done);
     })
 }
 
 function updateSkuPosition(expectedHTTPStatus, position) {
     it("Update an sku position", function (done) {
         SKUsDAO.createSKU("a", 10, 5, "f", 10.99, 50)
-        .then((res)=>{
-        let body = { position: position };
-        agent
-            .put("/api/sku/" + res + "/position")
-            .send(body)
-            .then(function (res) {
-                res.should.have.status(expectedHTTPStatus);
-                done();
-            });
-        }).catch(done);
+            .then((res) => {
+                let body = { position: position };
+                agent
+                    .put("/api/sku/" + res + "/position")
+                    .send(body)
+                    .then(function (res) {
+                        res.should.have.status(expectedHTTPStatus);
+                        done();
+                    }).catch(done);
+            }).catch(done);
     });
 }
 
 function deletesku(expectedHTTPStatus) {
     it("delete sku", function (done) {
         SKUsDAO.createSKU("a", 10, 5, "f", 10.99, 50)
-        .then((res)=>{
-            agent
-            .delete("/api/skus/" + res)
-            .then(function (res) {
-                res.should.have.status(expectedHTTPStatus);
-                done();
-            });
-        }).catch(done);
-        
+            .then((res) => {
+                agent
+                    .delete("/api/skus/" + res)
+                    .then(function (res) {
+                        res.should.have.status(expectedHTTPStatus);
+                        done();
+                    }).catch(done);
+            }).catch(done);
+
     });
 }
 

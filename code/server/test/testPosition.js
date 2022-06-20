@@ -11,11 +11,11 @@ describe('test', () => {
     beforeEach(async () => {
         await positionsDAO.deleteALLPosition()
     })
-    testcreate(201,1,1,8,7,55,80);
-    testlistPosition(201,200,1,1,8,7,55,80);
-    testupdatePosition(200,1,7,7,70,70,70,70);
-    testmodifypositionID(200,3);
-    testdeletePosition(204);
+    testcreate(201,'1','1','8','7','55','80');
+    testlistPosition(201,200,'1','1','8','7','55','80');
+    testupdatePosition(200,'1','7','7','70','70','70','70');
+    testmodifypositionID(200,'111122223333');
+    //testdeletePosition(204);
     //testcreate(201,1,1,8,7,55,80);
 });
 
@@ -83,7 +83,7 @@ function testupdatePosition(expectedHTTPStatus,aisleID,row,col,maxWeight,maxVolu
 
 function testmodifypositionID(expectedHTTPStatus,newPositionID){
     it('modify position id',function(done){
-        let po = {positionID:2, aisleID:5,row:5,col:5,maxWeight:100,maxVolume:100};
+        let po = {positionID:'2', aisleID:'5',row:'5',col:'5',maxWeight:100,maxVolume:100};
         agent.post('/api/position')
         .send(po)
         .then(function(res){
@@ -92,6 +92,7 @@ function testmodifypositionID(expectedHTTPStatus,newPositionID){
             .send(newpos)
             .then(function (r) {
                 r.should.have.status(expectedHTTPStatus);
+                
                 done();
             })
         }).catch(done);

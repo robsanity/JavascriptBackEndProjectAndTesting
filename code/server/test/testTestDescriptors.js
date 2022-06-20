@@ -29,11 +29,11 @@ function postTestDescriptors() {
             .then(function (res) {
                 SKUsDAO.listSKUs()
                     .then(function (res) {
-                        let idSKU = res[0].idSKU;
+                        let idSKU = res[0].id;
                         let body = {
-                            "name": "test descriptor 3",
-                            "procedureDescription": "This test is described by...",
-                            "idSKU": idSKU
+                            name: "test descriptor 3",
+                            procedureDescription: "This test is described by...",
+                            idSKU: idSKU
                         }
                         agent.post('/api/testDescriptor')
                             .send(body)
@@ -52,11 +52,11 @@ function getTestDescriptors() {
             .then(function (res) {
                 SKUsDAO.listSKUs()
                     .then(function (res) {
-                        let idSKU = res[0].idSKU;
+                        let idSKU = res[0].id;
                         let body = {
-                            "name": "test descriptor 3",
-                            "procedureDescription": "This test is described by...",
-                            "idSKU": idSKU
+                            name: "test descriptor 3",
+                            procedureDescription: "This test is described by...",
+                            idSKU: idSKU
                         }
                         agent.post('/api/testDescriptor')
                             .send(body)
@@ -79,11 +79,11 @@ function getByIdTestDescriptors() {
             .then(function (res) {
                 SKUsDAO.listSKUs()
                     .then(function (res) {
-                        let idSKU = res[0].idSKU;
+                        let idSKU = res[0].id;
                         let body = {
-                            "name": "test descriptor 3",
-                            "procedureDescription": "This test is described by...",
-                            "idSKU": idSKU
+                            name: "test descriptor 3",
+                            procedureDescription: "This test is described by...",
+                            idSKU: idSKU
                         }
                         agent.post('/api/testDescriptor')
                             .send(body)
@@ -113,11 +113,11 @@ function putTestDescriptors() {
             .then(function (res) {
                 SKUsDAO.listSKUs()
                     .then(function (res) {
-                        idSKU = res[0].idSKU;
+                        idSKU = res[0].id;
                         let body = {
-                            "name": "test descriptor 3",
-                            "procedureDescription": "This test is described by...",
-                            "idSKU": idSKU
+                            name: "test descriptor 3",
+                            procedureDescription: "This test is described by...",
+                            idSKU: idSKU
                         }
                         agent.post('/api/testDescriptor')
                             .send(body)
@@ -151,11 +151,11 @@ function deleteTestDescriptors() {
             .then(function (res) {
                 SKUsDAO.listSKUs()
                     .then(function (res) {
-                        let idSKU = res[0].idSKU;
+                        let idSKU = res[0].id;
                         let body = {
-                            "name": "test descriptor 3",
-                            "procedureDescription": "This test is described by...",
-                            "idSKU": idSKU
+                            name: "test descriptor 3",
+                            procedureDescription: "This test is described by...",
+                            idSKU: idSKU
                         }
                         agent.post('/api/testDescriptor')
                             .send(body)

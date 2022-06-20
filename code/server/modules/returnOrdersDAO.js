@@ -224,7 +224,7 @@ function listReturnOrders() {
                        array2.filter((z)=>uno.id == z.returnOrderId)
                        .map(element => ({
                         RFID : element.RFID,
-                        SKUid: element.idSKU,
+                        SKUId: element.idSKU,
                         itemId: element.idItems,
                         description: element.description,
                         price: element.price
@@ -247,13 +247,13 @@ function findRetOrder(idReturnOrder) {
                 reject({ error: `Database error` });
                 return;
             }
-            const array = rows.map((t) => ({ idSKU: t.idSKU, description: t.description, price: t.price, RFID: t.RFID,idItems:t.idItems}));
+            const array = rows.map((t) => ({ SKUId: t.idSKU, description: t.description, price: t.price, RFID: t.RFID,itemId:t.idItems}));
             db.all(sql, [idReturnOrder], (err, rows) => {
                 if (err) {
                     reject({ error: `Database error` });
                     return;
                 }
-                const products = rows.map((k) => ({returnDate: k.returnDate, idRestockOrder: k.idRestockOrder }));
+                const products = rows.map((k) => ({returnDate: k.returnDate, restockOrderId: k.idRestockOrder }));
                 products.map((elem) => {
                     elem.products = [array];
                     resolve(products);

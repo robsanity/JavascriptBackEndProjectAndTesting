@@ -20,10 +20,10 @@ describe('testreturn', () => {
 
 function newRet(expectedHTTPStatus,returnDate,restockOrderId){
     it('add retord', function(done){
-        returnOrdersDAO.createRetOrder(3,"2021-02-02",5,9999)
+        returnOrdersDAO.createRetOrder(3,"2021-02-02",5,'11112222333311112222333311112222')
         .then(()=>{
-        let products = [{"SKUId":12,"description":"a product","price":10.99,"RFID":"9999"},
-        {"SKUId":180,"description":"another product","price":11.99,"RFID":"99999"}];
+        let products = [{"SKUId":12,"description":"a product","price":10.99,"RFID":"11112222333311112222333311112222"},
+        {"SKUId":180,"description":"another product","price":11.99,"RFID":'11112222333311112222333311112222'}];
         let ret = {returnDate:returnDate,products:products,restockOrderId:restockOrderId};
         agent.post('/api/returnOrder')
         .send(ret)

@@ -189,7 +189,7 @@ router.delete('/api/skus/:id',
 
     try {
       if (!validationResult(req).isEmpty()) {
-        console.log(req.params.id)
+        
         return res.status(422).end();
       }
       await SKUsDAO.deleteSKU(req.params.id);
@@ -385,7 +385,7 @@ router.post('/api/position',
       if (!validationResult(req).isEmpty()) {
         return res.status(422).end();
       }
-      let z = await positionsDAO.createPositions(req.body.positionID, req.body.aisleID, req.body.row, req.body.col, req.body.maxWeight, req.body.maxVolume);
+      await positionsDAO.createPositions(req.body.positionID, req.body.aisleID, req.body.row, req.body.col, req.body.maxWeight, req.body.maxVolume);
       return res.status(201).end();
     }
     catch (error) {
@@ -423,7 +423,7 @@ router.put('/api/position/:positionID', param('positionID').isString().notEmpty(
         return;
       }
       let newpositionid = (req.body.newAisleID + req.body.newRow + req.body.newCol);
-      console.log(newpositionid)
+      
       await positionsDAO.modifyPosition(req.params.positionID, newpositionid, req.body.newAisleID, req.body.newRow, req.body.newCol, req.body.newMaxWeight, req.body.newMaxVolume, req.body.newOccupiedWeight, req.body.newOccupiedVolume);
       return res.status(200).end();
     }
@@ -702,7 +702,7 @@ router.get('/api/skuitems/:rfid/testResults',
 
       let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
       if (checkRfid.length === 0) {
-        console.log(rfid);
+        
         return res.status(404).end()
       }
 
@@ -781,19 +781,19 @@ router.post('/api/skuitems/testResult',
       //controllo in skuitems perchè inserisco un sku item che dovrebbe essere già in mio possesso
       let checkRfid = await SKUItemsDAO.findSKUItem(rfid);
       if (checkRfid.length === 0) {
-        console.log(rfid);
+        
         return res.status(404).end()
       }
 
       let checkTD = await testDescriptorsDAO.getByIdTestDescriptors(idTestDescriptor);
       if (checkTD.length === 0) {
-        console.log(req.body);
+        
         return res.status(404).end()
       }
 
       let checkTR = await testResultsDAO.getByIdTestResults(rfid, idTestDescriptor);
       if (checkTR.length !== 0) {
-        console.log(req.body);
+        
         return res.status(422).end()
       }
 
@@ -1560,7 +1560,7 @@ router.post('/api/returnOrder',
 
       return res.status(422).end();
     }
-    console.log(req.body);
+    
     let returnDate = req.body.returnDate;
     const products = req.body.products;
     let restockOrderId = req.body.restockOrderId;
@@ -1961,10 +1961,13 @@ router.get('/api/items/:id/:supplierId',
       }
 
       const item = await itemsDAO.findItem(req.params.id, req.params.supplierId);
-      if (item.length === 0)
+      if (item.length === 0){
         return res.status(404).end();
+      }
+      else {
       return res.status(200).json(item[0]);
     }
+  }
     catch (error) {
       console.log(error);
       return res.status(500).json(error);
