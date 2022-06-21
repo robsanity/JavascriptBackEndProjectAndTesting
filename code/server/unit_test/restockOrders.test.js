@@ -3,18 +3,21 @@
 const restockOrdersDAO = require('../modules/restockOrdersDAO');
 const itemsDAO = require('../modules/itemsDAO');
 const SKUItemsDAO = require('../modules/SKUItemsDAO');
+const SKUsDAO = require('../modules/SKUsDAO');
 
 describe("Test RestockOrder", () => {
-    beforeAll(async() => {
+    beforeAll(async () => {
         await restockOrdersDAO.deleteDatas();
         await itemsDAO.deleteALLItems();
         await SKUItemsDAO.deleteALLSKUItems();
+        await SKUsDAO.deleteDatas()
     })
 
-    beforeEach(async() => {
+    beforeEach(async () => {
         await restockOrdersDAO.deleteDatas();
         await itemsDAO.deleteALLItems();
         await SKUItemsDAO.deleteALLSKUItems();
+        await SKUsDAO.deleteDatas()
     })
 
     test("Database start", async () => {
@@ -68,16 +71,15 @@ function testPostRestockOrder() {
         expect(id).toStrictEqual(get[0].id);
 
         let products = [
-            { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 30 },
-            { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 20 }
+            { "SKUId": 12, "itemId": 10, "description": "a product", "price": 10, "qty": 30 },
+            { "SKUId": 180, "itemId": 18, "description": "another product", "price": 11, "qty": 20 }
         ];
-        let idItem;
         for (let p of products) {
-            idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, 1);
-            await restockOrdersDAO.insertROI(id, idItem, p.qty);
+            // idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, 1);
+            await itemsDAO.createItem(p.description, p.itemId, p.SKUId, 1, p.price)
+            await restockOrdersDAO.insertROI(id, p.itemId, p.qty);
         }
-        res = await itemsDAO.listItems();
-        expect(res.length).toStrictEqual(2);
+
         res = await restockOrdersDAO.getProducts();
         expect(res.length).toStrictEqual(2);
 
@@ -97,17 +99,20 @@ function testPutRestockOrder() {
         expect(id).toStrictEqual(get[0].id);
 
         let products = [
-            { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 30 },
-            { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 20 }
+            { "SKUId": 12, "itemId": 10, "description": "a product", "price": 10, "qty": 30 },
+            { "SKUId": 180, "itemId": 18, "description": "another product", "price": 11, "qty": 20 }
         ];
         let idItem;
         for (let p of products) {
-            idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, 1);
-            await restockOrdersDAO.insertROI(id, idItem, p.qty);
+            //idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, 1);
+            //await SKUsDAO.createSKUWithOnlyId(p.SKUId);
+            await itemsDAO.createItem(p.description, p.itemId, p.SKUId, 1, p.price)
+            await restockOrdersDAO.insertROI(id, p.itemId, p.qty);
         }
-        res = await itemsDAO.listItems();
-        expect(res.length).toStrictEqual(2);
+        /* res = await itemsDAO.listItems();
+        expect(res.length).toStrictEqual(2); */
         res = await restockOrdersDAO.getProducts();
+        //res = res.filter(p => p.id === id);
         expect(res.length).toStrictEqual(2);
 
         res = await restockOrdersDAO.putStateRestockOrder(id, 'DELIVERED');
@@ -118,20 +123,24 @@ function testPutRestockOrder() {
         expect(get[0].id).toStrictEqual(id)
         expect(get[0].state).toStrictEqual('DELIVERED')
 
-        let skuItems = [
-            { "SKUId": 12, "rfid": "12345678901234567890123456789016" },
-            { "SKUId": 12, "rfid": "12345678901234567890123456789017" }
-        ];
+        let skuItems = [{ "SKUId": 12, "itemId": 10, "rfid": "12345678901234567890123456789016" },
+        { "SKUId": 180, "itemId": 18, "rfid": "12345678901234567890123456789017" }];
 
         for (let si of skuItems) {
             await SKUItemsDAO.createSKUItemNoDate(si.rfid, si.SKUId)
             await restockOrdersDAO.putSkuItemsOfRestockOrder(id, si.rfid, si.SKUId);
         }
+        
+        res = await SKUItemsDAO.listSKUItems();
+        
+        res= await restockOrdersDAO.getRestockList();
+        
         res = await restockOrdersDAO.getSkuItems();
-        res = res.filter(si => si.id == id);
+        res = res.filter(si => si.id === id);
+        
         expect(res.length).toStrictEqual(2)
 
-        let transportNote="2021/12/29";
+        let transportNote = "2021/12/29";
 
         res = await restockOrdersDAO.putTNRestockOrder(id, transportNote);
         expect(res).toStrictEqual(true)
@@ -156,16 +165,16 @@ function testDeleteRestockOrder() {
         expect(id).toStrictEqual(get[0].id);
 
         let products = [
-            { "SKUId": 12, "description": "a product", "price": 10.99, "qty": 30 },
-            { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 20 }
+            { "SKUId": 12, "itemId": 10, "description": "a product", "price": 10, "qty": 30 },
+            { "SKUId": 180, "itemId": 18, "description": "another product", "price": 11, "qty": 20 }
         ];
         let idItem;
         for (let p of products) {
-            idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, 1);
-            await restockOrdersDAO.insertROI(id, idItem, p.qty);
+            //idItem = await restockOrdersDAO.insertI(p.SKUId, p.description, p.price, 1);
+            await itemsDAO.createItem(p.description, p.itemId, p.SKUId, 1, p.price)
+            await restockOrdersDAO.insertROI(id, p.itemId, p.qty);
         }
-        res = await itemsDAO.listItems();
-        expect(res.length).toStrictEqual(2);
+
         res = await restockOrdersDAO.getProducts();
         expect(res.length).toStrictEqual(2);
 

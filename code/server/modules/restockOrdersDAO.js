@@ -257,7 +257,8 @@ function getProducts() {
 function getSkuItems() {
     return new Promise((resolve, reject) => {
         //const sql = "SELECT restockOrderId AS id, idSKU AS SKUId, RFID AS rfid FROM SKUItems"
-        const sql = "SELECT SI.restockOrderId AS id, SI.idSKU AS SKUId, ROI.idItem AS itemId, SI.RFID AS rfid FROM SKUItems SI, RestockOrderItems ROI WHERE SI.RestockOrderId=ROI.idRestockOrder"
+        //const sql = "SELECT SI.restockOrderId AS id, SI.idSKU AS SKUId, ROI.idItem AS itemId, SI.RFID AS rfid FROM SKUItems SI, RestockOrderItems ROI WHERE SI.restockOrderId=ROI.idRestockOrder"
+        const sql = "SELECT SI.restockOrderId AS id, SI.idSKU AS SKUId, ROI.idItem AS itemId, SI.RFID AS rfid FROM Items I, SKUItems SI, RestockOrderItems ROI WHERE SI.restockOrderId=ROI.idRestockOrder AND ROI.idItem=I.idItems AND SI.idSKU=I.idSKU"
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject({ error: "error in database" });
