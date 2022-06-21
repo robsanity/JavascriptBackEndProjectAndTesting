@@ -245,8 +245,8 @@ TestResults -- SKUItems
 ## scenario 1-1 
 ```plantuml
 Manager -> SKU: createSKU(description, weight, volume, notes, availableQuantity, price)
-SKU ->Manager  : response.status(201 created)
-SKU ->Data Layer: recorded in the system 
+SKU -> Manager: response.status(201 created)
+SKU -> Data Layer: recorded in the system 
 ```
 
 
