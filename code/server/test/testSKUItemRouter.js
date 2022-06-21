@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const itemsDAO = require('../modules/SKUItemsDAO');
+const SKUsDAO = require('../modules/SKUsDAO');  
 chai.use(chaiHttp);
 chai.should();
 
@@ -11,6 +12,9 @@ var agent = chai.request.agent(app);
 describe('test', () => {
     beforeEach(async () => {
         await itemsDAO.deleteALLSKUItems()
+        await SKUsDAO.deleteDatas();
+        await SKUsDAO.createSKUWithOnlyId(1);
+        await SKUsDAO.createSKUWithOnlyId(5);
     })
 
 
