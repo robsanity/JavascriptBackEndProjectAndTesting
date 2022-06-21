@@ -31,9 +31,9 @@ function newItem(expectedHTTPStatus, description, id, SKUId, supplierId, price) 
         agent.post('/api/item')
             .send(k)
             .then(function (res) {
-                done();
+             
                 res.should.have.status(expectedHTTPStatus);
-
+                done();
             }).catch(done);
 
 
