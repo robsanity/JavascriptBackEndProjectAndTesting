@@ -289,7 +289,7 @@ InternalOrders ->Clerk: response.status(200 ok)
 InternalOrders -> DataLayer: recorded in the DB
 DataLayer -> InternalOrders: updateIntOrder(id, ISSUED)
 DataLayer -> SKU: updateSKU(position,quantity)
-Manager -> Clerk: Check & Accepted
+Manager -> DataLayer: Check & Accepted
 DataLayer -> InternalOrders: updateIntOrder(id, ACCEPTED)
 
 
