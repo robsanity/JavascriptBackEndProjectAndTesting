@@ -1318,7 +1318,7 @@ router.post('/api/restockOrder',
         await restockOrdersDAO.insertROI(idRestockOrder, idItem, p.qty); */
         /* await itemsDAO.createItem(p.description, p.itemId, p.SKUId, supplierId, p.price); //item deve essere già inserito */
 
-        item = await itemsDAO.findItemWithSupplier(p.itemId, supplierId);
+        item = await itemsDAO.findItem(p.itemId, supplierId);
         if (item.length == 0) {
           return res.status(422).end();
         }

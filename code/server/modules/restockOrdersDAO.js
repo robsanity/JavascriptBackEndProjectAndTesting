@@ -291,7 +291,7 @@ function deleteDatas() {
         })
     })
 }
-function initialize() {
+/* function initialize() {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO Users (idUser,name,surname,email,type) VALUES (1,'Giuseppe','Regina','gr@a.it','suppliers'); INSERT INTO SKUs (idSKU,description,weight,volume,notes,availableQuantity,price) values (1,'ciao',12,13,'ciaao',10,12); INSERT INTO Items (idItems,idSKU,description,price,idSupplier) VALUES (1,1,'CIAO',77,1); INSERT INTO RestockOrders(idRestockOrder,issueDate,state,idSupplier,transportNote) VALUES (1,'2022-10-10','DELIVERED',1,'ciao'); INSERT INTO RestockOrderItems (idRestockOrder,idItem,quantity) VALUES (1,1,10);"
         db.run(sql, [], function (err) {
@@ -303,9 +303,9 @@ function initialize() {
             }
         });
     });
-}
+} */
 
 
 
 
-module.exports = { getByIdRestockOrders, getToBeReturnRestockOrders, insertROI, insertRO, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, initialize, getRestockList, getProducts, getSkuItems };
+module.exports = { getByIdRestockOrders, getToBeReturnRestockOrders, insertROI, insertRO, putStateRestockOrder, putTNRestockOrder, putSkuItemsOfRestockOrder, deleteRestockOrder, getRestockList, getProducts, getSkuItems, deleteDatas, getRestockList, getProducts, getSkuItems };

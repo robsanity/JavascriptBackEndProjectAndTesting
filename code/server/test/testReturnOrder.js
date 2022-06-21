@@ -61,7 +61,7 @@ function testfindRetOrder(expectedHTTPStatus,idReturnOrder){
     it('get retOrdby his id',function(done){
         returnOrdersDAO.createRetOrder(3,"2021-11-11",5,9999)
         .then((res)=>{
-            agent.get('/api/returnOrders/' + res)
+            agent.get('/api/returnOrders/' + idReturnOrder)
             .then(function(res){
                 res.should.have.status(expectedHTTPStatus);
                 done();
