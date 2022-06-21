@@ -284,7 +284,6 @@ Clerk -> InternalOrders: insertIO(issueDate, customerId)
 InternalOrders -> Clerk: response.status(201 created)
 Clerk -> SKU: findSKU(idSKU)
 SKU -> Clerk: response(SKU), response.status(200 ok)
-SKU -> Clerk: response.status(200 ok)
 Clerk -> InternalOrders: insertIOS(id,SKUId, qty)
 InternalOrders ->Clerk: response.status(200 ok)
 InternalOrder -> DataLayer: recorded in the DB
