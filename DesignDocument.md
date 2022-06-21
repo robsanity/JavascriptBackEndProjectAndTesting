@@ -286,7 +286,7 @@ Clerk -> SKU: findSKU(idSKU)
 SKU -> Clerk: response(SKU), response.status(200 ok)
 Clerk -> InternalOrders: insertIOS(id,SKUId, qty)
 InternalOrders ->Clerk: response.status(200 ok)
-InternalOrder -> DataLayer: recorded in the DB
+InternalOrders -> DataLayer: recorded in the DB
 DataLayer -> InternalOrders: updateIntOrder(id, ISSUED)
 DataLayer -> SKU: updateSKU(position,quantity)
 Manager -> Clerk: Check & Accepted
