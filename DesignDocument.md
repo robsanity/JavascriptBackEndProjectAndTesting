@@ -225,8 +225,7 @@ TestResults -- SKUItems
 
 # Verification traceability matrix
 
-|          | Users | TestResults | TestDescriptor | SKU | SKUItem | ReturnOrders | RestockOrders | Positions | Items | InternalOrders | Data Layer |
-|          |       |             |                |     |         |              |               |           |       |                |            |
+|          | Users(Customers,Manager,Suppliers) | TestResults | TestDescriptor | SKU | SKUItem | ReturnOrders | RestockOrders | Positions | Items | InternalOrders | Data Layer |
 |----------|-------|-------------|----------------|-----|---------|--------------|---------------|-----------|-------|----------------|------------|
 |  FR1     |   x   |             |                |     |         |              |               |           |       |                |      x     |
 |  FR2     |   x   |             |                |     |         |              |               |           |       |                |      x     |
