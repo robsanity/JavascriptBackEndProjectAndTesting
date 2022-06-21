@@ -244,36 +244,54 @@ TestResults -- SKUItems
 
 ## scenario 1-1 
 ```plantuml
-Manager -> SKU: SKU:post(id,weight,volume,SKU notes,
-SKU ->Manager  : response(ok)
+Manager -> SKU: createSKU(description, weight, volume, notes, availableQuantity, price)
+SKU ->Manager  : response.status(201 created)
+SKU ->Data Layer: recorded in the system 
 ```
 
 
-## scenario 3-1 
+## scenario 3-2 
 ```plantuml
-Manager ->R0: new SKU description 
-Manager -> R0: fills quantity of item to be ordered
-Manager -> R0: select supplier SP that can sastisfy order
-Manager -> R0: confirms inserted data  
-Manager -> R0: new SKU notes
-R0 -> database: recorded in the system in ISSUED state
+Manager -> Users: getSuppliers
+Users -> Manager: response(Suppliers array), response.status(200 ok)
+Manager -> R0: insertROI(idRestockOrder, idItem, qty)
+Manager -> R0: insertRO(issueDate, supplierId)
+R0 -> Manager: response.status(201 created)
+Manager -> R0: putSkuItemsOfRestockOrder(id, rfid, SKUId)
+Manager -> R0: putTNRestockOrder(id, TransportNote)
+Manager -> R0: putStateRestockOrder(id, newState = ISSUED)
+R0 -> Manager: response.status(200 ok)
+R0 -> DataLayer: recorded in the DB
 
 ```
 
 ## scenario 5-1-1
 ```plantuml
 R0 -> Clerk: arrives to the shop 
-Clerk -> Database : records e the system with a new RFID
-Database -> SKU_ITEM  : stores RFID and changed the state
+Clerk -> SKU: findSKU(idSKU)
+SKU -> Clerk: response(SKU), response.status(200 ok)
+Clerk -> SKUItems: createSKUItem(rfid, SKUId, date)
+SKUItems -> Clerk: response.status(201 created)
+Clerk -> Items: creataeItem(description, id, SKUId, supplierId, price)
+Items -> Clerk:  response.status(201 created)
+SKUItems -> DataLayer : recorded in the DB
+Items -> DataLayer  : recorded in the DB
 ```
 ## Scenario 9-1 
 ```plantuml
 
-User -> internal_order: new Internal Order 
-User -> SKU: adds every SKU he wants
-internal_order ->User: ask confermation
-User -> internal_order: confermation
-internal_order ->User:  System issue IO with status
-internal_order ->manager:  checks IO and accepts it
-manager -> User: confermation
+Clerk -> InternalOrders: insertIO(issueDate, customerId)
+InternalOrders -> Clerk: response.status(201 created)
+Clerk -> SKU: findSKU(idSKU)
+SKU -> Clerk: response(SKU), response.status(200 ok)
+SKU -> User: response.status(200 ok)
+Clerk -> InternalOrders insertIOS(id,SKUId, qty)
+InternalOrders ->Clerk: response.status(200 ok)
+InternalOrder -> DataLayer: recorded in the DB
+DataLayer -> InternalOrders: updateIntOrder(id, ISSUED)
+DataLayer -> SKU: updateSKU(position,quantity)
+Manager -> Clerk: Check & Accepted
+DataLayer -> InternalOrders: updateIntOrder(id, ACCEPTED)
+
+
 ```
