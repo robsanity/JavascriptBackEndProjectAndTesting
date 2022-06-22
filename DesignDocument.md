@@ -17,7 +17,7 @@ Version: 3.0
 - [Verification traceability matrix](#verification-traceability-matrix)
 - [Verification sequence diagrams](#verification-sequence-diagrams)
   - [scenario 1-1](#scenario-1-1)
-  - [scenario 3-1](#scenario-3-1)
+  - [scenario 3-2](#scenario-3-2)
   - [scenario 5-1-1](#scenario-5-1-1)
   - [Scenario 9-1](#scenario-9-1)
 
@@ -207,12 +207,9 @@ ReturnOrders -- SKUItems
 SKUItems -- SKUs
 SKUItems -- InternalOrders
 SKUItems -- RestockOrders
-SKUItems -- ReturnOrders
 
 SKUs -- Positions
 SKUs -- TestDescriptors
-
-TestDescriptors -- SKUs
 
 TestResults -- TestDescriptors
 TestResults -- SKUItems
