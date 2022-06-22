@@ -1,6 +1,7 @@
 'use strict'
 /* const { expect } = require('chai'); */
 const SKUItemsDAO = require('../modules/SKUItemsDAO');
+const SKUsDAO = require('../modules/SKUsDAO');    
 
 describe("Test SKU Items", () => {
     beforeAll( async () => {
@@ -129,6 +130,6 @@ function testDeleteSKUItems() {
 
         res = await SKUItemsDAO.listSKUItems();
         expect(res.length).toStrictEqual(0);
-
+        await SKUsDAO.deleteDatas();
     })
 }

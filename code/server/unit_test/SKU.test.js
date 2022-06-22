@@ -10,9 +10,13 @@ const positionsDAO = require('../modules/positionsDAO');
 describe("Test SKUs", () => {
     beforeAll(async() => {
         await SKUsDAO.deleteDatas();
+        await positionsDAO.deleteALLPosition();
     })
 
-    beforeEach(async() => await SKUsDAO.deleteDatas())
+    beforeEach(async() => await SKUsDAO.deleteDatas());
+    beforeEach(async() => await positionsDAO.deleteALLPosition());
+
+  
 
     test("Database start", async () => {
         let res = await SKUsDAO.listSKUs();
@@ -23,7 +27,7 @@ describe("Test SKUs", () => {
     testcreatesku("product",12,20,'this',15,10.45);
     testFindSKU();
     testUpdateSKU('product2',12,15,'that',72.5,88);
-    testupdatePosition(800211);
+    testupdatePosition('111122223333');
     testdelete();
 })
 
@@ -141,19 +145,17 @@ function testlistSKUs(){
           22.30
       );
       await SKUsDAO.deleteDatasfromPositions();
-      let newPosition = await SKUsDAO.createPositionforSKU(800211,12,3,3,50,50);
+      await SKUsDAO.createPositionforSKU('111122223333','1111','2222','3333',50,50);
       let z = await SKUsDAO.listSKUs();
       expect(z.length).toStrictEqual(1);
-      let idposition = 800211;
       let idsku = newsku;
       await SKUsDAO.updatePosition(idposition,idsku,idsku,idsku,idposition,idsku,idsku,idsku,idposition);
-      let res = await SKUsDAO.findSKU(idsku);
+      let res = await SKUsDAO.listSKUs();
 
-      let respos = await positionsDAO.checkPosition(idposition)
-      
-      expect(res[0].idPosition).toStrictEqual(idposition);
-      expect(res[0].weight).toStrictEqual(respos[0].occupiedWeight);
-      expect(res[0].volume).toStrictEqual(respos[0].occupiedVolume);
+      await positionsDAO.checkPosition(idposition)
+      expect(res[0].idPosition).toStrictEqual(111122223333);
+   
+      await positionsDAO.deleteALLPosition();
       
     })
   }
