@@ -29,7 +29,7 @@ describe("Test ReturnOrder", () => {
         expect(res.length).toStrictEqual(0);
     })
     testlistReturnOrder();
-    testFindRetOrder(2);
+    testFindRetOrder(3);
     testcreateRetOrder(3,'2022-12-12',1,"11112222333311112222333311112222");
     testDeleteOrder();
 });
@@ -51,7 +51,7 @@ function testlistReturnOrder (){
       });
 }
 
-function testFindRetOrder(){
+function testFindRetOrder(idRet){
         test('find ret ord', async()=>{
           let res = await returnOrderDAO.listReturnOrders();
         expect(res.length).toStrictEqual(0);
@@ -62,11 +62,11 @@ function testFindRetOrder(){
         await itemsDAO.createItem("a",1,1,u[0].id,10);
         await SKUItems.addRetOrdtoSKUITEM(3);
         await returnOrderDAO.createRetOrder(3, '2022-12-12',1, "11112222333311112222333311112222");
-            res = await returnOrderDAO.listReturnOrders();    
+            res = await returnOrderDAO.findRetOrder(idRet);    
             expect(res.length).toStrictEqual(1);
-            let z  = res[0].idReturnOrder;
-            let k = await returnOrderDAO.listReturnOrders(z);
-            expect(k).toStrictEqual(res);
+            //let z  = res[0].idReturnOrder;
+            let k = await returnOrderDAO.listReturnOrders();
+            expect(k.length).toStrictEqual(1);
         })
     }
 

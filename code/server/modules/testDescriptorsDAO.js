@@ -94,7 +94,7 @@ function updateID (idDescriptor1,idDescriptor2){
                 resolve(true);
         });
     });
-}
+} 
 
 
 module.exports = { getTestDescriptors, getByIdTestDescriptors, insertTestDescriptor, updateTestDescriptor, deleteTestDescriptor, deleteALLTestDescriptor,updateID };

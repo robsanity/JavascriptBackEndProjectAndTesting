@@ -128,7 +128,7 @@ function getALLTestResults() {
 
 function updateIDResult (idResult,idSKUItem){
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE TestResults SET idResult = ? WHERE idSKUItem=?";
+        const sql = "UPDATE TestResults SET idResults = ? WHERE idSKUItem=?";
         db.run(sql, [idResult,idSKUItem],function(err) {
             if (err) {
                 reject({ error: "no update" });
@@ -140,4 +140,4 @@ function updateIDResult (idResult,idSKUItem){
 }
 
 
-module.exports = { getTestResults, getByIdTestResults, checkId, checkRfid, insertTestResult, updateTestResults, deleteTestResult, deleteALLTestResult, getALLTestResults, updateIDResult };
+module.exports = { getTestResults, getByIdTestResults, checkId, checkRfid, insertTestResult, updateTestResults, deleteTestResult, deleteALLTestResult, getALLTestResults,updateIDResult};

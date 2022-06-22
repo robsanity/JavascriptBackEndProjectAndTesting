@@ -1,25 +1,45 @@
+const SKUsDAO = require('../modules/SKUsDAO');
+const testDescriptorsDAO = require('../modules/testDescriptorsDAO'); 
 const testResultsDAO = require('../modules/testResultsDAO');
+const SKUItemsDAO = require('../modules/SKUItemsDAO');
 
 describe("Test testResults", () => {
     beforeAll(async () => {
         await testResultsDAO.deleteALLTestResult();
+        await SKUsDAO.deleteDatas();
+        await SKUItemsDAO.deleteALLSKUItems();
+        await testDescriptorsDAO.deleteALLTestDescriptor();
+        
     })
 
     beforeEach(async () => 
-    await testResultsDAO.deleteALLTestResult())
+    await testResultsDAO.deleteALLTestResult());
+    beforeEach(async () => 
+    await await SKUsDAO.deleteDatas())
+    beforeEach(async () => 
+    await SKUItemsDAO.deleteALLSKUItems(),)
+    beforeEach(async () => 
+    await testDescriptorsDAO.deleteALLTestDescriptor());
+    beforeEach(async () => 
+    await SKUsDAO.createSKUWithOnlyId(1))
+    beforeEach(async () => 
+    await SKUItemsDAO.createSKUItem("11112222333311112222333311112222",1,"2022/02/24"));
+    beforeEach(async () => 
+    await testDescriptorsDAO.insertTestDescriptor("test1","procedure",1));
 
     test("Database start", async () => {
         let res = await testResultsDAO.getALLTestResults();
         expect(res.length).toStrictEqual(0);
     })
 
-    testGetTestResults("1234", 1, '2022/02/24', true);
-    testGetByIdTestResults("1234", 1, '2022/02/24', true);
+    testGetTestResults("11112222333311112222333311112222", 1, '2022/02/24', true);
+    testGetByIdTestResults("11112222333311112222333311112222", 1, '2022/02/24', true);
     testCheckId();
     testCheckRFID();
-    testInsertTestResult("1234", 1, '2022/02/24', true);
-    testUpdateTestResult("1234", 1, '2022/02/24', true, 2, '2010/10/28', false);
-    testDeleteTestResult("1234");
+    testInsertTestResult("11112222333311112222333311112222", 1, '2022/02/24', true);
+    testUpdateTestResult("11112222333311112222333311112222", 1, '2022/02/24', true, 2, '2010/10/28', false);
+    testUpdateIDResult(2,"11112222333311112222333311112222");
+    testDeleteTestResult("11112222333311112222333311112222");
 
 
 })
@@ -75,14 +95,14 @@ function testCheckId() {
         expect(res.length).toStrictEqual(0);
 
         let newTR = await testResultsDAO.insertTestResult(
-            "1234",
+            "11112222333311112222333311112222",
             1,
             '2022/02/24',
             true
         )
         expect(newTR).toStrictEqual(true);
 
-        res = await testResultsDAO.getTestResults("1234");
+        res = await testResultsDAO.getTestResults("11112222333311112222333311112222");
         expect(res.length).toStrictEqual(1);
         let idTR = res[0].id;
 
@@ -98,14 +118,14 @@ function testCheckRFID() {
         expect(res.length).toStrictEqual(0);
 
         let newTR = await testResultsDAO.insertTestResult(
-            "1234",
+            "11112222333311112222333311112222",
             1,
             '2022/02/24',
             true
         )
         expect(newTR).toStrictEqual(true);
 
-        res = await testResultsDAO.checkRfid("1234");
+        res = await testResultsDAO.checkRfid("11112222333311112222333311112222");
         expect(res.length).toStrictEqual(1);
     })
 }
@@ -160,6 +180,29 @@ function testUpdateTestResult(rfid, idTestDescriptor, date, result, newIdTestDes
         expect(res[0].idTestDescriptor).toStrictEqual(newIdTestDescriptor);
         expect(res[0].date).toStrictEqual(newDate);
         expect(res[0].result).toStrictEqual(newResult);
+    })
+}
+
+function testUpdateIDResult(idResult,idSKUItem) {
+    test("Update test result", async () => {
+    let res = await testResultsDAO.getALLTestResults();
+    
+        expect(res.length).toStrictEqual(0);
+
+        let newTR = await testResultsDAO.insertTestResult(
+            "11112222333311112222333311112222",
+            1,
+            '2022/02/24',
+            true
+        )
+        
+        
+        expect(newTR).toStrictEqual(true);
+       
+        
+        await testResultsDAO.updateIDResult(idResult,idSKUItem);
+        let k = await testResultsDAO.getALLTestResults();
+        expect(k[0].id).toStrictEqual(2);
     })
 }
 
